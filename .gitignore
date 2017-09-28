@@ -6,6 +6,7 @@ Homestead.json
 .env
 composer.lock
 .php_cs.cache
+.idea/
 
 
 # Created by https://www.gitignore.io/api/linux,phpstorm

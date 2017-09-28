@@ -102,5 +102,20 @@ class SentinelGroupSeedTableSeeder extends Seeder
             'tag.tags.destroy' => true,
         ];
         $group->save();
+
+
+        $group = Sentinel::findRoleBySlug('user');
+        $group->permissions = [
+            'core.sidebar.group' => true,
+            /* Dashboard */
+            'dashboard.index' => true,
+            'dashboard.update' => true,
+            'dashboard.reset' => true,
+            /* API keys */
+            'account.api-keys.index' => true,
+            'account.api-keys.create' => true,
+            'account.api-keys.destroy' => true,
+        ];
+        $group->save();
     }
 }

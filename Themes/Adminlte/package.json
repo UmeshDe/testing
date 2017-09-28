@@ -19,13 +19,14 @@
     "datatables.net-bs": "~1.10.10",
     "font-awesome": ">=4.6",
     "gridstack": ">=0.2.2",
+    "icheck": "^1.0.2",
+    "knockout": "^3.4.2",
     "laravel-mix": "^1.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "simplemde": "~1.9.0",
-    "webpack-shell-plugin": "^0.5.0",
-    "icheck": "^1.0.2",
-    "sisyphus": "0.0.4"
+    "sisyphus": "0.0.4",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "devDependencies": {
     "cross-env": "^5.0.5"

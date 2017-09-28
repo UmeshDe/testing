@@ -11,7 +11,7 @@ return [
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
     */
-    'name' => 'My Application',
+    'name' => 'Accunity WebApp',
 
     /*
    |--------------------------------------------------------------------------
@@ -189,6 +189,8 @@ return [
         Modules\Core\Providers\AsgardServiceProvider::class,
 
         App\Providers\RouteServiceProvider::class,
+        Accunity\SMSSender\SMSSenderServiceProvider::class,
+
     ],
 
     /*

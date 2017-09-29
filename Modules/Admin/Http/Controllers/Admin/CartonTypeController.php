@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateCartonTypeRequest;
 use Modules\Admin\Http\Requests\UpdateCartonTypeRequest;
 use Modules\Admin\Repositories\CartonTypeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class CartonTypeController extends AdminBaseController
 {
@@ -16,12 +17,16 @@ class CartonTypeController extends AdminBaseController
      * @var CartonTypeRepository
      */
     private $cartontype;
+    
+    
+    private $auth;
 
-    public function __construct(CartonTypeRepository $cartontype)
+    public function __construct(CartonTypeRepository $cartontype,Authentication $auth)
     {
         parent::__construct();
 
         $this->cartontype = $cartontype;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +36,9 @@ class CartonTypeController extends AdminBaseController
      */
     public function index()
     {
-        //$cartontypes = $this->cartontype->all();
+        $cartontypes = $this->cartontype->all();
 
-        return view('admin::admin.cartontypes.index', compact(''));
+        return view('admin::admin.cartontypes.index', compact('cartontypes'));
     }
 
     /**
@@ -54,7 +59,11 @@ class CartonTypeController extends AdminBaseController
      */
     public function store(CreateCartonTypeRequest $request)
     {
-        $this->cartontype->create($request->all());
+        $data = [
+            'type' => $request->type,
+            'created_by' => $this->auth->user()->id,
+        ] ;
+        $this->cartontype->create($data);
 
         return redirect()->route('admin.admin.cartontype.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::cartontypes.title.cartontypes')]));
@@ -80,7 +89,13 @@ class CartonTypeController extends AdminBaseController
      */
     public function update(CartonType $cartontype, UpdateCartonTypeRequest $request)
     {
-        $this->cartontype->update($cartontype, $request->all());
+        $cartontype = $this->cartontype->find($request->type_id);
+        $data = [
+            'type' => $request->type,
+            'created_by' => $this->auth->user()->id,
+        ] ;
+        $this->cartontype->update($cartontype, $data);
+
 
         return redirect()->route('admin.admin.cartontype.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::cartontypes.title.cartontypes')]));

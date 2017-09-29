@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateApprovalNumberRequest;
 use Modules\Admin\Http\Requests\UpdateApprovalNumberRequest;
 use Modules\Admin\Repositories\ApprovalNumberRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class ApprovalNumberController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class ApprovalNumberController extends AdminBaseController
      */
     private $approvalnumber;
 
-    public function __construct(ApprovalNumberRepository $approvalnumber)
+    /**
+     * @var
+     */
+    private $auth;
+
+    public function __construct(ApprovalNumberRepository $approvalnumber,Authentication $auth)
     {
         parent::__construct();
 
         $this->approvalnumber = $approvalnumber;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,9 @@ class ApprovalNumberController extends AdminBaseController
      */
     public function index()
     {
-        //$approvalnumbers = $this->approvalnumber->all();
+        $approvalnumbers = $this->approvalnumber->all();
 
-        return view('admin::admin.approvalnumbers.index', compact(''));
+        return view('admin::admin.approvalnumbers.index', compact('approvalnumbers'));
     }
 
     /**
@@ -54,7 +61,10 @@ class ApprovalNumberController extends AdminBaseController
      */
     public function store(CreateApprovalNumberRequest $request)
     {
-        $this->approvalnumber->create($request->all());
+        $data = [
+            'app_number' => $request->app_number,
+        ];
+        $this->approvalnumber->create($data);
 
         return redirect()->route('admin.admin.approvalnumber.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::approvalnumbers.title.approvalnumbers')]));
@@ -80,7 +90,11 @@ class ApprovalNumberController extends AdminBaseController
      */
     public function update(ApprovalNumber $approvalnumber, UpdateApprovalNumberRequest $request)
     {
-        $this->approvalnumber->update($approvalnumber, $request->all());
+        $approvalnumber = $this->approvalnumber->find($request->approval_id);
+        $data = [
+            'app_number' => $request->app_number,
+        ];
+        $this->approvalnumber->update($approvalnumber, $data);
 
         return redirect()->route('admin.admin.approvalnumber.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::approvalnumbers.title.approvalnumbers')]));

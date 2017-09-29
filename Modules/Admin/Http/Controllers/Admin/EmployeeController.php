@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateEmployeeRequest;
 use Modules\Admin\Http\Requests\UpdateEmployeeRequest;
 use Modules\Admin\Repositories\EmployeeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class EmployeeController extends AdminBaseController
 {
@@ -17,11 +18,22 @@ class EmployeeController extends AdminBaseController
      */
     private $employee;
 
-    public function __construct(EmployeeRepository $employee)
+
+    /**
+     * @var
+     */
+    private $auth;
+    protected $validationRules = [
+        'first_name' => 'required',
+        'last_name' => 'required',
+    ];
+
+    public function __construct(EmployeeRepository $employee,Authentication $auth)
     {
         parent::__construct();
 
         $this->employee = $employee;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +43,9 @@ class EmployeeController extends AdminBaseController
      */
     public function index()
     {
-        //$employees = $this->employee->all();
+        $employees = $this->employee->allWith(['designation', 'department', 'user', 'currentShift', 'type']);
 
-        return view('admin::admin.employees.index', compact(''));
+        return view('admin::admin.employees.index', compact('employees'));
     }
 
     /**
@@ -41,9 +53,20 @@ class EmployeeController extends AdminBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($id = null)
     {
-        return view('admin::admin.employees.create');
+        $roles = app(getRepoName('Role', 'User'))->all();
+
+        $departments = app(getRepoName('Department', 'Profile'))->getNameValue();
+        $designations = app(getRepoName('Designation', 'Profile'))->getNameValue('designation');
+        $shifts = app(getRepoName('Shift', 'Attendance'))->getNameValue();
+        $types = app(getRepoName('EmployeeType', 'Profile'))->getNameValue();
+        $qualifications = app(getRepoName('Qualification', 'Profile'))->getNameValue();
+        $languages = config('asgard.profile.config.languages');
+        $bloodgroups = config('asgard.profile.config.bloodgroups');
+        $managers = $this->employee->getAllManagers(true);
+
+        return view('admin::admin.employees.create', compact('departments', 'designations', 'shifts', 'types', 'managers', 'languages', 'bloodgroups', 'roles', 'qualifications', 'useraddresses'));
     }
 
     /**

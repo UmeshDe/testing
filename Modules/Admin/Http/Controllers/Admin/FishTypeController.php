@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateFishTypeRequest;
 use Modules\Admin\Http\Requests\UpdateFishTypeRequest;
 use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class FishTypeController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class FishTypeController extends AdminBaseController
      */
     private $fishtype;
 
-    public function __construct(FishTypeRepository $fishtype)
+    /**
+     * @var
+     */
+    private $auth;
+
+    public function __construct(FishTypeRepository $fishtype,Authentication $auth)
     {
         parent::__construct();
 
         $this->fishtype = $fishtype;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,9 @@ class FishTypeController extends AdminBaseController
      */
     public function index()
     {
-        //$fishtypes = $this->fishtype->all();
+        $fishtypes = $this->fishtype->all();
 
-        return view('admin::admin.fishtypes.index', compact(''));
+        return view('admin::admin.fishtypes.index', compact('fishtypes'));
     }
 
     /**
@@ -54,7 +61,11 @@ class FishTypeController extends AdminBaseController
      */
     public function store(CreateFishTypeRequest $request)
     {
-        $this->fishtype->create($request->all());
+        $data = [
+            'type' => $request->type,
+            'created_by' => $this->auth->user()->id,
+        ];
+        $this->fishtype->create($data);
 
         return redirect()->route('admin.admin.fishtype.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::fishtypes.title.fishtypes')]));
@@ -80,7 +91,12 @@ class FishTypeController extends AdminBaseController
      */
     public function update(FishType $fishtype, UpdateFishTypeRequest $request)
     {
-        $this->fishtype->update($fishtype, $request->all());
+        $fishtype = $this->fishtype->find($request->fishtype_id);
+        $data = [
+            'type' => $request->type,
+            'created_by' => $this->auth->user()->id,
+        ];
+        $this->fishtype->update($fishtype, $data);
 
         return redirect()->route('admin.admin.fishtype.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::fishtypes.title.fishtypes')]));

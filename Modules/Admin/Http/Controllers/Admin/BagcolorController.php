@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateBagcolorRequest;
 use Modules\Admin\Http\Requests\UpdateBagcolorRequest;
 use Modules\Admin\Repositories\BagcolorRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class BagcolorController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class BagcolorController extends AdminBaseController
      */
     private $bagcolor;
 
-    public function __construct(BagcolorRepository $bagcolor)
+    /**
+     * @var
+     */
+    private $auth;
+    
+    public function __construct(BagcolorRepository $bagcolor,Authentication $auth)
     {
         parent::__construct();
 
         $this->bagcolor = $bagcolor;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,9 @@ class BagcolorController extends AdminBaseController
      */
     public function index()
     {
-        //$bagcolors = $this->bagcolor->all();
+        $bagcolors = $this->bagcolor->all();
 
-        return view('admin::admin.bagcolors.index', compact(''));
+        return view('admin::admin.bagcolors.index', compact('bagcolors'));
     }
 
     /**
@@ -54,7 +61,11 @@ class BagcolorController extends AdminBaseController
      */
     public function store(CreateBagcolorRequest $request)
     {
-        $this->bagcolor->create($request->all());
+        $data = [
+            'color' => $request->color,
+            'created_by'=> $this->auth->user()->id,
+        ];
+        $this->bagcolor->create($data);
 
         return redirect()->route('admin.admin.bagcolor.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::bagcolors.title.bagcolors')]));
@@ -80,8 +91,12 @@ class BagcolorController extends AdminBaseController
      */
     public function update(Bagcolor $bagcolor, UpdateBagcolorRequest $request)
     {
-        $this->bagcolor->update($bagcolor, $request->all());
-
+        $bagcolor = $this->bagcolor->find($request->color_id);
+        $data = [
+            'color' => $request->color,
+            'created_by'=> $this->auth->user()->id,
+        ];
+        $this->bagcolor->update($bagcolor, $data);
         return redirect()->route('admin.admin.bagcolor.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::bagcolors.title.bagcolors')]));
     }

@@ -41,7 +41,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->icon('fa fa-copy');
                 $item->weight(10);
                 $item->authorize(
-                     'process.index'
+                     'admin.process.module.index'
                 );
                 $item->item(trans('process::products.title.products'), function (Item $item) {
                     $item->icon('fa fa-copy');

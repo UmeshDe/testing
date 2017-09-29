@@ -41,7 +41,7 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->icon('fa fa-copy');
                 $item->weight(10);
                 $item->authorize(
-                    'admin.index'
+                    'admin.admin.module.index'
                 );
                 $item->item(trans('admin::approvalnumbers.title.approvalnumbers'), function (Item $item) {
                     $item->icon('fa fa-copy');

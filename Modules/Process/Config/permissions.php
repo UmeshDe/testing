@@ -1,8 +1,9 @@
 <?php
 
 return [
-
-    'process.index' => 'Show Porcess Module',
+    'process.module'=>[
+        'index' => 'Show Porcess Module'
+    ],
 
     'process.products' => [
         'index' => 'process::products.list resource',

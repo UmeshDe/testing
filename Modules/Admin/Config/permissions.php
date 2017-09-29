@@ -2,7 +2,10 @@
 
 return [
 
-    'admin.index' => 'Show Admin Module',
+    'admin.module'=>[
+        'index' => 'Show Admin Module'
+    ],
+
     'admin.approvalnumbers' => [
         'index' => 'admin::approvalnumbers.list resource',
         'create' => 'admin::approvalnumbers.create resource',

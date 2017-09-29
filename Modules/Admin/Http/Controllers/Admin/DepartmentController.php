@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateDepartmentRequest;
 use Modules\Admin\Http\Requests\UpdateDepartmentRequest;
 use Modules\Admin\Repositories\DepartmentRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class DepartmentController extends AdminBaseController
 {
@@ -17,11 +18,15 @@ class DepartmentController extends AdminBaseController
      */
     private $department;
 
-    public function __construct(DepartmentRepository $department)
+
+    private $auth;
+
+    public function __construct(DepartmentRepository $department,Authentication $auth)
     {
         parent::__construct();
 
         $this->department = $department;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +36,11 @@ class DepartmentController extends AdminBaseController
      */
     public function index()
     {
-        //$departments = $this->department->all();
+        $departments = $this->department->all();
+        $userrepo = app('Modules\User\Repositories\UserRepository');
+        $user = $userrepo->all(['id','first_name'],'first_name');
 
-        return view('admin::admin.departments.index', compact(''));
+        return view('admin::admin.departments.index', compact('departments','user'));
     }
 
     /**
@@ -54,7 +61,18 @@ class DepartmentController extends AdminBaseController
      */
     public function store(CreateDepartmentRequest $request)
     {
-        $this->department->create($request->all());
+        $data = [
+            'manager_user_id' => $request->manager_user_id,
+            'name' => $request->name,
+            'department_code' => $request->department_code,
+            'project_seq_no' => $request->project_seq_no,
+            'description' => $request->description,
+//             $name = $request->input('is_automatic'),
+            'created_by' => $this->auth->user()->id,
+            'is_automatic' => $request->input('is_automatic'),
+
+        ];
+        $this->department->create($data);
 
         return redirect()->route('admin.admin.department.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::departments.title.departments')]));
@@ -80,7 +98,17 @@ class DepartmentController extends AdminBaseController
      */
     public function update(Department $department, UpdateDepartmentRequest $request)
     {
-        $this->department->update($department, $request->all());
+        $department = $this->department->find($request->dept_id);
+        $data = [
+            'name' => $request->name,
+            'department_code' => $request->department_code,
+            'project_seq_no' => $request->project_seq_no,
+            'description' => $request->description,
+            'is_automatic' => $request->input('is_automatic'),
+            'created_by' => $this->auth->user()->id
+        ];
+        $this->department->update($department, $data);
+
 
         return redirect()->route('admin.admin.department.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::departments.title.departments')]));

@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateGradeRequest;
 use Modules\Admin\Http\Requests\UpdateGradeRequest;
 use Modules\Admin\Repositories\GradeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class GradeController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class GradeController extends AdminBaseController
      */
     private $grade;
 
-    public function __construct(GradeRepository $grade)
+    /**
+     * @var
+     */
+    private $auth;
+
+    public function __construct(GradeRepository $grade,Authentication $auth)
     {
         parent::__construct();
 
         $this->grade = $grade;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,9 @@ class GradeController extends AdminBaseController
      */
     public function index()
     {
-        //$grades = $this->grade->all();
+        $grades = $this->grade->all();
 
-        return view('admin::admin.grades.index', compact(''));
+        return view('admin::admin.grades.index', compact('grades'));
     }
 
     /**
@@ -54,7 +61,11 @@ class GradeController extends AdminBaseController
      */
     public function store(CreateGradeRequest $request)
     {
-        $this->grade->create($request->all());
+        $data = [
+            'grade' => $request->grade,
+            'created_by' => $this->auth->user()->id,
+        ];
+        $this->grade->create($data);
 
         return redirect()->route('admin.admin.grade.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::grades.title.grades')]));
@@ -80,7 +91,12 @@ class GradeController extends AdminBaseController
      */
     public function update(Grade $grade, UpdateGradeRequest $request)
     {
-        $this->grade->update($grade, $request->all());
+        $grade = $this->grade->find($request->grade_id);
+        $data = [
+            'grade' => $request->grade,
+            'created_by' => $this->auth->user()->id,
+        ];
+        $this->grade->update($grade, $data);
 
         return redirect()->route('admin.admin.grade.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::grades.title.grades')]));

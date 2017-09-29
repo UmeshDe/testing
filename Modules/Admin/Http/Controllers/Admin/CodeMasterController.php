@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateCodeMasterRequest;
 use Modules\Admin\Http\Requests\UpdateCodeMasterRequest;
 use Modules\Admin\Repositories\CodeMasterRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class CodeMasterController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class CodeMasterController extends AdminBaseController
      */
     private $codemaster;
 
-    public function __construct(CodeMasterRepository $codemaster)
+    /**
+     * @var
+     */
+    private $auth;
+    
+    public function __construct(CodeMasterRepository $codemaster,Authentication $auth)
     {
         parent::__construct();
 
         $this->codemaster = $codemaster;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,10 @@ class CodeMasterController extends AdminBaseController
      */
     public function index()
     {
-        //$codemasters = $this->codemaster->all();
-
-        return view('admin::admin.codemasters.index', compact(''));
+        $codemasters = $this->codemaster->all();
+        $codemasterrepo = app(getRepoName('Codemaster','Profile'));
+        $codemaster = $codemasterrepo->all();
+        return view('admin::admin.codemasters.index', compact('codemasters','codemaster'));
     }
 
     /**
@@ -54,7 +62,20 @@ class CodeMasterController extends AdminBaseController
      */
     public function store(CreateCodeMasterRequest $request)
     {
-        $this->codemaster->create($request->all());
+        if ($request->is_parent == NULL)
+        {
+            $isparent = 0;
+        }
+        else
+        {
+            $isparent = $request->is_parent;
+        }
+        $data = [
+            'code' => $request->code,
+            'is_parent' => $isparent,
+            'created_by' => $this->auth->user()->id,
+        ];
+        $this->codemaster->create($data);
 
         return redirect()->route('admin.admin.codemaster.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::codemasters.title.codemasters')]));
@@ -80,7 +101,12 @@ class CodeMasterController extends AdminBaseController
      */
     public function update(CodeMaster $codemaster, UpdateCodeMasterRequest $request)
     {
-        $this->codemaster->update($codemaster, $request->all());
+        $codemaster = $this->codemaster->find($request->codemaster_id);
+        $data = [
+            'name' => $request->name,
+            'created_by' => $request->created_by,
+        ];
+        $this->codemaster->update($codemaster, $data);
 
         return redirect()->route('admin.admin.codemaster.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::codemasters.title.codemasters')]));

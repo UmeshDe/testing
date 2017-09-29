@@ -9,6 +9,7 @@ use Modules\Admin\Http\Requests\CreateKindRequest;
 use Modules\Admin\Http\Requests\UpdateKindRequest;
 use Modules\Admin\Repositories\KindRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 
 class KindController extends AdminBaseController
 {
@@ -17,11 +18,17 @@ class KindController extends AdminBaseController
      */
     private $kind;
 
-    public function __construct(KindRepository $kind)
+    /**
+     * @var
+     */
+    private $auth;
+
+    public function __construct(KindRepository $kind,Authentication $auth)
     {
         parent::__construct();
 
         $this->kind = $kind;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,9 +38,9 @@ class KindController extends AdminBaseController
      */
     public function index()
     {
-        //$kinds = $this->kind->all();
+        $kinds = $this->kind->all();
 
-        return view('admin::admin.kinds.index', compact(''));
+        return view('admin::admin.kinds.index', compact('kinds'));
     }
 
     /**

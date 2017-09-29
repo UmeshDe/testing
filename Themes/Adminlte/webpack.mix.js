@@ -13,6 +13,7 @@ mix.less('resources/assets/less/asgard.less', 'assets/css/asgard.css')
  * Copy scripts
  */
 mix.copy('resources/assets/js', 'assets/js');
+mix.copy('node_modules/accounting.min.js','assets/js/accounting.min.js')
 
 /**
  * Copy node module

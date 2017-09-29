@@ -1,0 +1,17 @@
+{
+    "name": "Process",
+    "alias": "process",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 1,
+    "providers": [
+        "Modules\\Process\\Providers\\ProcessServiceProvider",
+        "Modules\\Process\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        
+    ],
+    "requires": []
+}

@@ -122,7 +122,7 @@ class AdminTables extends Migration
             $table->foreign('department_id')->references('id')->on('admin__departments');
 
 
-            $table->string('shift')->unsigned()->nullable();
+            $table->string('shift')->nullable();
 
             $table->date('joining_date')->nullable();
             $table->string('pan_no')->nullable();

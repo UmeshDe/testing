@@ -19,14 +19,13 @@ class ProcessTables extends Migration
             $table->date('product_date')->nullable();
             $table->integer('no_of_cartons')->nullable();
             $table->unsignedInteger('location_id');
-            $table->foreign('location')->references('id')->on('profile__locations');
+            $table->foreign('location_id')->references('id')->on('admin__locations');
 
             $table->integer('approval_no')->nullable();
             $table->integer('po_no')->nullable();
 
             $table->string('lot_no')->nullable();
-            $table->string('product_slab')->nullable();
-            $table->integer('no_of_cartons')->nullable();
+            $table->string('product_slab')->nadmin__locationsullable();
             $table->unsignedInteger('fish_type');
             $table->foreign('fish_type')->references('id')->on('admin__fishtypes');
 
@@ -45,7 +44,7 @@ class ProcessTables extends Migration
                 $table->unsignedInteger('product_id')->references('id')->on('process__products');
                 $table->date('carton_date')->nullable();
                 $table->integer('no_of_cartons')->nullable();
-                $table->date('carton_date')->nullable();
+
 
                 $table->integer('rejected')->nullable();
                 $table->integer('loose')->nullable();
@@ -56,10 +55,10 @@ class ProcessTables extends Migration
 
                 $table->string('carton_type')->nullable();
                 $table->unsignedInteger('bag_color');
-                $table->foreign('bag_color')->references('id')->on('profile__bagcolors');
+                $table->foreign('bag_color')->references('id')->on('admin__bagcolors');
 
                 $table->unsignedInteger('location_id');
-                $table->foreign('location')->references('id')->on('profile__locations');
+                $table->foreign('location_id')->references('id')->on('admin__locations');
                 $table->boolean('qualitycheckdone')->default(false);
 
                 $table->string('record_status')->nullable()->default("A");
@@ -108,7 +107,7 @@ class ProcessTables extends Migration
             $table->unsignedInteger('carton_id')->references('id')->on('process__cartons');
             $table->unsignedInteger('grade_id');
             $table->date('date');
-            $table->foreign('grade')->references('id')->on('admin__grades');
+            $table->unsignedInteger('grade')->references('id')->on('admin__grades');
             $table->string('moisture')->nullable();
             $table->string('kamaboko_hw')->nullable();
             $table->string('ashi')->nullable();

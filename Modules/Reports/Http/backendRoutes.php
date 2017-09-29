@@ -37,6 +37,12 @@ $router->group(['prefix' =>'/reports'], function (Router $router) {
         'uses' => 'ReportMasterController@destroy',
         'middleware' => 'can:reports.reportmasters.destroy'
     ]);
+
+    $router->post('report/generate', [
+        'as' => 'admin.report.generate',
+        'uses' => 'ReportMasterController@generate',
+        'middleware' => 'can:reports.reportmasters.index'
+    ]);
 // append
 
 });

@@ -190,6 +190,7 @@ return [
 
         App\Providers\RouteServiceProvider::class,
         Accunity\SMSSender\SMSSenderServiceProvider::class,
+        Former\FormerServiceProvider::class
 
     ],
 
@@ -237,6 +238,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
+        'Former' => 'Former\Facades\Former',
     ],
 
 ];

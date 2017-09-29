@@ -147,6 +147,7 @@ return [
             'pace.css',
             'selectize-default.css',
             'asgard.css',
+            'daterangepicker.css'
         ],
         'js' => [
             'bootstrap.js',
@@ -157,10 +158,13 @@ return [
             'dataTables.bootstrap.js',
             'jquery.slug.js',
             'keypressAction.js',
+            'moment.js',
             'app.js',
             'pace.js',
             'selectize.js',
             'main.js',
+            'daterangepicker.js',
+
         ],
     ],
 

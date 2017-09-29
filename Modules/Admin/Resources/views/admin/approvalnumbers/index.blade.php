@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+
+@section()
+
 @section('content-header')
     <h1>
         {{ trans('admin::approvalnumbers.title.approvalnumbers') }}
@@ -66,7 +69,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.approvalnumber.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.approvalnumber.update',''], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('app_number') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Number</label>
@@ -94,7 +97,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.approvalnumber.store'], 'method' => 'post','id'=>'create-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.approvalnumber.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('app_number') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Number</label>

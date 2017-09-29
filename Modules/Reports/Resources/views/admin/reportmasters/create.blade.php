@@ -1,5 +1,11 @@
 @extends('layouts.master')
 
+@push('css-stack')
+
+
+
+@endpush
+
 @section('content-header')
     <h1>
         {{ trans('reports::reportmasters.title.create reportmaster') }}

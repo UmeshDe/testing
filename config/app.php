@@ -190,8 +190,8 @@ return [
 
         App\Providers\RouteServiceProvider::class,
         Accunity\SMSSender\SMSSenderServiceProvider::class,
-        Former\FormerServiceProvider::class
-
+        Former\FormerServiceProvider::class,
+        Jimmyjs\ReportGenerator\ServiceProvider::class
     ],
 
     /*
@@ -238,7 +238,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
+        'Str'             => Illuminate\Support\Str::class,
+
         'Former' => 'Former\Facades\Former',
+        'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class
     ],
 
 ];

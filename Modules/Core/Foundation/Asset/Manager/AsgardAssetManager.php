@@ -3,6 +3,7 @@
 namespace Modules\Core\Foundation\Asset\Manager;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Foundation\Asset\AssetNotFoundException;
 
 final class AsgardAssetManager implements AssetManager
@@ -97,6 +98,7 @@ final class AsgardAssetManager implements AssetManager
         $assetPath = $this->js->get($dependency);
 
         $this->guardForAssetNotFound($assetPath);
+
 
         return $assetPath;
     }

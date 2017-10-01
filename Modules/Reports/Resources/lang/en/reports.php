@@ -6,9 +6,10 @@ return [
     'edit resource' => 'Edit Report',
     'destroy resource' => 'Destroy Report',
     'title' => [
-        'name' => 'Master',
+        'name' => 'Reports Admin',
         'create approvalnumber' => 'Create a Report',
         'edit approvalnumber' => 'Edit',
+        'report list' => 'Reports'
     ],
     'button' => [
         'create approvalnumber' => 'Create a Report',

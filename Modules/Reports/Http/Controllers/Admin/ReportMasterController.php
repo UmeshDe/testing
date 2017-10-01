@@ -31,7 +31,6 @@ class ReportMasterController extends AdminBaseController
      */
     public function index()
     {
-        //$reportmasters = $this->reportmaster->all();
 
         return view('reports::admin.reportmasters.index', compact(''));
     }
@@ -99,21 +98,4 @@ class ReportMasterController extends AdminBaseController
         return redirect()->route('admin.reports.reportmaster.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('reports::reportmasters.title.reportmasters')]));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  ReportMaster $reportmaster
-     * @return Response
-     */
-    public function generate(ReportMaster $reportmaster)
-    {
-        return "OK";
-    }
-
-
-
-
-
-
 }

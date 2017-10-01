@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Core\Traits\CanPublishConfiguration;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\Process\Events\Handlers\RegisterProcessSidebar;
+use Modules\Process\Repositories\ProductRepository;
 
 class ProcessServiceProvider extends ServiceProvider
 {
@@ -48,7 +49,7 @@ class ProcessServiceProvider extends ServiceProvider
     private function registerBindings()
     {
         $this->app->bind(
-            'Modules\Process\Repositories\ProductRepository',
+            ProductRepository::class,
             function () {
                 $repository = new \Modules\Process\Repositories\Eloquent\EloquentProductRepository(new \Modules\Process\Entities\Product());
 

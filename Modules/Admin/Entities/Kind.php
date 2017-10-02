@@ -4,12 +4,13 @@ namespace Modules\Admin\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kind extends Model
 {
-    use Translatable;
+    use SoftDeletes;
 
     protected $table = 'admin__kinds';
     public $translatedAttributes = [];
-    protected $fillable = [];
+    protected $guarded = ['id'];
 }

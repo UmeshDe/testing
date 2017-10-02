@@ -1,8 +1,5 @@
 @extends('layouts.master')
 
-
-@section()
-
 @section('content-header')
     <h1>
         {{ trans('admin::approvalnumbers.title.approvalnumbers') }}
@@ -191,6 +188,6 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateApprovalNumberRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\ApprovalNumberRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateApprovalNumberRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateApprovalNumberRequest','#create-form')->render() !!}
 @endpush

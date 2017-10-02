@@ -66,7 +66,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.bagcolor.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.bagcolor.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('color') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Color</label>
@@ -95,7 +95,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.bagcolor.store'], 'method' => 'post','id'=>'create-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.bagcolor.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('color') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Color</label>
@@ -194,6 +194,6 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateBagcolorRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\BagcolorRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateBagcolorRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateBagcolorRequest','#create-form')->render() !!}
 @endpush

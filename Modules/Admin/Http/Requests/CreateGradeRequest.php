@@ -8,7 +8,9 @@ class CreateGradeRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'grade' => 'required|unique:admin__grades,grade|max:255',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateGradeRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'grade.required' => 'Please Enter Grade',
+            'grade.unique' => 'Grade Already Exist',
+        ];
     }
 
     public function translationMessages()

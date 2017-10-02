@@ -8,7 +8,9 @@ class CreateFishTypeRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'type' => 'required|unique:admin__fishtypes,type|max:255',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateFishTypeRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+         return [
+            'type.required' => 'Please Enter Fish Type',
+            'type.unique' => 'Type Already Exist',
+        ];
     }
 
     public function translationMessages()

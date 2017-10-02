@@ -66,7 +66,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.grade.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.grade.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Grade</label>
@@ -95,7 +95,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.grade.store'], 'method' => 'post','id'=>'create-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.grade.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Grade</label>
@@ -193,7 +193,7 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateGradeRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\GradeRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateGradeRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateGradeRequest','#create-form')->render() !!}
 @endpush
 

@@ -66,7 +66,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.fishtype.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.fishtype.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('type') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Fish Name</label>
@@ -95,7 +95,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.fishtype.store'], 'method' => 'post','id'=>'create-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.fishtype.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('type') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Fish Name</label>
@@ -194,6 +194,6 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateFishtypeRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\FishtypeRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateFishTypeRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateFishTypeRequest','#create-form')->render() !!}
 @endpush

@@ -68,7 +68,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.codemaster.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.codemaster.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('name') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Name</label>
@@ -97,7 +97,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.codemaster.store'], 'method' => 'post','id'=>'create-form' , 'class' => 'form-horizontal' , 'align' => 'right']) !!}
+                {!! Form::open(['route' => ['admin.admin.codemaster.store'], 'method' => 'post','id'=>'create-form' , 'class' => 'form-horizontal' , 'align' => 'right']) !!}
                 <div class="box-body">
                     <div class="form-group {{ $errors->has('code') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name" class="col-sm-2">Code:</label>
@@ -212,6 +212,6 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateCodeRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\CodeRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateCodeMasterRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateCodeMasterRequest','#create-form')->render() !!}
 @endpush

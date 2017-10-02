@@ -66,7 +66,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.cartontype.update'], 'method' => 'post','id'=>'update-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.cartontype.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('type') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Carton Type</label>
@@ -95,7 +95,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.profile.cartontype.store'], 'method' => 'post','id'=>'create-form']) !!}
+                {!! Form::open(['route' => ['admin.admin.cartontype.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('type') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Carton Type</label>
@@ -194,6 +194,6 @@
         });
     </script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\UpdateCartontypeRequest','#update-form')->render() !!}
-{!!  JsValidator::formRequest('Modules\Profile\Http\Requests\CartontypeRequest','#create-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateCartonTypeRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateCartonTypeRequest','#create-form')->render() !!}
 @endpush

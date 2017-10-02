@@ -8,7 +8,10 @@ class CreateLocationRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required|unique:admin__locations,name|max:255',
+            'location' => 'required|max:255',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +26,11 @@ class CreateLocationRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'name.required' => 'Please Enter Name',
+            'name.unique' => 'Name Already Exist',
+            'location.required' => 'Please Enter Location',
+        ];
     }
 
     public function translationMessages()

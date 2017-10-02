@@ -8,7 +8,12 @@ class UpdateDepartmentRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required|max:255',
+            'department_code' => 'required|max:255',
+            'project_seq_no' => 'required|max:255',
+            'is_automatic' => 'required'
+        ];
     }
 
     public function translationRules()
@@ -23,7 +28,12 @@ class UpdateDepartmentRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'name.required' => 'Name is Required',
+            'department_code.required' => 'Department is Required',
+            'project_seq_no.required' => 'Sequence is Required',
+            'is_automatic.required' => 'Automatic is Required'
+        ];
     }
 
     public function translationMessages()

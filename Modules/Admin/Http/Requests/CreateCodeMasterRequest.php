@@ -8,7 +8,9 @@ class CreateCodeMasterRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'code' => "required|unique:admin__codemasters,code|max:255",
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateCodeMasterRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'code.required' => 'Please Enter Name',
+            'code.unique' => 'Name Already Exist',
+        ];
     }
 
     public function translationMessages()

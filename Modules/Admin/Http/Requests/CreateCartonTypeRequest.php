@@ -8,7 +8,9 @@ class CreateCartonTypeRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'type' => 'required|unique:admin__cartontypes,type|max:255',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateCartonTypeRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'type.required' => 'Please Enter type',
+            'type.unique' => 'Type Already Exist',
+        ];
     }
 
     public function translationMessages()

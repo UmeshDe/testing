@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Admin\Entities\Designation;
 use Modules\Admin\Http\Requests\CreateDesignationRequest;
 use Modules\Admin\Http\Requests\UpdateDesignationRequest;
+use Modules\Admin\Repositories\DepartmentRepository;
 use Modules\Admin\Repositories\DesignationRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\User\Contracts\Authentication;
@@ -39,10 +40,14 @@ class DesignationController extends AdminBaseController
     public function index()
     {
         $designations = $this->designation->all();
-        $deptrepo = app('Modules\Profile\Repositories\DepartmentRepository');
-        $department = $deptrepo->allWithColumns(['id','name'],'name');
-        $desigrepo = app('Modules\Profile\Repositories\DesignationRepository');
-        $desig = $desigrepo->allWithColumns(['id','designation'],'designation');
+        $department = app(DepartmentRepository::class)->allWithBuilder()
+            ->orderBy('name')
+            ->pluck('name','id');
+
+
+        $desig = app(DesignationRepository::class)->allWithBuilder()
+            ->orderBy('designation')
+            ->pluck('designation','id');
 
         return view('admin::admin.designations.index', compact('designations','department','desig'));
     }

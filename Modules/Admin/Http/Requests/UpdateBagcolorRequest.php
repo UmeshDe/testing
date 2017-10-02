@@ -8,7 +8,9 @@ class UpdateBagcolorRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'color' => 'required|unique:admin__bagcolors,color,'.$this->old_color.',color|max:255',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class UpdateBagcolorRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+         return [
+            'color.required' => 'Please Enter Color',
+            'color.unique' => 'Color Alreaduy Exist',
+        ];
     }
 
     public function translationMessages()

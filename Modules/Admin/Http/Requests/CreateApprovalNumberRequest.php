@@ -8,7 +8,9 @@ class CreateApprovalNumberRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'app_number' => 'required|unique:admin__approvalnumbers,app_number',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateApprovalNumberRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+         return [
+            'app_number.required' => 'Please Enter Approval Number',
+            'app_number.unique' => 'Approval Number Already Exist',
+        ];
     }
 
     public function translationMessages()

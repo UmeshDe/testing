@@ -32,6 +32,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'ApprovalNumberController@update',
         'middleware' => 'can:admin.approvalnumbers.edit'
     ]);
+    $router->post('approvalnumbers/update', [
+        'as' => 'admin.admin.approvalnumber.update',
+        'uses' => 'ApprovalNumberController@update',
+        'middleware' => 'can:admin.approvalnumbers.edit'
+    ]);
     $router->delete('approvalnumbers/{approvalnumber}', [
         'as' => 'admin.admin.approvalnumber.destroy',
         'uses' => 'ApprovalNumberController@destroy',
@@ -61,6 +66,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'middleware' => 'can:admin.bagcolors.edit'
     ]);
     $router->put('bagcolors/{bagcolor}', [
+        'as' => 'admin.admin.bagcolor.update',
+        'uses' => 'BagcolorController@update',
+        'middleware' => 'can:admin.bagcolors.edit'
+    ]);
+       $router->post('bagcolors/update', [
         'as' => 'admin.admin.bagcolor.update',
         'uses' => 'BagcolorController@update',
         'middleware' => 'can:admin.bagcolors.edit'
@@ -98,6 +108,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'CartonTypeController@update',
         'middleware' => 'can:admin.cartontypes.edit'
     ]);
+    $router->post('cartontypes/update', [
+        'as' => 'admin.admin.cartontype.update',
+        'uses' => 'CartonTypeController@update',
+        'middleware' => 'can:admin.cartontypes.edit'
+    ]);
     $router->delete('cartontypes/{cartontype}', [
         'as' => 'admin.admin.cartontype.destroy',
         'uses' => 'CartonTypeController@destroy',
@@ -127,6 +142,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'middleware' => 'can:admin.codemasters.edit'
     ]);
     $router->put('codemasters/{codemaster}', [
+        'as' => 'admin.admin.codemaster.update',
+        'uses' => 'CodeMasterController@update',
+        'middleware' => 'can:admin.codemasters.edit'
+    ]);
+     $router->post('codemasters/update', [
         'as' => 'admin.admin.codemaster.update',
         'uses' => 'CodeMasterController@update',
         'middleware' => 'can:admin.codemasters.edit'
@@ -164,6 +184,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'DepartmentController@update',
         'middleware' => 'can:admin.departments.edit'
     ]);
+    $router->post('departments/update', [
+        'as' => 'admin.admin.department.update',
+        'uses' => 'DepartmentController@update',
+        'middleware' => 'can:admin.departments.edit'
+    ]);
     $router->delete('departments/{department}', [
         'as' => 'admin.admin.department.destroy',
         'uses' => 'DepartmentController@destroy',
@@ -193,6 +218,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'middleware' => 'can:admin.employees.edit'
     ]);
     $router->put('employees/{employee}', [
+        'as' => 'admin.admin.employee.update',
+        'uses' => 'EmployeeController@update',
+        'middleware' => 'can:admin.employees.edit'
+    ]);
+    $router->post('employees/update', [
         'as' => 'admin.admin.employee.update',
         'uses' => 'EmployeeController@update',
         'middleware' => 'can:admin.employees.edit'
@@ -230,6 +260,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'FishTypeController@update',
         'middleware' => 'can:admin.fishtypes.edit'
     ]);
+    $router->post('fishtypes/update', [
+        'as' => 'admin.admin.fishtype.update',
+        'uses' => 'FishTypeController@update',
+        'middleware' => 'can:admin.fishtypes.edit'
+    ]);
     $router->delete('fishtypes/{fishtype}', [
         'as' => 'admin.admin.fishtype.destroy',
         'uses' => 'FishTypeController@destroy',
@@ -259,6 +294,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'middleware' => 'can:admin.grades.edit'
     ]);
     $router->put('grades/{grade}', [
+        'as' => 'admin.admin.grade.update',
+        'uses' => 'GradeController@update',
+        'middleware' => 'can:admin.grades.edit'
+    ]);
+    $router->post('grades/update', [
         'as' => 'admin.admin.grade.update',
         'uses' => 'GradeController@update',
         'middleware' => 'can:admin.grades.edit'
@@ -296,6 +336,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'KindController@update',
         'middleware' => 'can:admin.kinds.edit'
     ]);
+    $router->post('kinds/update', [
+        'as' => 'admin.admin.kind.update',
+        'uses' => 'KindController@update',
+        'middleware' => 'can:admin.kinds.edit'
+    ]);
     $router->delete('kinds/{kind}', [
         'as' => 'admin.admin.kind.destroy',
         'uses' => 'KindController@destroy',
@@ -329,6 +374,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'LocationController@update',
         'middleware' => 'can:admin.locations.edit'
     ]);
+    $router->post('locations/update', [
+        'as' => 'admin.admin.location.update',
+        'uses' => 'LocationController@update',
+        'middleware' => 'can:admin.locations.edit'
+    ]);
     $router->delete('locations/{location}', [
         'as' => 'admin.admin.location.destroy',
         'uses' => 'LocationController@destroy',
@@ -358,6 +408,11 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'middleware' => 'can:admin.designations.edit'
     ]);
     $router->put('designations/{designation}', [
+        'as' => 'admin.admin.designation.update',
+        'uses' => 'DesignationController@update',
+        'middleware' => 'can:admin.designations.edit'
+    ]);
+    $router->post('designations/update', [
         'as' => 'admin.admin.designation.update',
         'uses' => 'DesignationController@update',
         'middleware' => 'can:admin.designations.edit'

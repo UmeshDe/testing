@@ -61,7 +61,11 @@ class KindController extends AdminBaseController
      */
     public function store(CreateKindRequest $request)
     {
-        $this->kind->create($request->all());
+        $data = [
+          'kind' => $request->kind,
+          'created_by'=> $this->auth->user()->id,
+        ];
+        $this->kind->create($data);
 
         return redirect()->route('admin.admin.kind.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::kinds.title.kinds')]));
@@ -87,7 +91,12 @@ class KindController extends AdminBaseController
      */
     public function update(Kind $kind, UpdateKindRequest $request)
     {
-        $this->kind->update($kind, $request->all());
+        $kind = $this->kind->find($request->kind_id);
+        $data = [
+            'kind' => $request->kind,
+            'updated_by'=> $this->auth->user()->id,
+        ];
+        $this->kind->update($kind, $data);
 
         return redirect()->route('admin.admin.kind.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('admin::kinds.title.kinds')]));

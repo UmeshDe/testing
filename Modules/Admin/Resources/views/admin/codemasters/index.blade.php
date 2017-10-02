@@ -23,7 +23,7 @@
                             <thead>
                             <tr>
                                 <th>Code</th>
-                                <th>Is Parent</th>
+                                <th>Parent</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -71,8 +71,8 @@
                 {!! Form::open(['route' => ['admin.admin.codemaster.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('name') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Name</label>
-                        <input type="text" class="form-control -flip-horizontal" id="type-name"  name = "name" autofocus placeholder="Enter Name" value="{{ old('name') }}">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control -flip-horizontal" id="name"  name = "name" autofocus placeholder="Enter Name" value="{{ old('name') }}">
                         {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                     </div>
                     <input type="hidden" name="codemaster_id" id="codemaster-id">

@@ -22,6 +22,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>Kind</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -30,6 +31,7 @@
                             <?php if (isset($kinds)): ?>
                             <?php foreach ($kinds as $kind): ?>
                             <tr>
+                                <td>{{$kind->kind}}</td>
                                 <td>
                                     <a href="{{ route('admin.admin.kind.edit', [$kind->id]) }}">
                                         {{ $kind->created_at }}
@@ -37,7 +39,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.admin.kind.edit', [$kind->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-default btn-flat category-edit-button" data-kind="{{$kind->kind}}" data-id="{{$kind->id}}"><i class="fa fa-pencil"></i></a>
                                         <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.kind.destroy', [$kind->id]) }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </td>
@@ -57,6 +59,59 @@
                 </div>
                 <!-- /.box -->
             </div>
+            <div id="update-div" class="box box-primary" hidden>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Kind</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+
+                {!! Form::open(['route' => ['admin.admin.kind.update'], 'method' => 'post','id'=>'update-form']) !!}
+                <div class="box-body">
+                    <div class="form-group -flip-horizontal {{ $errors->has('kind') ? ' has-error has-feedback' : '' }}">
+                        <label for="kind">Kind</label>
+                        <input type="text" class="form-control" id="kind"  name="kind" autofocus placeholder="Enter Kind" value="{{ old('kind') }}">
+                        {!! $errors->first('kind', '<span class="help-block">:message</span>') !!}
+                    </div>
+                    <input type="hidden" name="kind_id" id="kind-id">
+                    <input type="hidden" name="old_kind" id="old-kind">
+
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                    <button class="btn btn-primary pull-left" id="btn-cancel-update">Cancel</button>
+                    <button type="submit" class="btn btn-primary pull-right">Update</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Kind</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+
+                {!! Form::open(['route' => ['admin.admin.kind.store'], 'method' => 'post','id'=>'create-form']) !!}
+                <div class="box-body">
+                    <div class="form-group -flip-horizontal {{ $errors->has('kind') ? ' has-error has-feedback' : '' }}">
+                        <label for="kind">Kind</label>
+                        <input type="text" class="form-control" id="type-kind"  name = "kind" autofocus placeholder="Enter Kind" value="{{ old('kind') }}">
+                        {!! $errors->first('kind','<span class="help-block">:message</span>') !!}
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right">Create</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+            <!-- /.box -->
         </div>
     </div>
     @include('core::partials.delete-modal')
@@ -97,6 +152,47 @@
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }
             });
+            $('#select-all').on('click', function(){
+                // Check/uncheck all checkboxes in the table
+                var rows = categoryTable.rows({ 'search': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+            $('#filetypedategory-table tbody').on('change', 'input[type="checkbox"]', function(){
+                // If checkbox is not checked
+                if(!this.checked){
+                    var el = $('#select-all').get(0);
+                    // If "Select all" control is checked and has 'indeterminate' property
+                    if(el && el.checked && ('indeterminate' in el)){
+                        // Set visual state of "Select all" control
+                        // as 'indeterminate'
+                        el.indeterminate = true;
+                    }
+                }
+            });
+
+            $(".category-edit-button").click(function () {
+
+                $("#kind-list").hide();
+
+                $("#kind-id").val($(this).data("id"));
+                $("#old-kind").val($(this).data("kind"));
+
+                $("#update-form").find('input[name="kind"]').val($(this).data("kind"));
+                $("#update-div").show();
+            });
+
+            $("#btn-cancel-update").click(function(event){
+                event.preventDefault();
+                $("#kind-list").show();
+                $("#update-div").hide();
+
+            });
+
+
         });
     </script>
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\UpdateKindRequest','#update-form')->render() !!}
+{!!  JsValidator::formRequest('Modules\Admin\Http\Requests\CreateKindRequest','#create-form')->render() !!}
 @endpush

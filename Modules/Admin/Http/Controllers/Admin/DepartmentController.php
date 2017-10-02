@@ -37,7 +37,7 @@ class DepartmentController extends AdminBaseController
     public function index()
     {
         $departments = $this->department->all();
-        $userrepo = app('Modules\User\Repositories\UserRepository');
+        $userrepo = app(DepartmentRepository::class);
         $user = $userrepo->all(['id','first_name'],'first_name');
 
         return view('admin::admin.departments.index', compact('departments','user'));

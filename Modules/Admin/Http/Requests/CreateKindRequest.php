@@ -8,7 +8,9 @@ class CreateKindRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+         return [
+            'kind' => 'required|unique:admin__kinds,kind|max:255',
+        ];
     }
 
     public function translationRules()
@@ -28,6 +30,9 @@ class CreateKindRequest extends BaseFormRequest
 
     public function translationMessages()
     {
-        return [];
+        return [
+            'kind.required' => 'Please Enter Kind',
+            'kind.unique' => 'Kind Already Exist',
+        ];
     }
 }

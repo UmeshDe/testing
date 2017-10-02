@@ -39,7 +39,7 @@ class CodeMasterController extends AdminBaseController
     public function index()
     {
         $codemasters = $this->codemaster->all();
-        $codemasterrepo = app(getRepoName('Codemaster','Profile'));
+        $codemasterrepo = app(CodeMasterRepository::class);
         $codemaster = $codemasterrepo->all();
         return view('admin::admin.codemasters.index', compact('codemasters','codemaster'));
     }

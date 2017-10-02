@@ -67,8 +67,7 @@ class AdminTables extends Migration
         Schema::create('admin__departments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('manager_user_id')->unsigned()->nullable();
-            $table->foreign('manager_user_id')->references('id')->on('users');
+            $table->unsignedInteger('manager_user_id')->references('id')->on('users')->nullable();
             $table->string('name')->nullable();
             $table->string('department_code')->nullable();
             $table->integer('project_seq_no')->nullable();
@@ -110,8 +109,8 @@ class AdminTables extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
 
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('user_id')->references('id')->on('users')->nullable();
+
 
             $table->string('emp_id')->unique();
 
@@ -151,9 +150,8 @@ class AdminTables extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_ifsc_code')->nullable();
 
-            $table->integer('manager_id')->unsigned()->nullable();
-            $table->foreign('manager_id')->references('id')->on('users');
-
+            
+            $table->unsignedInteger('manager_id')->references('id')->on('users')->nullable();
             $table->string('record_status')->nullable()->default("A");
 
             $table->integer('created_by')->nullable();

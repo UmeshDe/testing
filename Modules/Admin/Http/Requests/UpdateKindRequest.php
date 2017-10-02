@@ -8,7 +8,9 @@ class UpdateKindRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'kind' => 'required|unique:admin__kinds,kind,'.$this->old_kind.',kind',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class UpdateKindRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'kind.required' => 'Please Enter Kind',
+            'kind.unique' => 'Kind Already Exist',
+        ];
     }
 
     public function translationMessages()

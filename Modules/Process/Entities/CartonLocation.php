@@ -2,14 +2,14 @@
 
 namespace Modules\Process\Entities;
 
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CartonLocation extends Model
 {
-    use Translatable;
+    use SoftDeletes;
 
     protected $table = 'process__cartonlocations';
     public $translatedAttributes = [];
-    protected $fillable = [];
+    protected $guarded = ['id'];
 }

@@ -29,14 +29,28 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>Date</th>
+                                <th>FishType</th>
+                                <th>Bag Color</th>
+                                <th>Production Slab</th>
+                                <th>No.Of Cartons</th>
+                                <th>Rejected</th>
+                                <th>Loose</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($products)): ?>
-                            <?php foreach ($products as $product): ?>
+                            @if (isset($products))
+                            @foreach ($products as $product)
                             <tr>
+                                <td>{{$product->product_date}}</td>
+                                <td>{{$product->fishtype['type']}}</td>
+                                <td>{{$product->bagcolor['color']}}</td>
+                                <td>{{$product->product_slab}}</td>
+                                <td>{{$product->no_of_cartons}}</td>
+                                <td>{{$product->rejected}}</td>
+                                <td>{{$product->loose}}</td>
                                 <td>
                                     <a href="{{ route('admin.process.product.edit', [$product->id]) }}">
                                         {{ $product->created_at }}
@@ -53,10 +67,6 @@
                             <?php endif; ?>
                             </tbody>
                             <tfoot>
-                            <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
-                            </tr>
                             </tfoot>
                         </table>
                         <!-- /.box-body -->

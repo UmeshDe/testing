@@ -46,7 +46,7 @@ class EmployeeController extends AdminBaseController
         $employees = $this->employee->allWithBuilder()
             ->with(['designation', 'department', 'user', 'currentShift', 'type'])
             ->get();
-    
+
         return view('admin::admin.employees.index', compact('employees'));
     }
 

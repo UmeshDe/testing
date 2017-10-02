@@ -50,10 +50,7 @@ class ReportsTables extends Migration
             $table->increments('id');
             $table->string('name', 255)->nullable();
             $table->string('type', 255)->nullable();
-
-            $table->integer('report_id')->unsigned()->nullable();
-            $table->foreign('report_id')->references('id')->on('reporting__reportmasters');
-
+            $table->unsignedInteger('report_id')->refernces('id')->on('reports__reportmasters')->nullable();
             $table->boolean('is_data_field')->nullable();
             $table->text('query')->nullable();
             $table->string('seq_no', 255)->nullable();

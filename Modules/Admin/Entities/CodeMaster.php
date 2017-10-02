@@ -13,4 +13,12 @@ class CodeMaster extends Model
     protected $table = 'admin__codemasters';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function childCodes()
+    {
+        return $this->hasMany(CodeMaster::class,'is_parent','id');
+    }
 }

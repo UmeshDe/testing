@@ -11,29 +11,35 @@
     </ol>
 @stop
 
+@section('styles')
+<style>
+    .address{
+        width: 100% !important;
+    }
+</style>
+@stop
 @section('content')
-    {!! Form::open(['route' => ['admin.process.product.store'], 'method' => 'post']) !!}
+    {!! Former::horizontal_open()
+        ->route('admin.process.product.store')
+        ->method('post')
+    !!}
+
+
     <div class="row">
         <div class="col-md-12">
-            <div class="nav-tabs-custom">
-                @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('process::admin.products.partials.create-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
+            @include('partials.form-tab-headers')
+            @include('process::admin.products.partials.create-fields')
 
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                    </div>
-                </div>
+            <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
+            <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+
             </div> {{-- end nav-tabs-custom --}}
         </div>
     </div>
+
+
+
+
     {!! Form::close() !!}
 @stop
 
@@ -49,13 +55,57 @@
 
 @push('js-stack')
     <script type="text/javascript">
-        $( document ).ready(function() {
+            $( document ).ready(function() {
             $(document).keypressAction({
                 actions: [
                     { key: 'b', route: "<?= route('admin.process.product.index') ?>" }
                 ]
             });
         });
+	
+	function createLocation() {
+        {{--$.ajax({--}}
+            {{--type: 'POST',--}}
+            {{--url: '{{ URL::route('api.admin.location.getall')}}',--}}
+            {{--data: {--}}
+                {{--_token: $('meta[name="token"]').attr('value'),--}}
+            {{--},--}}
+            {{--success: function (response) {--}}
+                {{--$('#commonModal').html(response);--}}
+                {{--$('#commonModal').modal('show');--}}
+            {{--},--}}
+            {{--error: function (xhr, ajaxOptions, thrownError) {--}}
+                {{--swal("Oops.", "Something went wrong, Please try again", "error");--}}
+            {{--}--}}
+        {{--});--}}
+    }
+	
+	function calculateCarton()
+    {
+        var productionslab = document.getElementById('type-slab').value;
+        var carton = productionslab / 20    ;
+        document.getElementById('no-of-cartons').value = carton;
+    }
+
+    function myFunction()
+    {
+        var rejected = document.getElementById('type-rejected').value;
+        var noofcartons = document.getElementById('no-of-cartons').value;
+        if(rejected % 2 == 0)
+        {
+            var value = 0;
+            var cartonvalue = rejected/2;
+            var remainingcartons = noofcartons - cartonvalue;
+        }
+        else {
+            var value = 1;
+            var cartonvalue = rejected/2 + 0.5;
+            var remainingcartons = noofcartons - cartonvalue;
+        }
+        document.getElementById('no-of-cartons').value = remainingcartons;
+        document.getElementById('type-loose').value = value;
+    }
+
     </script>
     <script>
         $( document ).ready(function() {
@@ -63,6 +113,37 @@
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
+
+
+            $('select').select2();
+
+            $("#code").selectize({
+                options: [
+                        @foreach($codemasters as $codemaster)
+                        @foreach($codemaster->childCodes as $childCode)
+                    {
+                        id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'
+                    },
+                    @endforeach
+                    @endforeach
+                ],
+                optgroups: [
+                        @foreach($codemasters as $codemaster)
+                    {
+                        id: '{{$codemaster->id}}', name: '{{$codemaster->code}}'
+                    },
+                    @endforeach
+                ],
+                labelField: 'model',
+                valueField: 'id',
+                optgroupField: 'make',
+                optgroupLabelField: 'name',
+                optgroupValueField: 'id',
+                searchField: ['model'],
+                plugins: ['optgroup_columns']
+            });
         });
     </script>
+
+
 @endpush

@@ -11,13 +11,15 @@
     </ol>
 @stop
 
+    {!! Theme::script('vendor/admin-lte/plugins/select2/select2.full.js') !!}
+    {!! Theme::style('vendor/admin-lte/plugins/select2/select2.min.css') !!}
 @section('content')
     {!! Form::open(['route' => ['admin.process.product.update', $product->id], 'method' => 'put']) !!}
     <div class="row">
         <div class="col-md-12">
-            <div class="nav-tabs-custom">
+            
                 @include('partials.form-tab-headers')
-                <div class="tab-content">
+            
                     <?php $i = 0; ?>
                     @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
                         <?php $i++; ?>
@@ -26,13 +28,13 @@
                         </div>
                     @endforeach
 
-                    <div class="box-footer">
+            
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
                         <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                    </div>
-                </div>
+
+
             </div> {{-- end nav-tabs-custom --}}
-        </div>
+
     </div>
     {!! Form::close() !!}
 @stop
@@ -65,4 +67,89 @@
             });
         });
     </script>
+<script type="text/javascript">
+    function calculateCarton()
+    {
+        var productionslab = document.getElementById('type-slab').value;
+        var carton = productionslab / 20    ;
+        document.getElementById('no-of-cartons').value = carton;
+    }
+
+    function myFunction()
+    {
+        var rejected = document.getElementById('type-rejected').value;
+        var noofcartons = document.getElementById('no-of-cartons').value;
+        if(rejected % 2 == 0)
+        {
+            var value = 0;
+            var cartonvalue = rejected/2;
+            var remainingcartons = noofcartons - cartonvalue;
+        }
+        else {
+            var value = 1;
+            var cartonvalue = rejected/2 + 0.5;
+            var remainingcartons = noofcartons - cartonvalue;
+        }
+        document.getElementById('no-of-cartons').value = remainingcartons;
+        document.getElementById('type-loose').value = value;
+    }
+</script>
+<script type="text/javascript">
+    $('#address-id').select2({
+//        width: 100% !important,
+        placeholder: 'Select Client',
+    });
+</script>
+<style>
+    .address{
+        width: 100% !important;
+    }
+</style>
+<script type="text/javascript">
+
+    //    $("#itemName").select2({
+    //        placeholder: 'Select an item',
+    //        width:'100%',
+    //    });
+    $("#itemName1").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName2").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName3").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName6").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName10").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName11").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $("#itemName17").select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+    $(".codemaster").select2({
+        placeholder: 'Select an item',
+        width:'29%',
+    });
+    $("#location-id").select2({
+        placeholder: 'Search Location',
+        width : '100%',
+    });
+    $('#itemName20').select2({
+        placeholder: 'Select an item',
+        width:'100%',
+    });
+</script>
 @endpush

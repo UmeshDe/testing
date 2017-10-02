@@ -115,7 +115,7 @@
             });
 
 
-            $('select').select2();
+            $('.select').select2();
 
             $("#code").selectize({
                 options: [

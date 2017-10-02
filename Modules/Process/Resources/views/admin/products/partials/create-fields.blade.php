@@ -8,6 +8,7 @@
                         {!!
                             Former::select('approval_no')
                             ->fromQuery($approvalnumbers,'name','id')
+                            ->addClass('select')
                             ->raw()
                          !!}
 
@@ -119,6 +120,7 @@
                         {!!
                              Former::select('fish_type')
                             ->fromQuery($fishtypes,'type','id')
+                            ->addClass('select')
                             ->raw()
 
                          !!}
@@ -132,6 +134,7 @@
                         {!!
                             Former::select('bag_color')
                            ->fromQuery($bagcolors,'color','id')
+                           ->addClass('select')
                            ->raw()
 
                         !!}
@@ -146,6 +149,7 @@
                         {!!
                            Former::select('carton_type')
                           ->fromQuery($cartontypes,'type','id')
+                          ->addClass('select')
                           ->raw()
 
                        !!}
@@ -172,6 +176,7 @@
                         {!!
                              Former::select('location_id')
                             ->fromQuery($locations,'name','id')
+                            ->addClass('select')
                             ->raw()
 
                          !!}

@@ -98,6 +98,7 @@ return [
         'animate.css' => ['theme' => 'vendor/animate.css/animate.min.css'],
         'pace.css' => ['theme' => 'vendor/admin-lte/plugins/pace/pace.min.css'],
         'simplemde.css' => ['theme' => 'vendor/simplemde/dist/simplemde.min.css'],
+        'select2.css' => ['theme' => 'vendor/admin-lte/plugins/select2/select2.min.css'],
         // Javascript
         'bootstrap.js' => ['theme' => 'vendor/bootstrap/dist/js/bootstrap.min.js'],
         'mousetrap.js' => ['theme' => 'js/vendor/mousetrap.min.js'],
@@ -125,6 +126,7 @@ return [
         'moment.js' => ['theme' => 'vendor/admin-lte/plugins/daterangepicker/moment.min.js'],
         'clipboard.js' => ['theme' => 'vendor/clipboard/dist/clipboard.min.js'],
         'simplemde.js' => ['theme' => 'vendor/simplemde/dist/simplemde.min.js'],
+        'select2.js' => ['theme' => 'vendor/admin-lte/plugins/select2/select2.min.js'],
     ],
 
     /*
@@ -141,13 +143,13 @@ return [
             'alertify.default.css',
             'dataTables.bootstrap.css',
             'icheck.blue.css',
+            'select2.css',
             'AdminLTE.css',
             'AdminLTE.all.skins.css',
             'animate.css',
             'pace.css',
             'selectize-default.css',
             'asgard.css',
-            'daterangepicker.css'
         ],
         'js' => [
             'bootstrap.js',
@@ -158,13 +160,11 @@ return [
             'dataTables.bootstrap.js',
             'jquery.slug.js',
             'keypressAction.js',
-            'moment.js',
-            'daterangepicker.js',
             'app.js',
             'pace.js',
             'selectize.js',
             'main.js',
-
+            'select2.js'
         ],
     ],
 

@@ -27,7 +27,8 @@
     "less-loader": "^4.0.4",
     "simplemde": "~1.9.0",
     "sisyphus": "0.0.4",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-shell-plugin": "^0.5.0",
+    "jquery-datetimepicker": "git+https://github.com/xdan/datetimepicker.git",
   },
   "devDependencies": {
     "cross-env": "^5.0.5"

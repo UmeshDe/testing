@@ -29,12 +29,11 @@
         "idavoll/flatly-theme": "~3.0",
         "accunity/adminlte-theme": "dev-master",
         "laravel/tinker": "~1.0",
-        "jimmyjs/laravel-report-generator": "^1.0",
         "accunity/smssender": "^0.3.0",
         "anahkiasen/former": "^4.1",
         "spatie/laravel-activitylog": "^2.1",
         "proengsoft/laravel-jsvalidation": "^2.1",
-        "barryvdh/laravel-snappy": "^0.4.0"
+        "barryvdh/laravel-dompdf": "^0.8.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

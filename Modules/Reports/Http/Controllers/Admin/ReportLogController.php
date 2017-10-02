@@ -4,6 +4,7 @@ namespace Modules\Reports\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Modules\Page\Repositories\PageRepository;
 use Modules\Process\Repositories\ProductRepository;
 use Modules\Reports\Entities\ReportLog;
@@ -15,6 +16,7 @@ use Modules\Reports\Repositories\ReportMasterRepository;
 use Modules\Reports\Repositories\ReportModuleRepository;
 use Modules\Reports\Repositories\ReportParameterRepository;
 use Str;
+use PDF;
 
 class ReportLogController extends AdminBaseController
 {
@@ -130,6 +132,13 @@ class ReportLogController extends AdminBaseController
         $endDate = $request->input('end_date');
 
         $report = new $reportClass($startDate, $endDate,true);
+
+
+        $pdf = PDF::loadView('reports::reports.report')->setPaper('a4', 'landscape');
+
+
+        return $pdf->stream();
+
 
         return $report->run();
 

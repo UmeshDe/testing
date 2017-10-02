@@ -191,7 +191,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Accunity\SMSSender\SMSSenderServiceProvider::class,
         Former\FormerServiceProvider::class,
-        Jimmyjs\ReportGenerator\ServiceProvider::class
+        Barryvdh\DomPDF\ServiceProvider::class
     ],
 
     /*
@@ -241,7 +241,7 @@ return [
         'Str'             => Illuminate\Support\Str::class,
 
         'Former' => 'Former\Facades\Former',
-        'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

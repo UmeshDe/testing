@@ -3,8 +3,6 @@
 namespace Modules\Reports\Reports;
 
 use Modules\Process\Entities\Product;
-use PdfReport;
-
 
 class DailyProductionReport extends AbstractReport
 {

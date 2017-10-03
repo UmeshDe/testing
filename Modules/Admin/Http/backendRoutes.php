@@ -384,6 +384,7 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'LocationController@destroy',
         'middleware' => 'can:admin.locations.destroy'
     ]);
+
     $router->bind('designation', function ($id) {
         return app('Modules\Admin\Repositories\DesignationRepository')->find($id);
     });

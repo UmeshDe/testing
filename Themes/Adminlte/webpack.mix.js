@@ -13,7 +13,6 @@ mix.less('resources/assets/less/asgard.less', 'assets/css/asgard.css')
  * Copy scripts
  */
 mix.copy('resources/assets/js', 'assets/js');
-mix.copy('node_modules/accounting.min.js','assets/js/accounting.min.js')
 
 /**
  * Copy node module
@@ -31,6 +30,11 @@ mix.copyDirectory('node_modules/jquery', 'assets/vendor/jquery');
 mix.copyDirectory('node_modules/jquery-ui', 'assets/vendor/jquery-ui');
 mix.copyDirectory('node_modules/lodash', 'assets/vendor/lodash');
 mix.copyDirectory('node_modules/simplemde/src', 'assets/vendor/simplemde/src');
+mix.copyDirectory('node_modules/jquery-datetimepicker/build','assets/vendor/jquery-datetimepicker')
+mix.copyDirectory('node_modules/jquery-datetimepicker/build','assets/vendor/jquery-datetimepicker')
+mix.copyDirectory('node_modules/toastr/build','assets/vendor/toastr')
+mix.copyDirectory('node_modules/knockout/build/output','assets/vendor/knockout')
+
 
 /**
  * Publishing the assets

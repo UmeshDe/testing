@@ -30,23 +30,23 @@
                             </thead>
                             <tbody>
                             @if(isset($codemasters))
-                            @foreach ($codemasters as $codemaster)
-                            <tr>
-                                <td>{{$codemaster->code}}</td>
-                                <td>{{$codemaster->is_parent}}</td>
-                                <td>
-                                    <a href="{{ route('admin.admin.codemaster.edit', [$codemaster->id]) }}">
-                                        {{ $codemaster->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-default btn-flat category-edit-button" data-name="{{$codemaster->name}}" data-id="{{$codemaster->id}}"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.codemaster.destroy', [$codemaster->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
+                                @foreach ($codemasters as $codemaster)
+                                <tr>
+                                    <td>{{$codemaster->code}}</td>
+                                    <td>{{($codemaster->parentCode != null)?$codemaster->parentCode->code:''}}</td>
+                                    <td>
+                                        <a href="{{ route('admin.admin.codemaster.edit', [$codemaster->id]) }}">
+                                            {{ $codemaster->created_at }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-default btn-flat category-edit-button" data-name="{{$codemaster->name}}" data-id="{{$codemaster->id}}"><i class="fa fa-pencil"></i></a>
+                                            <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.codemaster.destroy', [$codemaster->id]) }}"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
                             @endif
                             </tbody>
                             <tfoot>
@@ -97,7 +97,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                {!! Form::open(['route' => ['admin.admin.codemaster.store'], 'method' => 'post','id'=>'create-form' , 'class' => 'form-horizontal' , 'align' => 'right']) !!}
+                {!! Form::open(['route' => ['admin.admin.codemaster.store'], 'method' => 'post','id'=>'create-form' , 'class' => 'form-horizontal']) !!}
                 <div class="box-body">
                     <div class="form-group {{ $errors->has('code') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name" class="col-sm-2">Code:</label>

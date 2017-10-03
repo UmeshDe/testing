@@ -99,7 +99,8 @@ return [
         'pace.css' => ['theme' => 'vendor/admin-lte/plugins/pace/pace.min.css'],
         'simplemde.css' => ['theme' => 'vendor/simplemde/dist/simplemde.min.css'],
         'select2.css' => ['theme' => 'vendor/admin-lte/plugins/select2/select2.min.css'],
-        'datetime-picker.css' => ['theme' => 'vendor/datetime-picker/jquery.datetimepicker.css'],
+        'datetime-picker.css' => ['theme' => 'vendor/jquery-datetimepicker/jquery.datetimepicker.min.css'],
+        'toastr.css' => ['theme' => 'vendor/toastr/toastr.min.css'],
 
         // Javascript
         'bootstrap.js' => ['theme' => 'vendor/bootstrap/dist/js/bootstrap.min.js'],
@@ -129,7 +130,9 @@ return [
         'clipboard.js' => ['theme' => 'vendor/clipboard/dist/clipboard.min.js'],
         'simplemde.js' => ['theme' => 'vendor/simplemde/dist/simplemde.min.js'],
         'select2.js' => ['theme' => 'vendor/admin-lte/plugins/select2/select2.min.js'],
-        'datetime-picker.js' => ['theme' => 'vendor/datetime-picker/jquery.datetimepicker.min.js'],
+        'datetime-picker.js' => ['theme' => 'vendor/jquery-datetimepicker/jquery.datetimepicker.full.min.js'],
+        'toastr.js' => ['theme' => 'vendor/toastr/toastr.min.js'],
+        'knockout.js' =>['theme' => 'vendor/knockout/knockout-latest.js'],
     ],
 
     /*
@@ -154,6 +157,8 @@ return [
             'selectize-default.css',
             'asgard.css',
             'datetime-picker.css',
+            'daterangepicker.css',
+            'toastr.css'
         ],
         'js' => [
             'bootstrap.js',
@@ -164,12 +169,16 @@ return [
             'dataTables.bootstrap.js',
             'jquery.slug.js',
             'keypressAction.js',
+            'moment.js',
             'app.js',
             'pace.js',
             'selectize.js',
             'main.js',
             'select2.js',
-            'datetime-picker.js'
+            'datetime-picker.js',
+            'daterangepicker.js',
+            'toastr.js',
+            'knockout.js'
         ],
     ],
 

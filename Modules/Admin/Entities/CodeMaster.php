@@ -5,6 +5,7 @@ namespace Modules\Admin\Entities;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Process\Entities\Product;
 
 class CodeMaster extends Model
 {
@@ -20,5 +21,17 @@ class CodeMaster extends Model
     public function childCodes()
     {
         return $this->hasMany(CodeMaster::class,'is_parent','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parentCode()
+    {
+        return $this->belongsTo(CodeMaster::class,'is_parent','id');
+    }
+
+    public function products(){
+        return $this->belongsToMany(Product::class,'process__productcode','code_id','product_id');
     }
 }

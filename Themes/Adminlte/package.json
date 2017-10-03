@@ -21,14 +21,16 @@
     "font-awesome": ">=4.6",
     "gridstack": ">=0.2.2",
     "icheck": "^1.0.2",
+    "jquery-datetimepicker": "^2.5.4",
     "knockout": "^3.4.2",
     "laravel-mix": "^1.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "simplemde": "~1.9.0",
     "sisyphus": "0.0.4",
-    "webpack-shell-plugin": "^0.5.0",
-    "jquery-datetimepicker": "git+https://github.com/xdan/datetimepicker.git",
+    "sweetalert2": "^6.10.1",
+    "toastr": "^2.1.2",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "devDependencies": {
     "cross-env": "^5.0.5"

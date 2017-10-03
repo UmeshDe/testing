@@ -11,32 +11,38 @@
     </ol>
 @stop
 
-    {!! Theme::script('vendor/admin-lte/plugins/select2/select2.full.js') !!}
-    {!! Theme::style('vendor/admin-lte/plugins/select2/select2.min.css') !!}
 @section('content')
-    {!! Form::open(['route' => ['admin.process.product.update', $product->id], 'method' => 'put']) !!}
+
+    {{Former::populate($product)}}
+
+
+    {!! Former::horizontal_open()
+       ->route('admin.process.product.update', $product->id)
+       ->method('POST')
+   !!}
+
+    {{ csrf_field() }}
+
     <div class="row">
         <div class="col-md-12">
-            
-                @include('partials.form-tab-headers')
-            
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('process::admin.products.partials.edit-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
+            @include('partials.form-tab-headers')
+            @include('process::admin.products.partials.create-fields')
 
-            
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+            <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
+            <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
 
-
-            </div> {{-- end nav-tabs-custom --}}
-
+        </div> {{-- end nav-tabs-custom --}}
     </div>
+
+
+
     {!! Form::close() !!}
+
+    @include('admin::modal.location-modal')
+
+
+
+
 @stop
 
 @section('footer')

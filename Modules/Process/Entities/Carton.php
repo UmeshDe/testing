@@ -11,5 +11,23 @@ class Carton extends Model
 
     protected $table = 'process__cartons';
     public $translatedAttributes = [];
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'product_id',
+        'carton_date',
+        'no_of_cartons',
+        'rejected',
+        'loose',
+        'shipped',
+        'local_sale',
+        'waste',
+        'missing',
+        'carton_type',
+        'bag_color',
+        'location_id',
+        'qualitycheckdone',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'record_status'
+    ];
 }

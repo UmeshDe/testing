@@ -11,19 +11,15 @@
     </ol>
 @stop
 
-@section('styles')
-<style>
-    .address{
-        width: 100% !important;
-    }
-</style>
-@stop
+
 @section('content')
+
     {!! Former::horizontal_open()
         ->route('admin.process.product.store')
-        ->method('post')
+        ->method('POST')
     !!}
 
+    {{ csrf_field() }}
 
     <div class="row">
         <div class="col-md-12">
@@ -33,14 +29,12 @@
             <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
             <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
 
-            </div> {{-- end nav-tabs-custom --}}
-        </div>
+        </div> {{-- end nav-tabs-custom --}}
     </div>
 
-
-
-
     {!! Form::close() !!}
+
+    @include('admin::modal.location-modal')
 @stop
 
 @section('footer')
@@ -63,27 +57,10 @@
             });
         });
 	
-	function createLocation() {
-        {{--$.ajax({--}}
-            {{--type: 'POST',--}}
-            {{--url: '{{ URL::route('api.admin.location.getall')}}',--}}
-            {{--data: {--}}
-                {{--_token: $('meta[name="token"]').attr('value'),--}}
-            {{--},--}}
-            {{--success: function (response) {--}}
-                {{--$('#commonModal').html(response);--}}
-                {{--$('#commonModal').modal('show');--}}
-            {{--},--}}
-            {{--error: function (xhr, ajaxOptions, thrownError) {--}}
-                {{--swal("Oops.", "Something went wrong, Please try again", "error");--}}
-            {{--}--}}
-        {{--});--}}
-    }
-	
 	function calculateCarton()
     {
         var productionslab = document.getElementById('type-slab').value;
-        var carton = productionslab / 20    ;
+        var carton = productionslab / 20;
         document.getElementById('no-of-cartons').value = carton;
     }
 
@@ -115,6 +92,18 @@
             });
 
 
+            $('#product_date').datetimepicker({
+                timepicker:false,
+                format:'{{PHP_DATE_FORMAT}}',
+                value:new moment()
+            });
+
+            $('#carton_date').datetimepicker({
+                timepicker:false,
+                format:'{{PHP_DATE_FORMAT}}',
+                value:new moment()
+            });
+
             $('.select').select2();
 
             $("#code").selectize({
@@ -143,6 +132,27 @@
                 plugins: ['optgroup_columns']
             });
         });
+
+
+        var ViewModel = function(model) {
+
+            var self = this;
+            this.product_slab = ko.observable();
+            this.rejected = ko.observable(0);
+
+            this.no_of_cartons = ko.computed(function () {
+                var value = self.product_slab()/20 - Math.ceil((self.rejected()/parseFloat(2)));
+                return (value)?value:0;
+            });
+
+            this.loose = ko.computed(function(){
+                var value = (self.rejected()%2);
+                return (value)?value:0;
+            });
+        };
+
+        ko.applyBindings(new ViewModel({{$product}}));
+
     </script>
 
 

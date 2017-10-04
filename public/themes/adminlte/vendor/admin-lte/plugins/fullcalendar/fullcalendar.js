@@ -1204,7 +1204,7 @@ function commonlyAmbiguate(inputs, preserveTime) {
 		moms.push(mom);
 	}
 
-	// strip each moment down to lowest common ambiguity
+	// strip each moment down to lowest layout ambiguity
 	// use clones to avoid modifying the original moments
 	for (i = 0; i < len; i++) {
 		mom = moms[i];

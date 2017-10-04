@@ -11,7 +11,7 @@
     ],
     "aliases": {},
     "files": [
-        
+        "Helpers/ReportHelper.php"
     ],
     "requires": []
 }

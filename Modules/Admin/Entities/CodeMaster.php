@@ -15,6 +15,11 @@ class CodeMaster extends Model
     public $translatedAttributes = [];
     protected $guarded = ['id'];
 
+
+    public function __toString() {
+        return $this->code;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

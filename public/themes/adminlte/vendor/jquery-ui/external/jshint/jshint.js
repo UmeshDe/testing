@@ -51742,7 +51742,7 @@ function assert(expression) {
     return _.map(obj, function(value){ return value[key]; });
   };
 
-  // Convenience version of a common use case of `filter`: selecting only objects
+  // Convenience version of a layout use case of `filter`: selecting only objects
   // containing specific `key:value` pairs.
   _.where = function(obj, attrs, first) {
     if (_.isEmpty(attrs)) return first ? null : [];

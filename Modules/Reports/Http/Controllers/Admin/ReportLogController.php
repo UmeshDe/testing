@@ -2,6 +2,7 @@
 
 namespace Modules\Reports\Http\Controllers\Admin;
 
+use App\Libraries\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
@@ -131,16 +132,8 @@ class ReportLogController extends AdminBaseController
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        $report = new $reportClass($startDate, $endDate,true);
+        $report = new $reportClass($startDate, $endDate,true,PAPER_SIZE_A3,ORIENTATION_PORTRAIT);
 
-
-        $pdf = PDF::loadView('reports::reports.report')->setPaper('a4', 'landscape');
-
-
-        return $pdf->stream();
-
-
-        return $report->run();
-
+        return $report->viewPDF();
     }
 }

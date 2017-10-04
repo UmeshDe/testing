@@ -19,7 +19,7 @@
  * 	type : 'button',
  * 	id : 'browse',
  * 	filebrowser : 'tabId:elementId',
- * 	label : editor.lang.common.browseServer
+ * 	label : editor.lang.layout.browseServer
  * }
  * </pre>
  *
@@ -33,7 +33,7 @@
  * 	type : 'fileButton',
  * 	id : 'uploadButton',
  * 	filebrowser : 'tabId:elementId',
- * 	label : editor.lang.common.uploadSubmit,
+ * 	label : editor.lang.layout.uploadSubmit,
  * 	'for' : [ 'upload', 'upload' ]
  * }
  * </pre>
@@ -59,7 +59,7 @@
  * <pre>
  * {
  * 	type : 'fileButton',
- * 	label : editor.lang.common.uploadSubmit,
+ * 	label : editor.lang.layout.uploadSubmit,
  * 	id : 'buttonId',
  * 	filebrowser :
  * 	{
@@ -95,7 +95,7 @@
  * {
  * 	type : 'button',
  * 	id : 'buttonId',
- * 	label : editor.lang.common.browseServer,
+ * 	label : editor.lang.layout.browseServer,
  * 	filebrowser :
  * 	{
  * 		action : 'Browse',

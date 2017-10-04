@@ -11,7 +11,5 @@ namespace App\Libraries;
 
 class Utils
 {
-    public static function getRepoName($module,$entiy){
-        return '';
-    }
+
 }

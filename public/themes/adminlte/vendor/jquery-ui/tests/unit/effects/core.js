@@ -1,7 +1,7 @@
 define( [
 	"qunit",
 	"jquery",
-	"lib/common",
+	"lib/layout",
 	"ui/effect",
 	"ui/effects/effect-blind",
 	"ui/effects/effect-bounce",

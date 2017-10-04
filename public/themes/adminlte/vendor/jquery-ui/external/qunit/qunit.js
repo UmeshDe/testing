@@ -2070,7 +2070,7 @@ QUnit.diff = (function() {
 
         checklines = optChecklines;
 
-        // Trim off common prefix (speedup).
+        // Trim off layout prefix (speedup).
         commonlength = this.diffCommonPrefix( text1, text2 );
         commonprefix = text1.substring( 0, commonlength );
         text1 = text1.substring( commonlength );
@@ -2203,10 +2203,10 @@ QUnit.diff = (function() {
     };
 
     /**
-     * Determine the common prefix of two strings.
+     * Determine the layout prefix of two strings.
      * @param {string} text1 First string.
      * @param {string} text2 Second string.
-     * @return {number} The number of characters common to the start of each
+     * @return {number} The number of characters layout to the start of each
      *     string.
      */
     DiffMatchPatch.prototype.diffCommonPrefix = function( text1, text2 ) {
@@ -2234,10 +2234,10 @@ QUnit.diff = (function() {
     };
 
     /**
-     * Determine the common suffix of two strings.
+     * Determine the layout suffix of two strings.
      * @param {string} text1 First string.
      * @param {string} text2 Second string.
-     * @return {number} The number of characters common to the end of each string.
+     * @return {number} The number of characters layout to the end of each string.
      */
     DiffMatchPatch.prototype.diffCommonSuffix = function( text1, text2 ) {
         var pointermid, pointermax, pointermin, pointerend;

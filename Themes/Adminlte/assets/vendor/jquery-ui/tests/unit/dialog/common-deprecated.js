@@ -1,5 +1,5 @@
 define( [
-	"lib/common",
+	"lib/layout",
 	"ui/widgets/dialog"
 ], function( common ) {
 

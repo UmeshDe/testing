@@ -13,4 +13,9 @@ class Location extends Model
     protected $table = 'admin__locations';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+
+    public function __toString() {
+        return $this->name."/".$this->location."/".$this->sublocation;
+    }
 }

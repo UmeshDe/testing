@@ -7761,7 +7761,7 @@ jQuery.fn.extend({
 				ret = elem.value;
 
 				return typeof ret === "string" ?
-					// handle most common string cases
+					// handle most layout string cases
 					ret.replace(rreturn, "") :
 					// handle cases where value is null/undef or number
 					ret == null ? "" : ret;

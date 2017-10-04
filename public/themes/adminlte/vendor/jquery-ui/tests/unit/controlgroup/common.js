@@ -1,5 +1,5 @@
 define( [
-	"lib/common",
+	"lib/layout",
 	"ui/widgets/controlgroup",
 	"ui/widgets/checkboxradio",
 	"ui/widgets/selectmenu",

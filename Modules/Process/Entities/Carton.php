@@ -4,6 +4,7 @@ namespace Modules\Process\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Admin\Entities\Bagcolor;
 
 class Carton extends Model
 {
@@ -11,6 +12,7 @@ class Carton extends Model
 
     protected $table = 'process__cartons';
     public $translatedAttributes = [];
+
     protected $fillable = [
         'product_id',
         'carton_date',
@@ -30,4 +32,11 @@ class Carton extends Model
         'deleted_by',
         'record_status'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function bagColor(){
+        return $this->belongsTo(Bagcolor::class,'bag_color','id');
+    }
 }

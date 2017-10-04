@@ -1,5 +1,196 @@
-<div class="box-body">
-    <p>
-        Your fields //
-    </p>
+<?php
+use Carbon\Carbon;
+?>
+<div class="box box-primary" xmlns="http://www.w3.org/1999/html">
+    <div class="box-header with-border">
+        <h2 class="box-title"></h2>
+        <div class="col-md-4">
+        <div class="bootstrap-timepicker">
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-5">Product Date:</label>
+
+                <div class="col-sm-7" style="padding-top: 7px">
+                    <div class="input-group">
+                        {!! Former::hidden('product_date')->raw() !!}
+                        <span id="product-date" data-text="lot_no">{{Carbon::parse($cartons->product->product_date)->format(PHP_DATE_FORMAT)}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+        <div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">
+            <label for="lot-no" class="control-label col-sm-5">Lot No:</label>
+            <div class="col-sm-7" style="padding-top: 7px">
+                {!!
+                    Former::hidden('lot_no')->raw()
+                 !!}
+                <span class="col-sm-7" data-text="lot_no">{{$cartons->product->lot_no}}</span>
+            </div>
+        </div>
+        </div>
+        {{--<div class="box-tools pull-right">--}}
+            {{--<button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>--}}
+        {{--</div>--}}
+    </div>
+    <div class="box-body">
+    <div class="col-xs-4">
+        <div class="bootstrap-timepicker">
+            <div class="form-group has-feedback">
+                <label class="control-label col-sm-5">Carton Date:</label>
+                <div class="col-sm-7">
+                    <div class="input-group">
+                        {!! Former::text('carton_date')->raw() !!}
+                        {!! Former::hidden('id') !!}
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback {{ $errors->has('kind_id') ? ' has-error has-feedback' : '' }}">
+            <label for="kind_id" class="control-label col-sm-5">Kind:</label>
+            <div class="col-sm-7">
+                {!!
+                     Former::select('kind_id')
+                     ->addOption(null)
+                    ->fromQuery($kinds,'kind','id')
+                    ->addClass('select')
+                    ->raw()
+                 !!}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="form-group has-feedback {{ $errors->has('moisture') ? ' has-error has-feedback' : '' }}">
+            <label for="moisture" class="control-label col-sm-5">Moisture:</label>
+            <div class="col-sm-7">
+                {!!
+                    Former::text('moisture')->raw()
+                 !!}
+
+            </div>
+        </div>
+        <div class="form-group has-feedback {{ $errors->has('kamaboko_hw') ? ' has-error has-feedback' : '' }}">
+            <label for="kamaboko-hw" class="control-label col-sm-5">KAMABOKO HW:</label>
+            <div class="col-sm-7">
+                {!!
+                    Former::text('kamaboko_hw')->raw()
+                 !!}
+
+            </div>
+        </div>
+        <div class="form-group has-feedback {{ $errors->has('ashi') ? ' has-error has-feedback' : '' }}">
+            <label for="ashi" class="control-label col-sm-5">ASHI:</label>
+            <div class="col-sm-7">
+                {!!
+                    Former::text('ashi')->raw()
+                 !!}
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="form-group has-feedback {{ $errors->has('contam') ? ' has-error has-feedback' : '' }}">
+            <label for="contam" class="control-label col-sm-5">CONTAM:</label>
+            <div class="col-sm-7">
+                {!!
+                    Former::text('contam')->raw()
+                 !!}
+            </div>
+        </div>
+        <div class="form-group has-feedback {{ $errors->has('ph') ? ' has-error has-feedback' : '' }}">
+            <label for="contam" class="control-label col-sm-5">PH:</label>
+            <div class="col-sm-7">
+                {!!
+                    Former::text('ph')->raw()
+                 !!}
+            </div>
+        </div>
+        <div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
+            <label for="kind_id" class="control-label col-sm-5">Grade:</label>
+            <div class="col-sm-7">
+                {!!
+                     Former::select('grade_id')
+                     ->addOption(null)
+                    ->fromQuery($grades,'grade','id')
+                    ->addClass('select')
+                    ->raw()
+
+                 !!}
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
+<div class="row">
+<div class="col-lg-6">
+    <div class="box box-primary suwari">
+        <div class="box-header with-border">
+            <h3 class="box-title">SUWARI</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group has-feedback {{ $errors->has('suwari_work_force') ? ' has-error has-feedback' : '' }}">
+                <label for="suwari_work_force" class="control-label col-sm-4">20% Work Force:</label>
+                <div class="col-sm-7">
+                    {!!
+                        Former::text('suwari_work_force')->raw()
+                     !!}
+                </div>
+            </div>
+            <div class="form-group has-feedback {{ $errors->has('suwari_length') ? ' has-error has-feedback' : '' }}">
+                <label for="suwari_length" class="control-label col-sm-4">20% Length:</label>
+                <div class="col-sm-7">
+                    {!!
+                        Former::text('suwari_length')->raw()
+                     !!}
+                </div>
+            </div>
+            <div class="form-group has-feedback {{ $errors->has('suwari_gel_strength') ? ' has-error has-feedback' : '' }}">
+                <label for="suwari_gel_strength" class="control-label col-sm-4">20% Gel Strength:</label>
+                <div class="col-sm-7">
+                    {!!
+                        Former::text('suwari_gel_strength')->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="col-lg-6">
+        <div class="box box-primary standard">
+            <div class="box-header with-border">
+                <h3 class="box-title">STANDERD</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group has-feedback {{ $errors->has('workforce') ? ' has-error has-feedback' : '' }}">
+                    <label for="workforce" class="control-label col-sm-4">Work Force:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('work_force')->raw()
+                         !!}
+                    </div>
+                </div>
+                <div class="form-group has-feedback {{ $errors->has('length') ? ' has-error has-feedback' : '' }}">
+                    <label for="length" class="control-label col-sm-4">Length:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('length')->raw()
+                         !!}
+                    </div>
+                </div>
+                <div class="form-group has-feedback {{ $errors->has('gel_strength') ? ' has-error has-feedback' : '' }}">
+                    <label for="gel_strength" class="control-label col-sm-4">Gel Strength:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('gel_strength')->raw()
+                         !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {{--</div>--}}

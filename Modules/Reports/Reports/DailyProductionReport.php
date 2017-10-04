@@ -20,7 +20,7 @@ class DailyProductionReport extends AbstractReport
 
     public $columns = [
         'sr_no'=>[
-            'column_name'=>'product_date',
+            'column_name'=>'sr_no',
             'display_name'=>'Sr No',
             'type'=> REPORT_ROWNO_COLUMN
         ],
@@ -36,9 +36,6 @@ class DailyProductionReport extends AbstractReport
         'variety'=> [
             'column_name'=>'variety',
             'display_name'=>'Varity',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'type'
-
         ],
         'lot_no'=>[
             'column_name'=>'lot_no',
@@ -47,8 +44,6 @@ class DailyProductionReport extends AbstractReport
         'bag_color'=> [
             'column_name'=>'bagColor',
             'display_name'=>'Bag Color',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'color'
         ],
         'production_slab'=>[
             'column_name'=>'product_slab',
@@ -66,8 +61,6 @@ class DailyProductionReport extends AbstractReport
         'carton_type'=> [
             'column_name'=>'cartonType',
             'display_name'=>'Carton Type',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'type'
         ],
         'po_no'=>[
             'column_name'=>'po_no',

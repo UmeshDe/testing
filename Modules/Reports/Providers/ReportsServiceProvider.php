@@ -10,6 +10,7 @@ use Modules\Reports\Entities\ReportParameter;
 use Modules\Reports\Events\Handlers\RegisterReportsSidebar;
 use Modules\Reports\Repositories\ReportLogRepository;
 use Modules\Reports\Repositories\ReportMasterRepository;
+use Modules\Reports\Repositories\ReportModuleRepository;
 use Modules\Reports\Repositories\ReportParameterRepository;
 
 class ReportsServiceProvider extends ServiceProvider
@@ -67,6 +68,7 @@ class ReportsServiceProvider extends ServiceProvider
         $this->app->bind(
             ReportModuleRepository::class,
             function () {
+
                 $repository = new \Modules\Reports\Repositories\Eloquent\EloquentReportModuleRepository(new \Modules\Reports\Entities\ReportModule());
 
                 if (! config('app.cache')) {

@@ -56,9 +56,6 @@ class AbstractReport
         if(!$this->setupDone){
             $this->setup();
         }
-
-        //return var_dump($this->title);
-
         return view($this->viewName)->with('report',$this);
     }
 

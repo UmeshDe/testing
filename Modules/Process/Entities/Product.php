@@ -47,8 +47,18 @@ class Product extends Model
         return $this->belongsTo(CartonType::class,'carton_type','id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function location(){
         return $this->belongsTo(Location::class,'location_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function fishtype(){
+        return $this->belongsTo(FishType::class,'fish_type','id');
     }
 
 

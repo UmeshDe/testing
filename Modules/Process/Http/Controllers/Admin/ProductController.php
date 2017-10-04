@@ -174,24 +174,22 @@ class ProductController extends AdminBaseController
      */
     public function update(Product $product, UpdateProductRequest $request)
     {
-        $data = [
-            'product_date' => Carbon::parse($request->product_date),
-            'fish_type' => $request->fish_type,
-            'no_of_cartons' => $request->no_of_cartons,
-            'product_slab' => $request->production_slab,
-            'approval_no' => $request->approval_no,
-            'codes' => $request->codes,
-            'rejected' => $request->rejected,
-            'loose' => $request->loose,
-            'carton_date' => Carbon::parse($request->carton_date),
-            'lot_no' => $request->lot_no,
-            'po_no' => $request->po_no,
-            'carton_type' => $request->carton_type,
-            'bag_color' => $request->bag_color,
-            'location' => $request->location_id,
-            'remark' => $request->remark,
-        ];
-        $this->product->update($product, $data);
+        //Update New Product
+        $production = $this->product->updateProduct($request,$product);
+
+
+        //Find Carton
+        $carton = app(CartonRepository::class)->findByAttributes(['product_id' => $product->id ]);
+
+
+        //Update Carton
+        $carton = app(CartonRepository::class)->updateCarton($carton,$request->all());
+        
+        //Update Carton Location
+        $cartontLocation = app(CartonLocationRepository::class)->updateCartonLocation($request->location_id,$carton);
+        //Add Product Codes
+        $codes = $request->input('code');
+        $production->codes()->sync($codes);
 
         return redirect()->route('admin.process.product.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('process::products.title.products')]));

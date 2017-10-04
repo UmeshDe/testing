@@ -44,7 +44,7 @@
                             @if (isset($products))
                             @foreach ($products as $product)
                             <tr>
-                                <td>{{$product->product_date}}</td>
+                                <td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>
                                 <td>{{$product->fishtype['type']}}</td>
                                 <td>{{$product->bagcolor['color']}}</td>
                                 <td>{{$product->product_slab}}</td>
@@ -63,8 +63,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
+                            @endforeach
+                            @endif
                             </tbody>
                             <tfoot>
                             </tfoot>

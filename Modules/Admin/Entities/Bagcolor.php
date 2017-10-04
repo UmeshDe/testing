@@ -13,4 +13,10 @@ class Bagcolor extends Model
     protected $table = 'admin__bagcolors';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+
+    public function __toString()
+    {
+        return $this->color;
+    }
 }

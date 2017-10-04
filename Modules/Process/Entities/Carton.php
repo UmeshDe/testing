@@ -39,4 +39,21 @@ class Carton extends Model
     public function bagColor(){
         return $this->belongsTo(Bagcolor::class,'bag_color','id');
     }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'product_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function qualitycheck()
+    {
+        return $this->hasOne(QualityParameter::class,'carton_id','id');
+    }
 }

@@ -18,7 +18,7 @@
 
     {!! Former::horizontal_open()
        ->route('admin.process.product.update', $product->id)
-       ->method('POST')
+       ->method('PUT')
    !!}
 
     {{ csrf_field() }}
@@ -34,14 +34,9 @@
         </div> {{-- end nav-tabs-custom --}}
     </div>
 
-
-
     {!! Form::close() !!}
 
     @include('admin::modal.location-modal')
-
-
-
 
 @stop
 
@@ -71,91 +66,73 @@
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
+
+
+            $('#product_date').datetimepicker({
+                timepicker:false,
+                format:'{{PHP_DATE_FORMAT}}',
+                value:new moment()
+            });
+
+            $('#carton_date').datetimepicker({
+                timepicker:false,
+                format:'{{PHP_DATE_FORMAT}}',
+                value:new moment()
+            });
+
+            $('.select').select2();
+
+            $("#code").selectize({
+                options: [
+                        @foreach($codemasters as $codemaster)
+                        @foreach($codemaster->childCodes as $childCode)
+                    {
+                        id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'
+                    },
+                    @endforeach
+                    @endforeach
+                ],
+                optgroups: [
+                        @foreach($codemasters as $codemaster)
+                    {
+                        id: '{{$codemaster->id}}', name: '{{$codemaster->code}}'
+                    },
+                    @endforeach
+                ],
+                labelField: 'model',
+                valueField: 'id',
+                optgroupField: 'make',
+                optgroupLabelField: 'name',
+                optgroupValueField: 'id',
+                searchField: ['model'],
+                plugins: ['optgroup_columns']
+            });
         });
+
+
+        var ViewModel = function(model) {
+
+            var self = this;
+            this.product_slab = ko.observable(model.product_slab);
+            this.rejected = ko.observable(model.rejected);
+
+            this.no_of_cartons = ko.computed(function () {
+                var value = self.product_slab()/20 - Math.ceil((self.rejected()/parseFloat(2)));
+                return (value)?value:0;
+            });
+
+            this.loose = ko.computed(function(){
+                var value = (self.rejected()%2);
+                return (value)?value:0;
+            });
+        };
+
+        ko.applyBindings(new ViewModel(@json($product)));
     </script>
-<script type="text/javascript">
-    function calculateCarton()
-    {
-        var productionslab = document.getElementById('type-slab').value;
-        var carton = productionslab / 20    ;
-        document.getElementById('no-of-cartons').value = carton;
-    }
 
-    function myFunction()
-    {
-        var rejected = document.getElementById('type-rejected').value;
-        var noofcartons = document.getElementById('no-of-cartons').value;
-        if(rejected % 2 == 0)
-        {
-            var value = 0;
-            var cartonvalue = rejected/2;
-            var remainingcartons = noofcartons - cartonvalue;
-        }
-        else {
-            var value = 1;
-            var cartonvalue = rejected/2 + 0.5;
-            var remainingcartons = noofcartons - cartonvalue;
-        }
-        document.getElementById('no-of-cartons').value = remainingcartons;
-        document.getElementById('type-loose').value = value;
-    }
-</script>
-<script type="text/javascript">
-    $('#address-id').select2({
-//        width: 100% !important,
-        placeholder: 'Select Client',
-    });
-</script>
-<style>
-    .address{
-        width: 100% !important;
-    }
-</style>
-<script type="text/javascript">
-
-    //    $("#itemName").select2({
-    //        placeholder: 'Select an item',
-    //        width:'100%',
-    //    });
-    $("#itemName1").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName2").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName3").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName6").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName10").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName11").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $("#itemName17").select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-    $(".codemaster").select2({
-        placeholder: 'Select an item',
-        width:'29%',
-    });
-    $("#location-id").select2({
-        placeholder: 'Search Location',
-        width : '100%',
-    });
-    $('#itemName20').select2({
-        placeholder: 'Select an item',
-        width:'100%',
-    });
-</script>
+{{--<style>--}}
+    {{--.address{--}}
+        {{--width: 100% !important;--}}
+    {{--}--}}
+{{--</style>--}}
 @endpush

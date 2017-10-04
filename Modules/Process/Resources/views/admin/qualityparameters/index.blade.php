@@ -13,13 +13,7 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.process.qualityparameter.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('process::qualityparameters.button.create qualityparameter') }}
-                    </a>
-                </div>
-            </div>
+
             <div class="box box-primary">
                 <div class="box-header">
                 </div>
@@ -29,33 +23,43 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
+                                <th>Production Date</th>
+                                <th>Lot No</th>
+                                <th>Carton Date</th>
+                                <th>No.Of Cartons</th>
+                                <th>FishType</th>
+                                <th>Bag Color</th>
+                                <th>Status</th>
+                                {{--<th>{{ trans('core::core.table.created at') }}</th>--}}
+                                {{--<th data-sortable="false">{{ trans('core::core.table.actions') }}</th>--}}
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($qualityparameters)): ?>
-                            <?php foreach ($qualityparameters as $qualityparameter): ?>
+                                @if(isset($cartons))
+                                @foreach($cartons as $carton)
+
                             <tr>
+                                <td>{{isset($carton->product)?\Carbon\Carbon::parse($carton->product->product_date)->format(PHP_DATE_FORMAT) : ''}}</td>
+                                <td>{{isset($carton->product)?$carton->product->lot_no : ''}}</td>
+                                <td>{{isset($carton->carton_date)?\Carbon\Carbon::parse($carton->carton_date)->format(PHP_DATE_FORMAT) : ''}}</td>
+                                <td>{{$carton->no_of_cartons}}</td>
+                                <td>{{isset($carton->product->fishtype)?$carton->product->fishtype->type : '' }}</td>
+                                <td>{{isset($carton->bagcolor)?$carton->bagcolor->color : ''}}</td>
                                 <td>
-                                    <a href="{{ route('admin.process.qualityparameter.edit', [$qualityparameter->id]) }}">
-                                        {{ $qualityparameter->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.process.qualityparameter.edit', [$qualityparameter->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.qualityparameter.destroy', [$qualityparameter->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
+                                    @if($carton->qualitycheckdone == 0)
+                                        <a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Pending</span></a>
+                                    @else
+                                        <a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
+                                    @endif
                                 </td>
                             </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
+                            @endforeach
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
+                                {{--<th>{{ trans('core::core.table.created at') }}</th>--}}
+                                {{--<th>{{ trans('core::core.table.actions') }}</th>--}}
                             </tr>
                             </tfoot>
                         </table>

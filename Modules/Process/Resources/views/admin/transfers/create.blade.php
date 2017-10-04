@@ -12,29 +12,27 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.process.transfer.store'], 'method' => 'post']) !!}
+    {!! Former::horizontal_open()
+        ->route('admin.process.transfer.store')
+        ->method('POST')
+    !!}
+
+    {{ csrf_field() }}
+
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('process::admin.transfers.partials.create-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
+               @include('process::admin.transfers.partials.create-fields')
+
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
                         <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.transfer.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
-                </div>
-            </div> {{-- end nav-tabs-custom --}}
         </div>
     </div>
-    {!! Form::close() !!}
+    {!! Former::close() !!}
 @stop
 
 @section('footer')

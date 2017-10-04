@@ -13,4 +13,9 @@ class CartonType extends Model
     protected $table = 'admin__cartontypes';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+    public function __toString()
+    {
+        return $this->type;
+    }
 }

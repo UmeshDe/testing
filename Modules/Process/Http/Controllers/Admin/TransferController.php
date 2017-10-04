@@ -9,6 +9,7 @@ use Modules\Process\Http\Requests\CreateTransferRequest;
 use Modules\Process\Http\Requests\UpdateTransferRequest;
 use Modules\Process\Repositories\TransferRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Repositories\UserRepository;
 
 class TransferController extends AdminBaseController
 {
@@ -43,7 +44,10 @@ class TransferController extends AdminBaseController
      */
     public function create()
     {
-        return view('process::admin.transfers.create');
+        $users = app(UserRepository::class)->allWithBuilder()
+            ->orderBy('first_name')
+            ->pluck('first_name','id');
+        return view('process::admin.transfers.create',compact('users'));
     }
 
     /**

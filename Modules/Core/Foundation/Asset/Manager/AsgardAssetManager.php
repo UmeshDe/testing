@@ -3,7 +3,6 @@
 namespace Modules\Core\Foundation\Asset\Manager;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Modules\Core\Foundation\Asset\AssetNotFoundException;
 
 final class AsgardAssetManager implements AssetManager

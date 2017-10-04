@@ -13,4 +13,9 @@ class FishType extends Model
     protected $table = 'admin__fishtypes';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+    public function __toString()
+    {
+        return $this->type;
+    }
 }

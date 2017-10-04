@@ -28,7 +28,6 @@
 
             <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
             <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-
         </div> {{-- end nav-tabs-custom --}}
     </div>
 
@@ -56,33 +55,6 @@
                 ]
             });
         });
-	
-	function calculateCarton()
-    {
-        var productionslab = document.getElementById('type-slab').value;
-        var carton = productionslab / 20;
-        document.getElementById('no-of-cartons').value = carton;
-    }
-
-    function myFunction()
-    {
-        var rejected = document.getElementById('type-rejected').value;
-        var noofcartons = document.getElementById('no-of-cartons').value;
-        if(rejected % 2 == 0)
-        {
-            var value = 0;
-            var cartonvalue = rejected/2;
-            var remainingcartons = noofcartons - cartonvalue;
-        }
-        else {
-            var value = 1;
-            var cartonvalue = rejected/2 + 0.5;
-            var remainingcartons = noofcartons - cartonvalue;
-        }
-        document.getElementById('no-of-cartons').value = remainingcartons;
-        document.getElementById('type-loose').value = value;
-    }
-
     </script>
     <script>
         $( document ).ready(function() {

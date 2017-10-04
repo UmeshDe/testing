@@ -98,7 +98,12 @@
                 <div class="form-group has-feedback {{ $errors->has('no_of_cartons') ? ' has-error has-feedback' : '' }}">
                     <label for="type-name" class="control-label col-sm-5">CartonNo:</label>
                     <div class="col-sm-7">
+                        <div class="input-group">
                         {!! Former::text('no_of_cartons')->data_bind('value: no_of_cartons')->raw() !!}
+                            <div class="input-group-addon">
+                                <b class="">Cartons</b>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div>

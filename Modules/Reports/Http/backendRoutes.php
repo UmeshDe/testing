@@ -33,6 +33,11 @@ $router->group(['prefix' =>'/reports'], function (Router $router) {
         'uses' => 'ReportMasterController@update',
         'middleware' => 'can:reports.reportmasters.edit'
     ]);
+    $router->post('reportmasters/update', [
+        'as' => 'admin.reports.reportmaster.update',
+        'uses' => 'ReportMasterController@update',
+        'middleware' => 'can:reports.reportmasters.edit'
+    ]);
     $router->delete('reportmasters/{reportmaster}', [
         'as' => 'admin.reports.reportmaster.destroy',
         'uses' => 'ReportMasterController@destroy',
@@ -63,6 +68,11 @@ $router->group(['prefix' =>'/reports'], function (Router $router) {
         'middleware' => 'can:reports.reportmodules.edit'
     ]);
     $router->put('reportmodules/{reportmodule}', [
+        'as' => 'admin.reports.reportmodule.update',
+        'uses' => 'ReportModuleController@update',
+        'middleware' => 'can:reports.reportmodules.edit'
+    ]);
+    $router->post('reportmodules/update', [
         'as' => 'admin.reports.reportmodule.update',
         'uses' => 'ReportModuleController@update',
         'middleware' => 'can:reports.reportmodules.edit'

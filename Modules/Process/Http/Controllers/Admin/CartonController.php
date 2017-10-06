@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Process\Entities\Carton;
 use Modules\Process\Http\Requests\CreateCartonRequest;
 use Modules\Process\Http\Requests\UpdateCartonRequest;
+use Modules\Process\Repositories\CartonLocationRepository;
 use Modules\Process\Repositories\CartonRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -98,5 +99,18 @@ class CartonController extends AdminBaseController
 
         return redirect()->route('admin.process.carton.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('process::cartons.title.cartons')]));
+    }
+    /**
+     *
+     */
+    public function cartonLots(Request $request)
+    {
+        //Find Carton Information
+        $cartonlocation = app(CartonLocationRepository::class)->allWithBuilder()->where('location_id', '=' , $request->id)
+            ->with(['carton','location','carton.product'])->get();
+        
+        //Required Product
+//        $product =  $this->carton->getProduct($cartonlocation);
+        return response()->json($cartonlocation);
     }
 }

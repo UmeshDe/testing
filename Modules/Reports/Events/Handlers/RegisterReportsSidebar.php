@@ -65,7 +65,7 @@ class RegisterReportsSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->authorize(
                     'reports.module.index'
                 );
-                $item->item(trans('reports::reportmaster.title.reportmasters'), function (Item $item) {
+                $item->item(trans('reports::reportmasters.title.reportmasters'), function (Item $item) {
                     $item->icon('fa fa-copy');
                     $item->weight(0);
                     $item->append('admin.reports.reportmaster.create');

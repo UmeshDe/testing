@@ -29,25 +29,34 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
+                                <th>Vehicle No.</th>
+                                <th>Container No.</th>
+                                <th>Loading From</th>
+                                <th>Unloading To</th>
+                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php if (isset($transfers)): ?>
                             <?php foreach ($transfers as $transfer): ?>
                             <tr>
+                                <td>{{$transfer->vehicle_no}}</td>
+                                <td>{{$transfer->container_no}}</td>
+                                <td>{{$transfer->loadinglocation['name'].'-'.$transfer->loadinglocation['location'].'-'.$transfer->loadinglocation['sublocation']}}</td>
+                                <td>{{$transfer->unloadinglocation['name'].'-'.$transfer->unloadinglocation['location'].'-'.$transfer->unloadinglocation['sublocation']}}</td>
                                 <td>
-                                    <a href="{{ route('admin.process.transfer.edit', [$transfer->id]) }}">
-                                        {{ $transfer->created_at }}
-                                    </a>
+                                    @if($transfer->status == 0)
+                                        <a href="{{ route('admin.process.transfer.create', ['id' => $transfer->id]) }}" id="btn1" class="btn btn-default btn-info"><span style="color:white">Loaded</span></a>
+                                    @else
+                                        <a href="{{ route('admin.process.transfer.create', ['id' => $transfer->id]) }}" id="btn3" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
+                                    @endif
                                 </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.process.transfer.edit', [$transfer->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.transfer.destroy', [$transfer->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
+                                {{--<td>--}}
+                                    {{--<div class="btn-group">--}}
+                                        {{--<a href="{{ route('admin.process.transfer.edit', [$transfer->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>--}}
+                                        {{--<button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.transfer.destroy', [$transfer->id]) }}"><i class="fa fa-trash"></i></button>--}}
+                                    {{--</div>--}}
+                                {{--</td>--}}
                             </tr>
                             <?php endforeach; ?>
                             <?php endif; ?>

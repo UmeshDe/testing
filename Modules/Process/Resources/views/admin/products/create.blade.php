@@ -1,14 +1,7 @@
 @extends('layouts.master')
 
 @section('content-header')
-    <h1>
-        {{ trans('process::products.title.create product') }}
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.process.product.index') }}">{{ trans('process::products.title.products') }}</a></li>
-        <li class="active">{{ trans('process::products.title.create product') }}</li>
-    </ol>
+
 @stop
 
 

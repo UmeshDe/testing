@@ -10,5 +10,18 @@ class ReportMaster extends Model
 
     protected $table = 'reports__reportmasters';
     public $translatedAttributes = [];
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'module_id',
+        'query',
+        'orientation',
+        'papersize',
+        'type',
+        'class',
+        'template_file_id',
+        'frequency',
+        'is_mnth_gnrtn',
+        'export_formats',
+        'code'
+    ];
 }

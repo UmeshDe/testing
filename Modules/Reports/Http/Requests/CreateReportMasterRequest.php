@@ -8,7 +8,9 @@ class CreateReportMasterRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required|unique:reports__reportmasters,name',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class CreateReportMasterRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'name.required' => 'Please Enter Name',
+            'name.unique' => 'Name Already Exuist',
+        ];
     }
 
     public function translationMessages()

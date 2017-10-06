@@ -1,5 +1,8 @@
 <div class="box box-primary">
     <div class="box-header with-border">
+        <h3 class="box-title">New Production</h3>
+     </div>
+    <div class="box-body">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group has-feedback {{ $errors->has('approval_no') ? ' has-error has-feedback' : '' }}">
@@ -127,7 +130,7 @@
                     <label for="type-name" class="control-label col-sm-5">Loose:</label>
                     <div class="col-sm-7">
                         {!! Former::hidden('loose')->data_bind('value: loose')->raw() !!}
-                        <span data-bind ='text: loose' />
+                        <span class="form-control" data-bind ='text: loose' />
 
                     </div>
                 </div>

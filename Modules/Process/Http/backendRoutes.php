@@ -65,6 +65,11 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'CartonController@update',
         'middleware' => 'can:process.cartons.edit'
     ]);
+    $router->get('cartons', [
+        'as' => 'admin.process.carton.cartonLots',
+        'uses' => 'CartonController@cartonLots',
+        'middleware' => 'can:process.cartons.edit'
+    ]);
     $router->delete('cartons/{carton}', [
         'as' => 'admin.process.carton.destroy',
         'uses' => 'CartonController@destroy',

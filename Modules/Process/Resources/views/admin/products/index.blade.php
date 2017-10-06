@@ -1,25 +1,31 @@
 @extends('layouts.master')
 
 @section('content-header')
-    <h1>
-        {{ trans('process::products.title.products') }}
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('process::products.title.products') }}</li>
-    </ol>
+    <div  class="row">
+        <div class="col-md-6">
+            <h4>    {{ trans('process::products.title.products') }}  </h4>
+        </div>
+        <div class="col-md-6">
+            <h4>
+            <a href="{{ route('admin.process.product.create') }}" class="btn btn-primary btn-flat pull-right"
+               style="padding: 4px 10px;">
+                <i class="fa fa-pencil"></i> {{ trans('process::products.button.create product') }}
+            </a>
+            </h4>
+         </div>
+    </div>
+    {{--<ol class="breadcrumb">--}}
+        {{--<li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>--}}
+        {{--<li class="active">{{ trans('process::products.title.products') }}</li>--}}
+    {{--</ol>--}}
+    {{--<div class="btn-group pull-right" style="margin: 0 15px 15px 0;">--}}
+
+    {{--</div>--}}
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.process.product.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('process::products.button.create product') }}
-                    </a>
-                </div>
-            </div>
             <div class="box box-primary">
                 <div class="box-header">
                 </div>
@@ -30,7 +36,8 @@
                             <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>FishType</th>
+                                <th>Lot No</th>
+                                <th>Fish Type</th>
                                 <th>Bag Color</th>
                                 <th>Production Slab</th>
                                 <th>No.Of Cartons</th>
@@ -45,6 +52,7 @@
                             @foreach ($products as $product)
                             <tr>
                                 <td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>
+                                <td>{{$product->lot_no}}</td>
                                 <td>{{$product->fishtype['type']}}</td>
                                 <td>{{$product->bagcolor['color']}}</td>
                                 <td>{{$product->product_slab}}</td>

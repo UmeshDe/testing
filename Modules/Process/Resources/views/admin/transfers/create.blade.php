@@ -12,6 +12,14 @@
 @stop
 
 @section('content')
+
+    {{--@if($transfers->status ==  null)--}}
+        {{Former::populate($transfers)}}
+    {{--@else--}}
+
+
+    {{--@endif--}}
+
     {!! Former::horizontal_open()
         ->route('admin.process.transfer.store')
         ->method('POST')
@@ -27,11 +35,12 @@
 
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.transfer.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        {{--<button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>--}}
+                        {{--<a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.transfer.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>--}}
                     </div>
         </div>
     </div>
+        </div>
     {!! Former::close() !!}
 @stop
 
@@ -62,5 +71,118 @@
                 radioClass: 'iradio_flat-blue'
             });
         });
+
+        $('#carton_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#product_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_date').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+
+
+        $('#transfer_lot').select2();
+        $('#loading_location_id').select2();
+        $('#unloading_location_id').select2();
+        $('#status').select2();
+        $('#loading_supervisor').select2();
+
+
+        $('#loading_from').select2().on('change' , function () {
+
+            var loadingFrom = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.cartonLots')}}',
+                data: {
+                    id : loadingFrom,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+
+                    $('#transfer_lot').html('');
+                    $.each(response, function (i , item) {
+                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonId =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        function display() {
+            var b = 0;
+
+            var qty = $('#quantity').val();
+
+            if(qty == "" || qty < 0 || qty != parseInt(qty, 10)) {
+                alert("Please enter valid quantity");
+                return false;
+            }
+            else if($('#transfer_lot').val() == ""){
+                alert("Please select product lot");
+                return false;
+            }
+
+            var quantity = $('#transfer_lot').children('option:selected').data('quantity');
+            var lotno = $('#transfer_lot').children('option:selected').data('lot_no');
+            var locationId = $('#transfer_lot').children('option:selected').data('location_id');
+
+            if(qty > quantity){
+                alert('Only ' + quantity+ " cartons are available in lot :" + lotno + " at selected location");
+                return false;
+            }
+
+
+            $('#'+lotno).remove();
+
+
+            var cartonId = $('#transfer_lot').children('option:selected').data('cartonId');
+            var toHTML = '';
+
+            var cartondate="";
+
+            if(moment($('#transfer_lot').children('option:selected').data('carton_date')).isValid())
+            {
+                cartondate = moment($('#transfer_lot').children('option:selected').data('carton_date')).format('{{MOMENT_DATE_FORMAT}}');
+            }
+
+            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <button type="button" class ="glyphicon glyphicon-remove close" style="color:red" data-rowid = '+ lotno + '> </td></tr><input type="hidden" name="carton[locationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '>';
+            $('#records-table').append(toHTML);
+            $('.close').click(function () {
+                var id = $(this).data('rowid');
+                $('#'+id).remove();
+            });
+        }
     </script>
 @endpush

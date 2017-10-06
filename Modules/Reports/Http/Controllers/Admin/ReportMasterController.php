@@ -9,6 +9,8 @@ use Modules\Reports\Http\Requests\CreateReportMasterRequest;
 use Modules\Reports\Http\Requests\UpdateReportMasterRequest;
 use Modules\Reports\Repositories\ReportMasterRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\Reports\Repositories\ReportModuleRepository;
+use Modules\User\Contracts\Authentication;
 
 class ReportMasterController extends AdminBaseController
 {
@@ -17,11 +19,15 @@ class ReportMasterController extends AdminBaseController
      */
     private $reportmaster;
 
-    public function __construct(ReportMasterRepository $reportmaster)
+
+    private $auth;
+
+    public function __construct(ReportMasterRepository $reportmaster,Authentication $auth)
     {
         parent::__construct();
 
         $this->reportmaster = $reportmaster;
+        $this->auth = $auth;
     }
 
     /**
@@ -31,8 +37,9 @@ class ReportMasterController extends AdminBaseController
      */
     public function index()
     {
-
-        return view('reports::admin.reportmasters.index', compact(''));
+        $reportmasters = $this->reportmaster->all();
+        $reportmodules = app(ReportModuleRepository::class)->all();
+        return view('reports::admin.reportmasters.index', compact('reportmasters','reportmodules'));
     }
 
     /**

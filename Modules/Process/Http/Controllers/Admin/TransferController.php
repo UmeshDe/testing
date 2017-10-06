@@ -4,11 +4,15 @@ namespace Modules\Process\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\LocationRepository;
 use Modules\Process\Entities\Transfer;
 use Modules\Process\Http\Requests\CreateTransferRequest;
 use Modules\Process\Http\Requests\UpdateTransferRequest;
+use Modules\Process\Repositories\TransferCartonRepository;
 use Modules\Process\Repositories\TransferRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 use Modules\User\Repositories\UserRepository;
 
 class TransferController extends AdminBaseController
@@ -18,11 +22,17 @@ class TransferController extends AdminBaseController
      */
     private $transfer;
 
-    public function __construct(TransferRepository $transfer)
+    /**
+     * @var
+     */
+    private $auth;
+
+    public function __construct(TransferRepository $transfer,Authentication $auth)
     {
         parent::__construct();
 
         $this->transfer = $transfer;
+        $this->auth = $auth;
     }
 
     /**
@@ -32,9 +42,9 @@ class TransferController extends AdminBaseController
      */
     public function index()
     {
-        //$transfers = $this->transfer->all();
+        $transfers = $this->transfer->all();
 
-        return view('process::admin.transfers.index', compact(''));
+        return view('process::admin.transfers.index', compact('transfers'));
     }
 
     /**
@@ -42,12 +52,27 @@ class TransferController extends AdminBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $users = app(UserRepository::class)->allWithBuilder()
-            ->orderBy('first_name')
-            ->pluck('first_name','id');
-        return view('process::admin.transfers.create',compact('users'));
+        
+        $transfers = $this->transfer->find($request->id);
+        
+        
+        $locations = app(LocationRepository::class)->allWithBuilder()
+            ->orderBy('name')
+            ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
+            ->pluck('name','id');
+        
+        $transfercarton [] = app(TransferCartonRepository::class)->getByAttributes(['transfer_id' => $request->id]);
+
+
+        foreach ($transfercarton as $cartontransfer)
+        {
+            $cartons  = $cartontransfer;
+        }
+        
+        $users = app(UserRepository::class)->all();
+        return view('process::admin.transfers.create',compact('users','locations','transfers','cartons'));
     }
 
     /**
@@ -58,10 +83,17 @@ class TransferController extends AdminBaseController
      */
     public function store(CreateTransferRequest $request)
     {
-        $this->transfer->create($request->all());
 
-        return redirect()->route('admin.process.transfer.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::transfers.title.transfers')]));
+        if($request->button == 'loading') {
+            $this->transfer->load($request);
+            return redirect()->route('admin.process.transfer.index')
+                ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::transfers.title.transfers')]));
+        }
+        else{
+            $this->transfer->unload($request);
+            return redirect()->route('admin.process.transfer.index')
+                ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::transfers.title.transfers')]));
+        }
     }
 
     /**

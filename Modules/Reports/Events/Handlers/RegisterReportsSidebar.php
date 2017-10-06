@@ -71,7 +71,7 @@ class RegisterReportsSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     $item->append('admin.reports.reportmaster.create');
                     $item->route('admin.reports.reportmaster.index');
                     $item->authorize(
-                        $this->auth->hasAccess('reports.reportmaster.index')
+                        $this->auth->hasAccess('reports.reportmasters.index')
                     );
                 });
 

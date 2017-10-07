@@ -12,28 +12,24 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.process.qualityparameter.update', $qualityparameter->id], 'method' => 'put']) !!}
+    {!! Former::horizontal_open()
+   ->route('admin.process.qualityparameter.update',$qualityparameter->id)
+   ->method('PUT')
+   !!}
+
+    {{ csrf_field() }}
+
     <div class="row">
         <div class="col-md-12">
-            <div class="nav-tabs-custom">
-                @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('process::admin.qualityparameters.partials.edit-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                    </div>
-                </div>
-            </div> {{-- end nav-tabs-custom --}}
+                @include('process::admin.qualityparameters.partials.create-fields')
         </div>
     </div>
+
+    {{--<div class="box-footer">--}}
+        <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.update') }}</button>
+        <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+    {{--</div>--}}
+
     {!! Form::close() !!}
 @stop
 
@@ -63,6 +59,17 @@
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
+            $('#carton_date').datetimepicker({
+                timepicker: false,
+                format: '{{PHP_DATE_FORMAT}}',
+                value: '{{\Carbon\Carbon::parse($cartons->carton_date)->format(PHP_DATE_FORMAT)}}'
+            });
+
+            $('#kind_id').select2();
+
+            $('#grade_id').select2();
         });
     </script>
+
+
 @endpush

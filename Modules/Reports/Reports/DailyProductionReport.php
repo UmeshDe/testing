@@ -3,6 +3,7 @@
 namespace Modules\Reports\Reports;
 
 
+use Carbon\Carbon;
 use Modules\Process\Entities\Product;
 use PDF;
 
@@ -92,6 +93,10 @@ class DailyProductionReport extends AbstractReport
 
         // Report title
         $this->title = 'Daily Production Report';
+
+        $this->subtitle = 'Date: '.Carbon::parse( $this->startDate)->format(PHP_DATE_FORMAT);
+        
+        $this->subtitlestyle = 'text-align:left';
 
         $this->name = 'daily_production_report';
 

@@ -76,11 +76,19 @@ class QualityParameterController extends AdminBaseController
         //Create Qualitycheck
         $qualitycheck = $this->qualityparameter->createQualityparameter($request);
 
-        //QualityCheckDone
-        $cartons = app(CartonRepository::class)->findByAttributes(['id' => $request->id]);
-        $cartons->qualitycheckdone = true;
-        $cartons->carton_date = Carbon::parse($request->carton_date);
-        $cartons->save();
+        //If all parameters are entered mark quality check done
+        if(isset($qualitycheck->suwari_work_force) &&
+            isset($qualitycheck->suwari_length) &&
+            isset($qualitycheck->suwari_gel_strength) &&
+            isset($qualitycheck->gel_strength) &&
+            isset($qualitycheck->length) &&
+            isset($qualitycheck->work_force)){
+
+            $cartons = app(CartonRepository::class)->findByAttributes(['id' => $request->id]);
+            $cartons->qualitycheckdone = true;
+            $cartons->carton_date = Carbon::parse($request->carton_date);
+            $cartons->save();
+        }
 
         return redirect()->route('admin.process.qualityparameter.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::qualityparameters.title.qualityparameters')]));
@@ -94,7 +102,18 @@ class QualityParameterController extends AdminBaseController
      */
     public function edit(QualityParameter $qualityparameter)
     {
-        return view('process::admin.qualityparameters.edit', compact('qualityparameter'));
+        $grades = app(GradeRepository::class)->allWithBuilder()
+            ->orderBy('grade')
+            ->pluck('grade','id');
+
+        $kinds = app(KindRepository::class)->allWithBuilder()
+            ->orderBy('kind')
+            ->pluck('kind','id');
+
+        $cartons = app(CartonRepository::class)->findByAttributes(['id' => $qualityparameter->carton_id]);
+
+        return view('process::admin.qualityparameters.edit', compact('qualityparameter','cartons','grades','kinds'));
+
     }
 
     /**
@@ -106,7 +125,21 @@ class QualityParameterController extends AdminBaseController
      */
     public function update(QualityParameter $qualityparameter, UpdateQualityParameterRequest $request)
     {
-        $this->qualityparameter->update($qualityparameter, $request);
+        $qualitycheck = $this->qualityparameter->update($qualityparameter, $request->all());
+
+        //If all parameters are entered mark quality check done
+        if(isset($qualitycheck->suwari_work_force) &&
+            isset($qualitycheck->suwari_length) &&
+            isset($qualitycheck->suwari_gel_strength) &&
+            isset($qualitycheck->gel_strength) &&
+            isset($qualitycheck->length) &&
+            isset($qualitycheck->work_force)){
+
+            $cartons = app(CartonRepository::class)->findByAttributes(['id' => $request->id]);
+            $cartons->qualitycheckdone = true;
+            $cartons->carton_date = Carbon::parse($request->carton_date);
+            $cartons->save();
+        }
 
         return redirect()->route('admin.process.qualityparameter.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('process::qualityparameters.title.qualityparameters')]));

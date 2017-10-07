@@ -46,10 +46,12 @@
                                 <td>{{isset($carton->product->fishtype)?$carton->product->fishtype->type : '' }}</td>
                                 <td>{{isset($carton->bagcolor)?$carton->bagcolor->color : ''}}</td>
                                 <td>
-                                    @if($carton->qualitycheckdone == 0)
+                                    @if(!isset($carton->qualitycheck))
                                         <a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Pending</span></a>
+                                    @elseif($carton->qualitycheckdone )
+                                        <a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
                                     @else
-                                        <a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
+                                        <a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-info"><span style="color:white">In Progress</span></a>
                                     @endif
                                 </td>
                             </tr>
@@ -58,8 +60,6 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                {{--<th>{{ trans('core::core.table.created at') }}</th>--}}
-                                {{--<th>{{ trans('core::core.table.actions') }}</th>--}}
                             </tr>
                             </tfoot>
                         </table>

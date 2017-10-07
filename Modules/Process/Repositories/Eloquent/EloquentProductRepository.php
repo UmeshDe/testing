@@ -17,15 +17,19 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
         return $this->create([
             'product_date' =>Carbon::parse($request->product_date),
+            'carton_date' => $request->carton_date,
             'no_of_cartons' => $request->no_of_cartons,
             'rejected' => $request->rejected,
             'loose' => $request->loose,
+            'bag_color' => $request->bag_color,
+            'carton_type' => $request->carton_type,
             'location_id' => $request->location_id,
             'approval_no' => $request->approval_no,
             'po_no' => $request->po_no,
             'lot_no' => $request->lot_no,
             'product_slab' => $request->product_slab,
-            'fish_type'=>$request->fish_type
+            'fish_type'=>$request->fish_type,
+            'remark' => $request->remark
         ]);
     }
 
@@ -33,15 +37,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $this->update($product,
             [
                 'product_date' => Carbon::parse($request->product_date),
+                'carton_date' => $request->carton_date,
                 'no_of_cartons' => $request->no_of_cartons,
                 'rejected' => $request->rejected,
                 'loose' => $request->loose,
+                'carton_type' => $request->carton_type,
                 'location_id' => $request->location_id,
                 'approval_no' => $request->approval_no,
                 'po_no' => $request->po_no,
                 'lot_no' => $request->lot_no,
                 'product_slab' => $request->product_slab,
-                'fish_type'=>$request->fish_type
+                'fish_type'=>$request->fish_type,
+                'remark' => $request->remark
             ]);
     }
 }

@@ -46,10 +46,10 @@
                                 <td>{{$transfer->unloadinglocation['name'].'-'.$transfer->unloadinglocation['location'].'-'.$transfer->unloadinglocation['sublocation']}}</td>
                                 <td>
                                     @if($transfer->status == 0)
-                                        <a href="{{ route('admin.process.transfer.create', ['id' => $transfer->id]) }}" id="btn1" class="btn btn-default btn-info"><span style="color:white">Loaded</span></a>
-                                    @else
-                                        <a href="{{ route('admin.process.transfer.create', ['id' => $transfer->id]) }}" id="btn3" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
-                                    @endif
+                                     <a href="{{ route('admin.process.transfer.edit', ['id' => $transfer->id]) }}" id="btn1" class="btn btn-default btn-info"><span style="color:white">Loaded</span></a>
+                                        @else
+                                        <a href="{{ route('admin.process.transfer.edit', ['id' => $transfer->id]) }}" id="btn1" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
+                                        @endif
                                 </td>
                                 {{--<td>--}}
                                     {{--<div class="btn-group">--}}
@@ -63,8 +63,6 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </tfoot>
                         </table>

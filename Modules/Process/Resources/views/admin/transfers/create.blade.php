@@ -109,14 +109,20 @@
         });
 
 
-        $('#transfer_lot').select2();
+        $('#transfer_lot').select2({
+            width: '100%'
+        });
         $('#loading_location_id').select2();
         $('#unloading_location_id').select2();
-        $('#status').select2();
-        $('#loading_supervisor').select2();
+        $('#status').select2({
+            width: '100%'
+        });
+        $('#loading_supervisor').select2({
+            width : '100%'
+        });
 
 
-        $('#loading_from').select2().on('change' , function () {
+        $('#loading_location_id').select2().on('change' , function () {
 
             var loadingFrom = $(this).val();
 
@@ -131,7 +137,7 @@
 
                     $('#transfer_lot').html('');
                     $.each(response, function (i , item) {
-                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonId =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
                     });
 
                 },
@@ -167,7 +173,7 @@
             $('#'+lotno).remove();
 
 
-            var cartonId = $('#transfer_lot').children('option:selected').data('cartonId');
+            var cartonId = $('#transfer_lot').children('option:selected').data('cartonid');
             var toHTML = '';
 
             var cartondate="";
@@ -177,12 +183,16 @@
                 cartondate = moment($('#transfer_lot').children('option:selected').data('carton_date')).format('{{MOMENT_DATE_FORMAT}}');
             }
 
-            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <button type="button" class ="glyphicon glyphicon-remove close" style="color:red" data-rowid = '+ lotno + '> </td></tr><input type="hidden" name="carton[locationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '>';
+            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <button type="button" class ="glyphicon glyphicon-remove close" style="color:red" data-rowid = '+ lotno + '> </td><<input type="hidden" name="carton[cartonlocationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '></tr>';
             $('#records-table').append(toHTML);
             $('.close').click(function () {
                 var id = $(this).data('rowid');
                 $('#'+id).remove();
             });
         }
+
+        $('#unloading_location_id').change(function () {
+           $('#loading').show();
+        });
     </script>
 @endpush

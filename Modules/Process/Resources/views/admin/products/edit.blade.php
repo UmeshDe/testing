@@ -5,8 +5,10 @@
         {{ trans('process::products.title.edit product') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.process.product.index') }}">{{ trans('process::products.title.products') }}</a></li>
+        <li><a href="{{ route('dashboard.index') }}"><i
+                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
+        <li><a href="{{ route('admin.process.product.index') }}">{{ trans('process::products.title.products') }}</a>
+        </li>
         <li class="active">{{ trans('process::products.title.edit product') }}</li>
     </ol>
 @stop
@@ -28,8 +30,9 @@
             @include('partials.form-tab-headers')
             @include('process::admin.products.partials.create-fields')
 
-            <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-            <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+            <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.update') }}</button>
+            <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.product.index')}}"><i
+                        class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
 
         </div> {{-- end nav-tabs-custom --}}
     </div>
@@ -51,88 +54,96 @@
 @stop
 
 @push('js-stack')
-    <script type="text/javascript">
-        $( document ).ready(function() {
-            $(document).keypressAction({
-                actions: [
-                    { key: 'b', route: "<?= route('admin.process.product.index') ?>" }
-                ]
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).keypressAction({
+            actions: [
+                {key: 'b', route: "<?= route('admin.process.product.index') ?>"}
+            ]
         });
-    </script>
-    <script>
-        $( document ).ready(function() {
-            $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
-            });
+    });
+</script>
+<script>
 
 
-            $('#product_date').datetimepicker({
-                timepicker:false,
-                format:'{{PHP_DATE_FORMAT}}',
-                value:new moment()
-            });
+    var selectcodes;
 
-            $('#carton_date').datetimepicker({
-                timepicker:false,
-                format:'{{PHP_DATE_FORMAT}}',
-                value:new moment()
-            });
+    $(document).ready(function () {
+        $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
 
-            $('.select').select2();
 
-            $("#code").selectize({
-                options: [
-                        @foreach($codemasters as $codemaster)
+        $('#product_date').datetimepicker({
+            timepicker: false,
+            format: '{{PHP_DATE_FORMAT}}',
+            value: '{{\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT)}}'
+        });
+
+        $('#carton_date').datetimepicker({
+            timepicker: false,
+            format: '{{PHP_DATE_FORMAT}}',
+            value: '{{\Carbon\Carbon::parse($product->carton_date)->format(PHP_DATE_FORMAT)}}'
+        });
+
+        $('.select').select2();
+
+
+        selectcodes = $("#code").selectize({
+            options: [
+                    @foreach($codemasters as $codemaster)
                         @foreach($codemaster->childCodes as $childCode)
-                    {
-                        id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'
-                    },
+                        {
+                            id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'
+                        },
+                        @endforeach
                     @endforeach
-                    @endforeach
-                ],
-                optgroups: [
-                        @foreach($codemasters as $codemaster)
+            ],
+            optgroups: [
+                    @foreach($codemasters as $codemaster)
                     {
                         id: '{{$codemaster->id}}', name: '{{$codemaster->code}}'
                     },
                     @endforeach
-                ],
-                labelField: 'model',
-                valueField: 'id',
-                optgroupField: 'make',
-                optgroupLabelField: 'name',
-                optgroupValueField: 'id',
-                searchField: ['model'],
-                plugins: ['optgroup_columns']
-            });
+            ],
+            labelField: 'model',
+            valueField: 'id',
+            optgroupField: 'make',
+            optgroupLabelField: 'name',
+            optgroupValueField: 'id',
+            searchField: ['model'],
+            plugins: ['optgroup_columns']
         });
 
 
-        var ViewModel = function(model) {
+        selectcodes[0].selectize.addItems(@json(collect($product->codes->toArray())->pluck('id')->all()));
+    });
 
-            var self = this;
-            this.product_slab = ko.observable(model.product_slab);
-            this.rejected = ko.observable(model.rejected);
 
-            this.no_of_cartons = ko.computed(function () {
-                var value = self.product_slab()/20 - Math.ceil((self.rejected()/parseFloat(2)));
-                return (value)?value:0;
-            });
+    var ViewModel = function (model) {
 
-            this.loose = ko.computed(function(){
-                var value = (self.rejected()%2);
-                return (value)?value:0;
-            });
-        };
+        var self = this;
+        this.product_slab = ko.observable(model.product_slab);
+        this.rejected = ko.observable(model.rejected);
 
-        ko.applyBindings(new ViewModel(@json($product)));
-    </script>
+        this.no_of_cartons = ko.computed(function () {
+            var value = self.product_slab() / 20 - Math.ceil((self.rejected() / parseFloat(2)));
+            return (value) ? value : 0;
+        });
+
+        this.loose = ko.computed(function () {
+            var value = (self.rejected() % 2);
+            return (value) ? value : 0;
+        });
+    };
+
+    ko.applyBindings(new ViewModel(@json($product)));
+</script>
 
 {{--<style>--}}
-    {{--.address{--}}
-        {{--width: 100% !important;--}}
-    {{--}--}}
+{{--.address{--}}
+{{--width: 100% !important;--}}
+{{--}--}}
 {{--</style>--}}
 @endpush

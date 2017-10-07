@@ -11,5 +11,24 @@ class QualityParameter extends Model
 
     protected $table = 'process__qualityparameters';
     public $translatedAttributes = [];
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'carton_id',
+        'grade_id',
+        'kind_id',
+        'date',
+        'grade',
+        'moisture',
+        'kamaboko_hw',
+        'ashi',
+        'contam',
+        'ph',
+        'work_force',
+        'length',
+        'gel_strength',
+        'suwari_work_force',
+        'suwari_length',
+        'suwari_gel_strength',
+        'approved_by',
+        'created_by'
+    ];
 }

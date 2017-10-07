@@ -1,6 +1,29 @@
 <?php
 use Carbon\Carbon;
 ?>
+
+
+    {{Former::populate($cartons)}}
+    {{Former::populateField('lot_no',$cartons->product->lot_no)}}
+    {{Former::populateField('carton_date',\Carbon\Carbon::parse($cartons->carton_date)->format(PHP_DATE_FORMAT))}}
+    {{Former::populateField('lot_no',$cartons->product->lot_no)}}
+
+
+ @if(isset($cartons->qualitycheck))
+    {{Former::populateField('kind_id',$cartons->qualitycheck->kind_id)}}
+    {{Former::populateField('moisture',$cartons->qualitycheck->moisture)}}
+    {{Former::populateField('kamaboko_hw',$cartons->qualitycheck->kamaboko_hw)}}
+    {{Former::populateField('ashi',$cartons->qualitycheck->ashi)}}
+    {{Former::populateField('contam',$cartons->qualitycheck->contam)}}
+    {{Former::populateField('ph',$cartons->qualitycheck->ph)}}
+    {{Former::populateField('grade_id',$cartons->qualitycheck->grade_id)}}
+    {{Former::populateField('suwari_work_force',$cartons->qualitycheck->suwari_work_force)}}
+    {{Former::populateField('suwari_length',$cartons->qualitycheck->suwari_length)}}
+    {{Former::populateField('suwari_gel_strength',$cartons->qualitycheck->suwari_gel_strength)}}
+    {{Former::populateField('work_force',$cartons->qualitycheck->work_force)}}
+    {{Former::populateField('length',$cartons->qualitycheck->length)}}
+    {{Former::populateField('gel_strength',$cartons->qualitycheck->gel_strength)}}
+@endif
 <div class="box box-primary" xmlns="http://www.w3.org/1999/html">
     <div class="box-header with-border">
         <h2 class="box-title"></h2>
@@ -25,7 +48,7 @@ use Carbon\Carbon;
                 {!!
                     Former::hidden('lot_no')->raw()
                  !!}
-                <span class="col-sm-7" data-text="lot_no">{{$cartons->product->lot_no}}</span>
+                <span class="col-sm-7" style="width: 100%" data-text="lot_no">{{$cartons->product->lot_no}}</span>
             </div>
         </div>
         </div>
@@ -194,3 +217,5 @@ use Carbon\Carbon;
     </div>
 </div>
     {{--</div>--}}
+
+

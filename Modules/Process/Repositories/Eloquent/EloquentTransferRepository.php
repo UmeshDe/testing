@@ -36,13 +36,12 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
 
         foreach ($request->carton['cartonId'] as $key => $value) {
 
-            $quantity = floatval($quantity[$key]);
-
+//            $quantity = floatval($quantity[$key]);
 
             $data = [
                 'carton_id' => $value,
                 'transfer_id' => $transfer->id,
-                'quantity' => $quantity,
+                'quantity' => $quantity[$key],
             ];
             array_push($transferCartons, $data);
 
@@ -51,19 +50,9 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
                 'carton_id' => $value
             ]);
 
-            $fromCartonLocation->available_quantity = is_null($fromCartonLocation->available_quantity)?0:$fromCartonLocation->available_quantity  -   $quantity;
-            $fromCartonLocation->transit = is_null($fromCartonLocation->transit )?0:$fromCartonLocation->transit  + $quantity;
+            $fromCartonLocation->available_quantity = $fromCartonLocation->available_quantity -  $quantity[$key];
+            $fromCartonLocation->transit = $fromCartonLocation->transit  + $quantity[$key];
             $fromCartonLocation->save();
-
-
-            $toCartonLocation = $cartonLocationRepo->findByAttributes([
-                'location_id' => $transfer->unloading_location_id,
-                'carton_id' => $value
-            ]);
-
-            $toCartonLocation->available_quantity = $fromCartonLocation->available_quantity  +   $quantity;
-            $toCartonLocation->save();
-
         }
 
         //Insert cartons in transfer cartons
@@ -72,7 +61,7 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
     }
 
 
-    public function unload($request,$transfer )
+    public function unload($request,$transfer)
     {
 
         $transfer = $this->find($transfer->id);
@@ -80,7 +69,7 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
         $transfer->unloading_date = Carbon::parse ($request->unloading_date);
         $transfer->unloading_supervisor = $request->unloading_supervisor;
         $transfer->unloading_start_time = Carbon::parse($request->unloading_start_time) ;
-        $transfer->status = $request->unloading_status;
+        $transfer->status = $request->status;
         $transfer->unloading_gate_pass_no = $request->unloading_gate_pass_no;
         $transfer->unloading_remark = $request->unloading_remark;
         $transfer->save();
@@ -89,40 +78,54 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
         $recieved = $request->carton['recieved'];
 
         $transferCartonRepo = app(TransferCarton::class);
+        $cartonLocationRepo = app(CartonLocationRepository::class);
+
 
         //Update received quantity in Transfer Carton
         foreach ($request->carton['transfer'] as $key => $value)
         {
-            $transferproduct  = $transferCartonRepo->find($value);
-
-            $transferproduct->recieved = $recieved[$key];
-            $transferproduct->save();
-
-        }
-
-        $cartonLocationRepo = app(CartonLocationRepository::class);
-
-        foreach ($request->carton['cartonId'] as $key => $value)
-        {
             $receivedQuantity = floatval($recieved[$key]);
 
-            $toLocation =  $cartonLocationRepo->findByAttribute([
-                'location_id' => $transfer->unloading_location_id,
-                'carton_id' => $value
-            ]);
+            $transferproduct  = $transferCartonRepo->find($value);
+            $previousReceived  = $transferproduct->received_quantity;
 
-            $toLocation->available_quantity = $toLocation->available_quantity + $receivedQuantity;
-            $toLocation->save();
+            $transferproduct->received_quantity  = $receivedQuantity;
+            $transferproduct->save();
 
-            $fromCartonLocation =  $cartonLocationRepo->findByAttribute([
+
+            //Decrease from from location
+            $fromCartonLocation =  $cartonLocationRepo->findByAttributes([
                 'location_id' => $transfer->loading_location_id,
-                'carton_id' => $value
+                'carton_id' => $transferproduct->carton_id
             ]);
 
-            $fromCartonLocation->available_quantity = $fromCartonLocation->available_quantity  -  $receivedQuantity;
-            $fromCartonLocation->transit = is_null($fromCartonLocation->transit )?0:$fromCartonLocation->transit  - $receivedQuantity;
+            $fromCartonLocation->transit  = is_null($fromCartonLocation->transit )?0:$fromCartonLocation->transit;
+            $fromCartonLocation->transit = $fromCartonLocation->transit + $previousReceived -  $receivedQuantity;
             $fromCartonLocation->save();
 
+            //Increase in to location
+            $toLocation =  $cartonLocationRepo->findByAttributes([
+                'location_id' => $transfer->unloading_location_id,
+                'carton_id' => $transferproduct->carton_id
+            ]);
+
+            if(isset($toLocation)){
+                $toLocation->available_quantity = $toLocation->available_quantity - $previousReceived  +  $receivedQuantity;
+                $toLocation->save();
+            }
+            else{
+
+                $cartonLocationData = [
+                    'carton_id' => $transferproduct->carton_id,
+                    'location_id' => $transfer->unloading_location_id,
+                    'available_quantity' => $receivedQuantity,
+                    'transit' => 0,
+                    'loose' => 0,
+                    'rejected'=>0
+                ];
+
+                $cartonLocation = app(CartonLocationRepository::class)->create($cartonLocationData);
+            }
         }
     }
 }

@@ -129,9 +129,8 @@
                 <div class="form-group has-feedback {{ $errors->has('loose') ? ' has-error has-feedback' : '' }}">
                     <label for="type-name" class="control-label col-sm-5">Loose:</label>
                     <div class="col-sm-7">
-                        {!! Former::hidden('loose')->data_bind('value: loose')->raw() !!}
-                        <span class="form-control" data-bind ='text: loose' />
-
+                            {!! Former::hidden('loose')->data_bind('value: loose')->raw() !!}
+                            <span class="form-control"  style="width:100%" data-bind ='text: loose' />
                     </div>
                 </div>
             </div>

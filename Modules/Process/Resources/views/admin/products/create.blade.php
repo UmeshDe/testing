@@ -19,8 +19,8 @@
             @include('partials.form-tab-headers')
             @include('process::admin.products.partials.create-fields')
 
-            <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-            <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+            <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.create') }}</button>
+            <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
         </div> {{-- end nav-tabs-custom --}}
     </div>
 
@@ -60,13 +60,14 @@
             $('#product_date').datetimepicker({
                 timepicker:false,
                 format:'{{PHP_DATE_FORMAT}}',
-                value:new moment()
+                {{--value: '{{isset($product)?$product->product_date:\Carbon\Carbon::now()}}'--}}
+                value : new moment()
             });
 
             $('#carton_date').datetimepicker({
                 timepicker:false,
                 format:'{{PHP_DATE_FORMAT}}',
-                value:new moment()
+                value : new moment()
             });
 
             $('.select').select2();

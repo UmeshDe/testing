@@ -2,6 +2,7 @@
 
 namespace Modules\Process\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Bagcolor;
@@ -33,6 +34,14 @@ class Carton extends Model
         'record_status'
     ];
 
+
+
+    public function setcartonDateAttribute($value)
+    {
+        $this->attributes['carton_date'] = Carbon::parse($value);
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -56,4 +65,6 @@ class Carton extends Model
     {
         return $this->hasOne(QualityParameter::class,'carton_id','id');
     }
+
+
 }

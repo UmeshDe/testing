@@ -22,9 +22,10 @@ class EloquentCartonRepository extends EloquentBaseRepository implements CartonR
         return $this->create($input);
 
     }
-    public function updateCarton(Carton $carton,$input){
+    public function updateCarton($carton,$input){
 
-        return $this->update($carton,$input);
+        $carton->update($input);
+        return $carton;
     }
     public function getProduct($cartonlocations)
     {

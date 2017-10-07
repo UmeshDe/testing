@@ -7,9 +7,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\Repositories\LocationRepository;
 use Modules\Process\Entities\Transfer;
+use Modules\Process\Entities\TransferCarton;
 use Modules\Process\Http\Requests\CreateTransferRequest;
 use Modules\Process\Http\Requests\UpdateTransferRequest;
-use Modules\Process\Repositories\TransferCartonRepository;
 use Modules\Process\Repositories\TransferRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\User\Contracts\Authentication;
@@ -63,14 +63,6 @@ class TransferController extends AdminBaseController
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
             ->pluck('name','id');
         
-        $transfercarton [] = app(TransferCartonRepository::class)->getByAttributes(['transfer_id' => $request->id]);
-
-
-        foreach ($transfercarton as $cartontransfer)
-        {
-            $cartons  = $cartontransfer;
-        }
-        
         $users = app(UserRepository::class)->all();
         return view('process::admin.transfers.create',compact('users','locations','transfers','cartons'));
     }
@@ -83,7 +75,6 @@ class TransferController extends AdminBaseController
      */
     public function store(CreateTransferRequest $request)
     {
-
         if($request->button == 'loading') {
             $this->transfer->load($request);
             return redirect()->route('admin.process.transfer.index')
@@ -104,7 +95,13 @@ class TransferController extends AdminBaseController
      */
     public function edit(Transfer $transfer)
     {
-        return view('process::admin.transfers.edit', compact('transfer'));
+        $transfer = $this->transfer->allWithBuilder()
+            ->with(['transfercarton','loadinglocation','unloadinglocation','transfercarton.carton','transfercarton.carton.product'])
+            ->find($transfer->id);
+
+        $users = app(UserRepository::class)->all();
+
+        return view('process::admin.transfers.edit', compact('transfer','users'));
     }
 
     /**
@@ -116,7 +113,13 @@ class TransferController extends AdminBaseController
      */
     public function update(Transfer $transfer, UpdateTransferRequest $request)
     {
-        $this->transfer->update($transfer, $request->all());
+
+        if($request->button == 'loading') {
+            $this->transfer->updateLoading($request,$transfer);
+        }
+        else{
+            $this->transfer->unload($request,$transfer);
+        }
 
         return redirect()->route('admin.process.transfer.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('process::transfers.title.transfers')]));

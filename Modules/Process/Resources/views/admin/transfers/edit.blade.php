@@ -12,27 +12,27 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.process.transfer.update', $transfer->id], 'method' => 'put']) !!}
+
+    {{Former::populate($transfer)}}
+
+    {!! Former::horizontal_open()
+      ->route('admin.process.transfer.update',$transfer->id)
+      ->method('put')
+  !!}
+
+    {{ csrf_field() }}
+
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('process::admin.transfers.partials.edit-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
-
+                            @include('process::admin.transfers.partials.edit-fields')
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.transfer.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        {{--<button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>--}}
+                        {{--<a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.process.transfer.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>--}}
                     </div>
-                </div>
-            </div> {{-- end nav-tabs-custom --}}
-        </div>
+            </div>
+         </div> {{-- end nav-tabs-custom --}}
     </div>
     {!! Form::close() !!}
 @stop
@@ -64,5 +64,46 @@
                 radioClass: 'iradio_flat-blue'
             });
         });
+        $('#carton_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#product_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_date').datetimepicker({
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#loading_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_date').datetimepicker({
+            timepicker:false,
+            format :'{{PHP_DATE_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#unloading_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+
+        $('#transfer_lot').select2();
+        $('#loading_location_id').select2();
+        $('#unloading_location_id').select2();
+        $('#status').select2();
+        $('#loading_supervisor').select2();
     </script>
 @endpush

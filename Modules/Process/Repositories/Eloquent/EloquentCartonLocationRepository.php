@@ -23,17 +23,11 @@ class EloquentCartonLocationRepository extends EloquentBaseRepository implements
 
     public function updateCartonLocation($locationId, $carton)
     {
-        $deleteCartonLocation = $this->findByAttributes(['carton_id' => $carton->id]);
-        $deleteCartonLocation->destroy($deleteCartonLocation->id);
+        $updateCartonLocation = $this->findByAttributes(['carton_id' => $carton->id]);
 
-        return $this->create([
-            'carton_id' => $carton->id,
-            'location_id' => $locationId,
-            'available_quantity' => $carton->no_of_cartons,
-            'transit' => 0,
-            'loose' => $carton->loose,
-            'rejected' => $carton->rejected
-        ]);
+        $updateCartonLocation -> location_id = $locationId;
+
+        $updateCartonLocation->save();
 
     }
 

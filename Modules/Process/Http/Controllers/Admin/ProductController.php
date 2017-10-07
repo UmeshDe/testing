@@ -179,14 +179,21 @@ class ProductController extends AdminBaseController
 
 
         //Find Carton
-        $carton = app(CartonRepository::class)->findByAttributes(['product_id' => $product->id ]);
+        $carton = app(CartonRepository::class)->getByAttributes(['product_id' => $product->id ]);
 
 
         //Update Carton
-        $carton = app(CartonRepository::class)->updateCarton($carton,$request->all());
+
+        if(count($carton) == 1)
+        {
+//            var_dump($request->all());
+//            return 'fgh';
+            $cartons = app(CartonRepository::class)->updateCarton($carton->first(),$request->all());
+
+            $cartontLocation = app(CartonLocationRepository::class)->updateCartonLocation($request->location_id,$cartons);
+        }
         
         //Update Carton Location
-        $cartontLocation = app(CartonLocationRepository::class)->updateCartonLocation($request->location_id,$carton);
         //Add Product Codes
         $codes = $request->input('code');
         $production->codes()->sync($codes);

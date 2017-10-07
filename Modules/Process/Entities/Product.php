@@ -3,6 +3,7 @@
 namespace Modules\Process\Entities;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Bagcolor;
@@ -18,6 +19,13 @@ class Product extends Model
     protected $table = 'process__products';
     public $translatedAttributes = [];
     protected $guarded = ['id'];
+
+
+
+    public function setcartonDateAttribute($value)
+    {
+        $this->attributes['carton_date'] = Carbon::parse($value);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

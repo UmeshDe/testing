@@ -91,24 +91,13 @@ class DailyProductionReport extends AbstractReport
 
     public function setup(){
 
-        // Report title
-        $this->title = 'Daily Production Report';
 
-        $this->subtitle = 'Date: '.Carbon::parse( $this->startDate)->format(PHP_DATE_FORMAT);
-        
-        $this->subtitlestyle = 'text-align:left';
+        $this->reportMaster->sub_title = 'Date: '.Carbon::parse( $this->startDate)->format(PHP_DATE_FORMAT);
 
-        $this->name = 'daily_production_report';
+        $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->footer = 'Prepared by :'. auth()->user()->first_name." ".auth()->user()->last_name .'   Verified by :_________________  ' ;
+        $this->reportMaster->footer = 'Prepared by :'. auth()->user()->first_name." ".auth()->user()->last_name .'   Verified by :_________________  ' ;
 
-        // For displaying filters description on header
-        $this->meta = [
-            'Duration' => $this->startDate . ' To ' . $this->endDate,
-        ];
-
-        // Do some querying..
-        //$queryBuilder = Product::select('*')->with('codes','variety')->whereBetween('product_date', [$this->startDate, $this->endDate]);
         $queryBuilder = Product::with('codes','variety','bagColor','cartonType');
 
         $this->data = $queryBuilder->get();

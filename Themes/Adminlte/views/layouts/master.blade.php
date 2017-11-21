@@ -16,7 +16,7 @@
     @foreach($cssFiles as $css)
         <link media="all" type="text/css" rel="stylesheet" href="{{ URL::asset($css) }}">
     @endforeach
-    <link media="all" type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
     {!! Theme::script('vendor/jquery/jquery.min.js') !!}
     @include('partials.asgard-globals')
     @section('styles')
@@ -82,7 +82,7 @@
     };
 </script>
 
-<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ URL::asset('js/app.js') }}"></script>
 
 <?php if (is_module_enabled('Notification')): ?>
     <script src="https://js.pusher.com/3.0/pusher.min.js"></script>

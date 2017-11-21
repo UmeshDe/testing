@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Location;
 use Modules\Process\Repositories\TransferCartonRepository;
+use Modules\User\Entities\Sentinel\User;
 
 class Transfer extends Model
 {
@@ -38,4 +39,16 @@ class Transfer extends Model
     {
         return $this->hasMany(TransferCarton::class,'transfer_id','id');
     }
+
+    public function loadingsupervisor()
+    {
+        return $this->belongsTo(User::class,'loading_supervisor','id');
+    }
+
+
+    public function unloadingsupervisor()
+    {
+        return $this->belongsTo(User::class,'unloading_supervisor','id');
+    }
+
 }

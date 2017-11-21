@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Bagcolor;
+use Modules\Admin\Entities\CartonType;
 
 class Carton extends Model
 {
@@ -66,5 +67,9 @@ class Carton extends Model
         return $this->hasOne(QualityParameter::class,'carton_id','id');
     }
 
+    public function cartontype()
+    {
+        return $this->belongsTo(CartonType::class,'carton_type','id');
+    }
 
 }

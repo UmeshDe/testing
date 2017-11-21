@@ -19,4 +19,9 @@ class TransferCarton extends Model
     {
         return $this->belongsTo(Carton::class,'carton_id','id');
     }
+    
+    public function transfer()
+    {
+        return $this->belongsTo(Transfer::class,'transfer_id','id');
+    }
 }

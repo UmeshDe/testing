@@ -178,10 +178,7 @@
                           ->fromQuery($cartontypes,'type','id')
                           ->addClass('select')
                           ->raw()
-
                        !!}
-
-
                     </div>
                 </div>
             </div>
@@ -206,7 +203,6 @@
                             ->fromQuery($locations,'name','id')
                             ->addClass('select')
                             ->raw()
-
                          !!}
                         <a href="#" data-toggle="modal" data-target="#location-modal"  >Add New Location</a>
                     </div>

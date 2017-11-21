@@ -33,6 +33,10 @@
                                 $value = $i;
                             }
                             else if($column['type'] === REPORT_RELATION_COLUMN){
+
+
+                                $column['column_name'] = str_replace('.','->',$column['column_name']);
+
                                 if(isset($column['function'])){
                                     $value = $column['function']($row->{$column['column_name']},$column['relation_column']);
                                 }

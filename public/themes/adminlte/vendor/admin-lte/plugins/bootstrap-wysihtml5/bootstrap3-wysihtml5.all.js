@@ -776,7 +776,7 @@ var wysihtml5 = {
             } else {
                 root = getCommonAncestor(nodeA, nodeB);
                 if (!root) {
-                    throw new Error("comparePoints error: nodes have no common ancestor");
+                    throw new Error("comparePoints error: nodes have no layout ancestor");
                 }
 
                 // Case 4: containers are siblings or descendants of siblings

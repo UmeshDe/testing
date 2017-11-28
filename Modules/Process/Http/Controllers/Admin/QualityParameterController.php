@@ -14,6 +14,7 @@ use Modules\Process\Http\Requests\UpdateQualityParameterRequest;
 use Modules\Process\Repositories\CartonRepository;
 use Modules\Process\Repositories\QualityParameterRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Repositories\UserRepository;
 
 class QualityParameterController extends AdminBaseController
 {
@@ -61,7 +62,9 @@ class QualityParameterController extends AdminBaseController
             ->orderBy('kind')
             ->pluck('kind','id');
 
-        return view('process::admin.qualityparameters.create',compact('kinds','grades','qualityparameter','cartons'));
+        $users = app(UserRepository::class)->all();
+
+        return view('process::admin.qualityparameters.create',compact('kinds','grades','qualityparameter','cartons','users'));
     }
 
     /**
@@ -102,6 +105,8 @@ class QualityParameterController extends AdminBaseController
      */
     public function edit(QualityParameter $qualityparameter)
     {
+        $users = app(UserRepository::class)->all();
+
         $grades = app(GradeRepository::class)->allWithBuilder()
             ->orderBy('grade')
             ->pluck('grade','id');
@@ -112,7 +117,7 @@ class QualityParameterController extends AdminBaseController
 
         $cartons = app(CartonRepository::class)->findByAttributes(['id' => $qualityparameter->carton_id]);
 
-        return view('process::admin.qualityparameters.edit', compact('qualityparameter','cartons','grades','kinds'));
+        return view('process::admin.qualityparameters.edit', compact('qualityparameter','cartons','grades','kinds','users'));
 
     }
 

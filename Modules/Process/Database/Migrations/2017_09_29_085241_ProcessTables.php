@@ -154,7 +154,6 @@ class ProcessTables extends Migration
             $table->string('unloading_gate_pass_no')->nullable();
             $table->string('loading_remark')->nullable();
             $table->string('unloading_remark')->nullable();
-
             $table->string('record_status')->nullable()->default("A");
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

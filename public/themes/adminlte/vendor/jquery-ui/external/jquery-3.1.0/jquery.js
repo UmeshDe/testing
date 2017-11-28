@@ -5364,7 +5364,7 @@ jQuery.Event.prototype = {
 	}
 };
 
-// Includes all layout event props including KeyEvent and MouseEvent specific props
+// Includes all common event props including KeyEvent and MouseEvent specific props
 jQuery.each( {
 	altKey: true,
 	bubbles: true,

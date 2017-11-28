@@ -47,7 +47,28 @@ return [
         'edit' => 'process::transfercartons.edit resource',
         'destroy' => 'process::transfercartons.destroy resource',
     ],
+    'process.throwings' => [
+        'index' => 'process::throwings.list resource',
+        'create' => 'process::throwings.create resource',
+        'edit' => 'process::throwings.edit resource',
+        'destroy' => 'process::throwings.destroy resource',
+    ],
+    'process.shipments' => [
+        'index' => 'process::shipments.list resource',
+        'create' => 'process::shipments.create resource',
+        'edit' => 'process::shipments.edit resource',
+        'destroy' => 'process::shipments.destroy resource',
+    ],
+    'process.shipmentcartons' => [
+        'index' => 'process::shipmentcartons.list resource',
+        'create' => 'process::shipmentcartons.create resource',
+        'edit' => 'process::shipmentcartons.edit resource',
+        'destroy' => 'process::shipmentcartons.destroy resource',
+    ],
 // append
+
+
+
 
 
 

@@ -29,6 +29,7 @@ class QualityParameter extends Model
         'suwari_length',
         'suwari_gel_strength',
         'approved_by',
-        'created_by'
+        'created_by',
+        'supervisor_id'
     ];
 }

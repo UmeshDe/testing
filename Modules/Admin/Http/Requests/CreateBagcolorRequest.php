@@ -13,11 +13,6 @@ class CreateBagcolorRequest extends BaseFormRequest
         ];
     }
 
-    public function translationRules()
-    {
-        return [];
-    }
-
     public function authorize()
     {
         return true;
@@ -29,10 +24,5 @@ class CreateBagcolorRequest extends BaseFormRequest
             'color.required' => 'Please Enter Color',
             'color.unique' => 'Color Alreaduy Exist',
         ];
-    }
-
-    public function translationMessages()
-    {
-         
     }
 }

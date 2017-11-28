@@ -57,7 +57,6 @@ class TransferController extends AdminBaseController
         
         $transfers = $this->transfer->find($request->id);
         
-        
         $locations = app(LocationRepository::class)->allWithBuilder()
             ->orderBy('name')
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')

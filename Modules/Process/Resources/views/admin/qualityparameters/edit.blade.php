@@ -69,6 +69,28 @@
 
             $('#grade_id').select2();
         });
+
+//        var ViewModel = function(model) {
+//            var self = this;
+//            this.suwari_work_force = ko.observable(0);
+//            this.suwari_length = ko.observable(0);
+//            this.work_force = ko.observable(0);
+//            this.length = ko.observable(0);
+//
+//
+//
+//            this.suwari_gel_strength = ko.computed(function () {
+//                var value = self.suwari_work_force() * self.suwari_length();
+//                return (value)?value:0;
+//            });
+//
+//            this.gel_strength = ko.computed(function () {
+//                var value = self.work_force() * self.length();
+//                return (value)?value:0;
+//            });
+//        };
+//        ko.applyBindings(new ViewModel());
+
     </script>
 
 

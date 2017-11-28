@@ -52,7 +52,6 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('process.products.index')
                     );
                 });
-
                 $item->item(trans('process::qualityparameters.title.qualityparameters'), function (Item $item) {
                     $item->icon('fa fa-copy');
                     $item->weight(0);
@@ -69,6 +68,24 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     $item->route('admin.process.transfer.index');
                     $item->authorize(
                         $this->auth->hasAccess('process.transfers.index')
+                    );
+                });
+                $item->item(trans('process::throwings.title.throwings'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.process.throwing.create');
+                    $item->route('admin.process.throwing.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('process.throwings.index')
+                    );
+                });
+                $item->item(trans('process::shipments.title.shipments'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.process.shipment.create');
+                    $item->route('admin.process.shipment.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('process.shipments.index')
                     );
                 });
             });

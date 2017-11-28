@@ -569,7 +569,7 @@
 				}
 				// build the proper dialog HTML
 				elDialog.innerHTML = this.build(item);
-				// assign all the common elements
+				// assign all the layout elements
 				btnReset  = $("alertify-resetFocus");
 				btnResetBack  = $("alertify-resetFocusBack");
 				btnOK     = $("alertify-ok")     || undefined;

@@ -35,7 +35,6 @@
                                 ->fromQuery($locations,'first_name','id')
                                 ->addClass('select')
                                 ->raw()
-
                              !!}
                         </div>
                     </div>

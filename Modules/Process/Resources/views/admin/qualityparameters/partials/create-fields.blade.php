@@ -85,6 +85,18 @@ use Carbon\Carbon;
                  !!}
             </div>
         </div>
+        <div class="form-group has-feedback {{ $errors->has('supervisor_id') ? ' has-error has-feedback' : '' }}">
+            <label for="supervisor_id" class="control-label col-sm-5">Supervisor:</label>
+            <div class="col-sm-7">
+                {!!
+                     Former::select('supervisor_id')
+                     ->addOption(null)
+                    ->fromQuery($users,'first_name','id')
+                    ->addClass('select')
+                    ->raw()
+                 !!}
+            </div>
+        </div>
     </div>
     <div class="col-xs-4">
         <div class="form-group has-feedback {{ $errors->has('moisture') ? ' has-error has-feedback' : '' }}">
@@ -149,39 +161,6 @@ use Carbon\Carbon;
     </div>
 </div>
 <div class="row">
-<div class="col-lg-6">
-    <div class="box box-primary suwari">
-        <div class="box-header with-border">
-            <h3 class="box-title">SUWARI</h3>
-        </div>
-        <div class="box-body">
-            <div class="form-group has-feedback {{ $errors->has('suwari_work_force') ? ' has-error has-feedback' : '' }}">
-                <label for="suwari_work_force" class="control-label col-sm-4">20% Work Force:</label>
-                <div class="col-sm-7">
-                    {!!
-                        Former::text('suwari_work_force')->raw()
-                     !!}
-                </div>
-            </div>
-            <div class="form-group has-feedback {{ $errors->has('suwari_length') ? ' has-error has-feedback' : '' }}">
-                <label for="suwari_length" class="control-label col-sm-4">20% Length:</label>
-                <div class="col-sm-7">
-                    {!!
-                        Former::text('suwari_length')->raw()
-                     !!}
-                </div>
-            </div>
-            <div class="form-group has-feedback {{ $errors->has('suwari_gel_strength') ? ' has-error has-feedback' : '' }}">
-                <label for="suwari_gel_strength" class="control-label col-sm-4">20% Gel Strength:</label>
-                <div class="col-sm-7">
-                    {!!
-                        Former::text('suwari_gel_strength')->raw()
-                     !!}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
     <div class="col-lg-6">
         <div class="box box-primary standard">
             <div class="box-header with-border">
@@ -192,7 +171,7 @@ use Carbon\Carbon;
                     <label for="workforce" class="control-label col-sm-4">Work Force:</label>
                     <div class="col-sm-7">
                         {!!
-                            Former::text('work_force')->raw()
+                            Former::text('work_force')->data_bind("value: work_force,valueUpdate: 'afterkeydown'")->raw()
                          !!}
                     </div>
                 </div>
@@ -200,7 +179,7 @@ use Carbon\Carbon;
                     <label for="length" class="control-label col-sm-4">Length:</label>
                     <div class="col-sm-7">
                         {!!
-                            Former::text('length')->raw()
+                            Former::text('length')->data_bind("value: length,valueUpdate: 'afterkeydown'")->raw()
                          !!}
                     </div>
                 </div>
@@ -208,7 +187,40 @@ use Carbon\Carbon;
                     <label for="gel_strength" class="control-label col-sm-4">Gel Strength:</label>
                     <div class="col-sm-7">
                         {!!
-                            Former::text('gel_strength')->raw()
+                            Former::text('gel_strength')->data_bind("value: gel_strength,valueUpdate: 'afterkeydown'")->raw()
+                         !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="box box-primary suwari">
+            <div class="box-header with-border">
+                <h3 class="box-title">SUWARI</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group has-feedback {{ $errors->has('suwari_work_force') ? ' has-error has-feedback' : '' }}">
+                    <label for="suwari_work_force" class="control-label col-sm-4">20% Work Force:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('suwari_work_force')->data_bind("value: suwari_work_force,valueUpdate: 'afterkeydown'")->raw()
+                         !!}
+                    </div>
+                </div>
+                <div class="form-group has-feedback {{ $errors->has('suwari_length') ? ' has-error has-feedback' : '' }}">
+                    <label for="suwari_length" class="control-label col-sm-4">20% Length:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('suwari_length')->data_bind("value: suwari_length,valueUpdate: 'afterkeydown'")->raw()
+                         !!}
+                    </div>
+                </div>
+                <div class="form-group has-feedback {{ $errors->has('suwari_gel_strength') ? ' has-error has-feedback' : '' }}">
+                    <label for="suwari_gel_strength" class="control-label col-sm-4">20% Gel Strength:</label>
+                    <div class="col-sm-7">
+                        {!!
+                            Former::text('suwari_gel_strength')->data_bind("value: suwari_gel_strength,valueUpdate: 'afterkeydown'")->raw()
                          !!}
                     </div>
                 </div>

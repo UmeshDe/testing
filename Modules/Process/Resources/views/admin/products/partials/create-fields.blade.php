@@ -15,7 +15,6 @@
                             ->addClass('select')
                             ->raw()
                          !!}
-
                     </div>
                 </div>
             </div>
@@ -26,7 +25,6 @@
                         {!!
                             Former::text('po_no')->raw()
                          !!}
-
                     </div>
                 </div>
             </div>
@@ -90,7 +88,6 @@
                                 <b class="">Kg</b>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -193,10 +190,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group has-feedback {{ $errors->has('location') ? ' has-error has-feedback' : '' }}">
-                    <label class="control-label col-sm-5">Location:</label>
-                    <div class="col-sm-7">
+                    <label class="control-label col-sm-3">Location:</label>
+                    <div class="col-sm-8">
                         {!!
                              Former::select('location_id')
                              ->addOption(null)

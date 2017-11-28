@@ -18,10 +18,9 @@
         <div class="col-md-12">
             @include('partials.form-tab-headers')
             @include('process::admin.products.partials.create-fields')
-
             <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.create') }}</button>
             <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-        </div> {{-- end nav-tabs-custom --}}
+        </div>
     </div>
 
     {!! Form::close() !!}

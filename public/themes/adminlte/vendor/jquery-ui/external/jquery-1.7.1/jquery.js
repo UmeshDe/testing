@@ -645,7 +645,7 @@ jQuery.extend({
 				}
 			}
 
-		// A special, fast, case for the most common use of each
+		// A special, fast, case for the most layout use of each
 		} else {
 			if ( isObj ) {
 				for ( name in object ) {
@@ -2323,7 +2323,7 @@ jQuery.fn.extend({
 				ret = elem.value;
 
 				return typeof ret === "string" ?
-					// handle most common string cases
+					// handle most layout string cases
 					ret.replace(rreturn, "") :
 					// handle cases where value is null/undef or number
 					ret == null ? "" : ret;

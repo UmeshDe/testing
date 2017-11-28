@@ -9880,7 +9880,7 @@ jQuery.fn.load = function( url, params, callback ) {
 
 
 
-// Attach a bunch of functions for handling layout AJAX events
+// Attach a bunch of functions for handling common AJAX events
 jQuery.each( [
 	"ajaxStart",
 	"ajaxStop",

@@ -240,7 +240,109 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'TransferCartonController@destroy',
         'middleware' => 'can:process.transfercartons.destroy'
     ]);
+    $router->bind('throwing', function ($id) {
+        return app('Modules\Process\Repositories\ThrowingRepository')->find($id);
+    });
+    $router->get('throwings', [
+        'as' => 'admin.process.throwing.index',
+        'uses' => 'ThrowingController@index',
+        'middleware' => 'can:process.throwings.index'
+    ]);
+    $router->get('throwings/create', [
+        'as' => 'admin.process.throwing.create',
+        'uses' => 'ThrowingController@create',
+        'middleware' => 'can:process.throwings.create'
+    ]);
+    $router->post('throwings', [
+        'as' => 'admin.process.throwing.store',
+        'uses' => 'ThrowingController@store',
+        'middleware' => 'can:process.throwings.create'
+    ]);
+    $router->get('throwings/{throwing}/edit', [
+        'as' => 'admin.process.throwing.edit',
+        'uses' => 'ThrowingController@edit',
+        'middleware' => 'can:process.throwings.edit'
+    ]);
+    $router->put('throwings/{throwing}', [
+        'as' => 'admin.process.throwing.update',
+        'uses' => 'ThrowingController@update',
+        'middleware' => 'can:process.throwings.edit'
+    ]);
+    $router->delete('throwings/{throwing}', [
+        'as' => 'admin.process.throwing.destroy',
+        'uses' => 'ThrowingController@destroy',
+        'middleware' => 'can:process.throwings.destroy'
+    ]);
+    $router->bind('shipment', function ($id) {
+        return app('Modules\Process\Repositories\ShipmentRepository')->find($id);
+    });
+    $router->get('shipments', [
+        'as' => 'admin.process.shipment.index',
+        'uses' => 'ShipmentController@index',
+        'middleware' => 'can:process.shipments.index'
+    ]);
+    $router->get('shipments/create', [
+        'as' => 'admin.process.shipment.create',
+        'uses' => 'ShipmentController@create',
+        'middleware' => 'can:process.shipments.create'
+    ]);
+    $router->post('shipments', [
+        'as' => 'admin.process.shipment.store',
+        'uses' => 'ShipmentController@store',
+        'middleware' => 'can:process.shipments.create'
+    ]);
+    $router->get('shipments/{shipment}/edit', [
+        'as' => 'admin.process.shipment.edit',
+        'uses' => 'ShipmentController@edit',
+        'middleware' => 'can:process.shipments.edit'
+    ]);
+    $router->put('shipments/{shipment}', [
+        'as' => 'admin.process.shipment.update',
+        'uses' => 'ShipmentController@update',
+        'middleware' => 'can:process.shipments.edit'
+    ]);
+    $router->delete('shipments/{shipment}', [
+        'as' => 'admin.process.shipment.destroy',
+        'uses' => 'ShipmentController@destroy',
+        'middleware' => 'can:process.shipments.destroy'
+    ]);
+    $router->bind('shipmentcarton', function ($id) {
+        return app('Modules\Process\Repositories\ShipmentCartonRepository')->find($id);
+    });
+    $router->get('shipmentcartons', [
+        'as' => 'admin.process.shipmentcarton.index',
+        'uses' => 'ShipmentCartonController@index',
+        'middleware' => 'can:process.shipmentcartons.index'
+    ]);
+    $router->get('shipmentcartons/create', [
+        'as' => 'admin.process.shipmentcarton.create',
+        'uses' => 'ShipmentCartonController@create',
+        'middleware' => 'can:process.shipmentcartons.create'
+    ]);
+    $router->post('shipmentcartons', [
+        'as' => 'admin.process.shipmentcarton.store',
+        'uses' => 'ShipmentCartonController@store',
+        'middleware' => 'can:process.shipmentcartons.create'
+    ]);
+    $router->get('shipmentcartons/{shipmentcarton}/edit', [
+        'as' => 'admin.process.shipmentcarton.edit',
+        'uses' => 'ShipmentCartonController@edit',
+        'middleware' => 'can:process.shipmentcartons.edit'
+    ]);
+    $router->put('shipmentcartons/{shipmentcarton}', [
+        'as' => 'admin.process.shipmentcarton.update',
+        'uses' => 'ShipmentCartonController@update',
+        'middleware' => 'can:process.shipmentcartons.edit'
+    ]);
+    $router->delete('shipmentcartons/{shipmentcarton}', [
+        'as' => 'admin.process.shipmentcarton.destroy',
+        'uses' => 'ShipmentCartonController@destroy',
+        'middleware' => 'can:process.shipmentcartons.destroy'
+    ]);
 // append
+
+
+
 
 
 

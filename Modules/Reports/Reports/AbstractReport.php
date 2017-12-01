@@ -73,14 +73,13 @@ class AbstractReport
         }
 
         $this->generatePDF();
-
         return $this->pdf->stream();
     }
 
     public function generatePDF()
     {
         $this->pdf = PDF::loadView($this->reportMaster->viewname,['report'=>$this])
-            ->setPaper($this->reportMaster->papersize, $this->reportMaster->orientation);
+            ->setPaper('legal', $this->reportMaster->orientation);
     }
 
     public function downloadPDF(){

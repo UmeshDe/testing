@@ -105,5 +105,24 @@
         $('#unloading_location_id').select2();
         $('#status').select2();
         $('#loading_supervisor').select2();
+        $('#unloading_supervisor').select2();
+
+//        var ViewModel = function(model) {
+//            var self = this;
+//            this.carton[quantity] = ko.observableArray();
+//            this.carton[recieved] = ko.observableArray(0);
+//
+//            this.carton[lost] = ko.computed(function () {
+//                var value = self.carton[quantity]() - self.carton[recieved]();
+//                return (value)?value:0;
+//            });
+//
+////            this.gel_strength = ko.computed(function () {
+////                var value = self.work_force() * self.length();
+////                return (value)?value:0;
+////            });
+//        };
+//        ko.applyBindings(new ViewModel());
+
     </script>
 @endpush

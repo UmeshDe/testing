@@ -29,6 +29,10 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>Loading Date</th>
+                                <th>Quantity In Transit</th>
+                                <th>From Location</th>
+                                <th>To Location</th>
                                 <th>Vehicle No.</th>
                                 <th>Container No.</th>
                                 <th>Loading From</th>
@@ -40,6 +44,16 @@
                             <?php if (isset($transfers)): ?>
                             <?php foreach ($transfers as $transfer): ?>
                             <tr>
+                                <th>{{isset($transfer->loading_date)?\App\Libraries\Utils::parseDate($transfer->loading_date) : '' }}</th>
+                                <th>
+                                    @foreach($transfer->transfercarton as $cartons)
+                                        <ul>
+                                        <li>{{$cartons->quantity}}</li>
+                                        </ul>
+                                    @endforeach
+                                </th>
+                                <td>{{$transfer->loadinglocation}}</td>
+                                <td>{{$transfer->unloadinglocation}}</td>
                                 <td>{{$transfer->vehicle_no}}</td>
                                 <td>{{$transfer->container_no}}</td>
                                 <td>{{$transfer->loadinglocation['name'].'-'.$transfer->loadinglocation['location'].'-'.$transfer->loadinglocation['sublocation']}}</td>

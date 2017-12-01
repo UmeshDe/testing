@@ -12,6 +12,18 @@
             </div>
         </div>
         <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('seal_no') ? ' has-error has-feedback' : '' }}">
+                <label for="seal-no" class="control-label col-sm-3">Seal No:</label>
+                <div class="col-sm-9">
+                    {!!
+                        Former::text('seal_no')->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="form-group has-feedback {{ $errors->has('vehicle_no') ? ' has-error has-feedback' : '' }}">
                 <label for="lot-no" class="control-label col-sm-3">Vehicle No:</label>
                 <div class="col-sm-9">
@@ -22,18 +34,12 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('stuffing_place') ? ' has-error has-feedback' : '' }}">
-                <label for="loading_from" class="control-label col-sm-3">Stuffing Place:</label>
+            <div class="form-group has-feedback {{ $errors->has('invoice_no') ? ' has-error has-feedback' : '' }}">
+                <label for="invoice-no" class="control-label col-sm-3">Invoice No:</label>
                 <div class="col-sm-9">
                     {!!
-                         Former::select('location_id')
-                         ->addOption(null)
-                         ->fromQuery($locations,'first_name','id')
-                        ->addClass('select')
-                        ->raw()
+                        Former::text('invoice_no')->raw()
                      !!}
                 </div>
             </div>
@@ -105,6 +111,50 @@
                 <div class="col-sm-9">
                     {!!
                          Former::text('temperature')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('stuffing_place') ? ' has-error has-feedback' : '' }}">
+                <label for="loading_from" class="control-label col-sm-3">Stuffing Place:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::select('location_id')
+                         ->addOption(null)
+                         ->fromQuery($locations,'first_name','id')
+                        ->addClass('select')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+        {{--<div class="col-md-3">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label for="grade" class="control-label col-sm-6">Grade:</label>--}}
+                {{--<div class="col-sm-6">--}}
+                    {{--{!!--}}
+                         {{--Former::multiselect('grade')--}}
+                         {{--->addOption(null)--}}
+                         {{--->fromQuery($grade,'grade','id')--}}
+                        {{--->addClass('select')--}}
+                        {{--->raw()--}}
+                     {{--!!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('varity') ? ' has-error has-feedback' : '' }}">
+                <label for="varity" class="control-label col-sm-3">Varity:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::multiselect('varity')
+                         ->addOption(null)
+                         ->fromQuery($varity,'type','id')
+                        ->addClass('select')
                         ->raw()
                      !!}
                 </div>

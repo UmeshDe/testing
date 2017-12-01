@@ -38,7 +38,7 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item(trans('admin::admin.title.name'), function (Item $item) {
-                $item->icon('fa fa-copy');
+                $item->icon('fa fa-asterisk');
                 $item->weight(10);
                 $item->authorize(
                     'admin.admin.module.index'

@@ -42,6 +42,7 @@
     </div>
         </div>
     {!! Former::close() !!}
+    @include('admin::modal.location-modal')
 @stop
 
 @section('footer')
@@ -183,7 +184,7 @@
                 cartondate = moment($('#transfer_lot').children('option:selected').data('carton_date')).format('{{MOMENT_DATE_FORMAT}}');
             }
 
-            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <button type="button" class ="glyphicon glyphicon-remove close" style="color:red" data-rowid = '+ lotno + '> </td><<input type="hidden" name="carton[cartonlocationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '></tr>';
+            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <i  class ="fa fa-trash close" style="color:red" data-rowid = '+ lotno + '></i> </td><<input type="hidden" name="carton[cartonlocationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '></tr>';
             $('#records-table').append(toHTML);
             $('.close').click(function () {
                 var id = $(this).data('rowid');
@@ -193,6 +194,27 @@
 
         $('#unloading_location_id').change(function () {
            $('#loading').show();
+        });
+
+        $('#loading_location_id').select2({
+            language: {
+                noResults: function() {
+                    return "<a data-toggle='modal' data-target='#location-modal''>Add</a>";
+                }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+        $('#unloading_location_id').select2({
+            language: {
+                noResults: function() {
+                    return "<a data-toggle='modal' data-target='#location-modal''>Add</a>";
+                }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
         });
     </script>
 @endpush

@@ -109,8 +109,18 @@ class CartonController extends AdminBaseController
         $cartonlocation = app(CartonLocationRepository::class)->allWithBuilder()->where('location_id', '=' , $request->id)
             ->with(['carton','location','carton.product'])->get();
         
-        //Required Product
-//        $product =  $this->carton->getProduct($cartonlocation);
         return response()->json($cartonlocation);
     }
+    
+    
+    //From Location And Varity Selection
+    public function getCartonsfromRelation(Request $request)
+    {
+        $cartonlocation = app(CartonLocationRepository::class)->allWithBuilder()->where('location_id', '=' , $request->id)->with(['carton','location','carton.product'])->whereHas('carton.product', function($query) use($request) {
+            return $query->whereIn('fish_type', \GuzzleHttp\json_decode($request->fishtype));
+        })->get();
+
+        return response()->json($cartonlocation);
+    }
+
 }

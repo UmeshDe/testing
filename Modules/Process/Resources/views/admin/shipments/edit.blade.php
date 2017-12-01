@@ -5,8 +5,7 @@
 
 @section('content')
 
-    {{Former::populate($shipment)}}
-
+    {!! Former::populate($shipment) !!}}
 
     {!! Former::horizontal_open()
        ->route('admin.process.shipment.update', $shipment->id)
@@ -66,5 +65,8 @@
                 radioClass: 'iradio_flat-blue'
             });
         });
+    </script>
+    <script>
+        $('#varity').select2();
     </script>
 @endpush

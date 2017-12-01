@@ -38,7 +38,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item(trans('process::process.title.name'), function (Item $item) {
-                $item->icon('fa fa-copy');
+                $item->icon('fa fa-tasks');
                 $item->weight(10);
                 $item->authorize(
                      'admin.process.module.index'

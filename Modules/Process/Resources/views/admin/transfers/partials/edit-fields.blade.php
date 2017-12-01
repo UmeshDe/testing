@@ -60,8 +60,7 @@
                     <div class="col-sm-9">
                         {!!
                              Former::select('status')
-                             ->addOption(null)
-                            ->options(['0' => 'Loaded','1' => 'Completed'])
+                            ->options(['1' => 'Completed'])
                             ->addClass('select')
                             ->raw()
                          !!}
@@ -197,7 +196,7 @@
                     </div>
                 </div>
                 {{--<div class="row">--}}
-                <button type="submit" name="button" class="btn btn-primary pull-right btn-flat" value="loading">Load</button>
+                {{--<button type="submit" name="button" class="btn btn-primary pull-right btn-flat" value="loading">Load</button>--}}
                 {{--</div>--}}
             </div>
 
@@ -222,6 +221,7 @@
                                 <th> Lot</th>
                                 <th> Quantity</th>
                                 <th>Recieved Quantity</th>
+                                {{--<th>Lost Carton</th>--}}
                             </tr>
 
                             @if(isset($transfer))
@@ -231,16 +231,23 @@
                                             {{$transfercarton->carton->carton_date}}
                                         </td>
                                         <td>
-                                            <input type="hidden" name="carton[transfer][]" value="{{$transfercarton->id}}">
+                                            <input type="hidden" name="carton[transfer][]" value="{{$transfercarton->id}}" >
                                             <input type="hidden" name="carton[cartonId][]" value="{{$transfercarton->carton->id}}">
                                             {{$transfercarton->carton->product->lot_no}}
                                         </td>
                                         <td>
+                                            {{--data-bind ="value: carton[quantity][],valueUpdate: 'afterkeydown'"--}}
+
+                                            <input type="hidden" name="carton[quantity][]" value="{{$transfercarton->quantity}}">
                                             {{$transfercarton->quantity}}
                                         </td>
                                         <td>
+                                            {{--data-bind ="value: carton[recieved][],valueUpdate: 'afterkeydown'"--}}
                                             <input type="text" class="form-control -flip-horizontal" id="product-recieved" name="carton[recieved][]" autofocus placeholder="Quantity" value="{{$transfercarton->received_quantity  }}">
                                         </td>
+                                        {{--<td>--}}
+                                            {{--<input type="text" class="form-control -flip-horizontal" id="lost-carton" name="carton[lost][]" autofocus placeholder="Lost" data-bind ="value: carton[lost][],valueUpdate: 'afterkeydown'">--}}
+                                        {{--</td>--}}
                                     </tr>
                                 @endforeach
                             @endif
@@ -338,7 +345,11 @@
                     </div>
                 </div>
                 {{--<div class="row">--}}
-                <button type="submit" name="button" class="btn btn-primary pull-right btn-flat" value="unloading">Unload</button>
+                @if($transfer->status == 1)
+                    <button type="submit" name="button" class="btn btn-primary pull-right btn-flat">Update</button>
+                    @else
+                    <button type="submit" name="button" class="btn btn-primary pull-right btn-flat" value="unloading">Unload</button>
+                    @endif
                 {{--</div>--}}
             </div>
         </div>

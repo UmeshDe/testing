@@ -8,12 +8,9 @@ class UpdateProductRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
-    }
-
-    public function translationRules()
-    {
-        return [];
+        return [
+            'lot_no' => 'required'
+        ];
     }
 
     public function authorize()
@@ -23,11 +20,8 @@ class UpdateProductRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
-    }
-
-    public function translationMessages()
-    {
-        return [];
+        return [
+            'lot_no.required' => 'Enter Lot Number',
+        ];
     }
 }

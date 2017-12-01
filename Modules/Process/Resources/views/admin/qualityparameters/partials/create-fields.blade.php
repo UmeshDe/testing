@@ -10,6 +10,8 @@ use Carbon\Carbon;
 
 
  @if(isset($cartons->qualitycheck))
+    {{Former::populateField('inspection_date',\App\Libraries\Utils::parseDate($cartons->qualitycheck->inspection_date))}}
+    {{Former::populateField('supervisor_id',$cartons->qualitycheck->supervisor_id)}}
     {{Former::populateField('kind_id',$cartons->qualitycheck->kind_id)}}
     {{Former::populateField('moisture',$cartons->qualitycheck->moisture)}}
     {{Former::populateField('kamaboko_hw',$cartons->qualitycheck->kamaboko_hw)}}
@@ -32,7 +34,7 @@ use Carbon\Carbon;
             <div class="form-group has-feedback">
                 <label class="control-label col-sm-5">Product Date:</label>
 
-                <div class="col-sm-7" style="padding-top: 7px">
+                <div class="col-sm-7" style="padding-top: 7px;margin-bottom :1px">
                     <div class="input-group">
                         {!! Former::hidden('product_date')->raw() !!}
                         <span id="product-date" data-text="lot_no">{{Carbon::parse($cartons->product->product_date)->format(PHP_DATE_FORMAT)}}</span>
@@ -44,13 +46,27 @@ use Carbon\Carbon;
         <div class="col-md-4">
         <div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">
             <label for="lot-no" class="control-label col-sm-5">Lot No:</label>
-            <div class="col-sm-7" style="padding-top: 7px">
+            <div class="col-sm-7" style="padding-top: 7px ; margin-bottom :1px">
                 {!!
                     Former::hidden('lot_no')->raw()
                  !!}
                 <span class="col-sm-7" style="width: 100%" data-text="lot_no">{{$cartons->product->lot_no}}</span>
             </div>
         </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group has-feedback {{ $errors->has('inspection_date') ? ' has-error has-feedback' : '' }}">
+                <label for="inspection-date" class="control-label col-sm-5">Inspection Date:</label>
+                <div class="col-sm-7" style="margin-bottom :1px">
+                    <div class="input-group">
+                        {!! Former::text('inspection_date')->raw() !!}
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                    </div>
+                    {{--<span class="col-sm-7" style="width: 100%" data-text="lot_no">{{$cartons->product->lot_no}}</span>--}}
+                </div>
+            </div>
         </div>
         {{--<div class="box-tools pull-right">--}}
             {{--<button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>--}}

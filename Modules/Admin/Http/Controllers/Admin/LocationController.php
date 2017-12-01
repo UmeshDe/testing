@@ -61,15 +61,19 @@ class LocationController extends AdminBaseController
      */
     public function store(CreateLocationRequest $request)
     {
-        $this->location->createLocation($request);
-
         if($request->ajax()){
+
+            $location = $this->location->create($request->all());
+
             return response()->json([
                 'error'=>false,
                 'message'=>'Location created successfully',
-                'data'=>[]
+                'data'=> $location
             ],200);
         }
+        
+        $this->location->createLocation($request);
+
 
         return redirect()->route('admin.admin.location.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::locations.title.locations')]));

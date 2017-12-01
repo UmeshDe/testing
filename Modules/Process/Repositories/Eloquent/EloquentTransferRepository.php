@@ -66,6 +66,11 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
 
         $transfer = $this->find($transfer->id);
 
+        $transfer->container_no = $request->container_no;
+        $transfer->vehicle_no = $request->vehicle_no;
+        $transfer->loading_supervisor = $request->loading_supervisor;
+        $transfer->loading_gate_pass_no = $request->loading_gate_pass_no;
+        $transfer->loading_remark = $request->loading_remark;
         $transfer->unloading_date = Carbon::parse ($request->unloading_date);
         $transfer->unloading_supervisor = $request->unloading_supervisor;
         $transfer->unloading_start_time = Carbon::parse($request->unloading_start_time) ;

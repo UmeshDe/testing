@@ -67,6 +67,12 @@
             value: '{{\Carbon\Carbon::parse($cartons->carton_date)->format(PHP_DATE_FORMAT)}}'
         });
 
+        $('#inspection_date').datetimepicker({
+            timepicker: false,
+            format: '{{PHP_DATE_FORMAT}}',
+            value : new moment(),
+        });
+
         $('#kind_id').select2();
 
         $('#grade_id').select2();

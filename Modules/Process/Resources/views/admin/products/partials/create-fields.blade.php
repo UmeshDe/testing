@@ -4,6 +4,19 @@
      </div>
     <div class="box-body">
         <div class="row">
+            {{--<div class="col-md-4">--}}
+                {{--{!!--}}
+                    {{--Former::select('approval_no')--}}
+                    {{--->addOption(null)--}}
+                    {{--->fromQuery($approvalnumbers,'name','id')--}}
+                    {{--->addClass('select')--}}
+                 {{--!!}--}}
+            {{--</div>--}}
+            {{--<div class="col-md-4">--}}
+                {{--{!!--}}
+                     {{--Former::text('po_no')--}}
+                  {{--!!}--}}
+            {{--</div>--}}
             <div class="col-md-4">
                 <div class="form-group has-feedback {{ $errors->has('approval_no') ? ' has-error has-feedback' : '' }}">
                     <label for="type-name" class="control-label col-sm-5">ApprovalNo:</label>
@@ -34,6 +47,24 @@
         </div>
 
         <div class="row">
+            {{--<div class="col-md-4">--}}
+                {{--<label class="control-label col-sm-5">{{trans('process::products.productdate')}}:</label>--}}
+                {{--<div class="input-group">--}}
+                    {{--{!! Former::text('product_date')->raw() !!}--}}
+                    {{--<div class="input-group-addon">--}}
+                        {{--<i class="fa fa-clock-o"></i>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="col-md-4">--}}
+                {{--<label class="control-label col-sm-5">CartonDate:</label>--}}
+                {{--<div class="input-group">--}}
+                    {{--{!! Former::text('carton_date')->raw() !!}--}}
+                    {{--<div class="input-group-addon">--}}
+                        {{--<i class="fa fa-clock-o"></i>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
             <div class="col-md-4">
                 <div class="bootstrap-timepicker">
                     <div class="form-group has-feedback">
@@ -70,27 +101,42 @@
 
         <div class="row">
             <div class="col-md-4">
-                <div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">
-                    <label for="type-name" class="control-label col-sm-5">Lot No:</label>
-                    <div class="col-sm-7">
-                        {!! Former::text('lot_no')->raw() !!}
-                    </div>
-                </div>
+                {!!  Former::setOption('TwitterBootstrap3.labelWidths', ['large' => 5, 'small' => 3]) !!}
+                {!! Former::text('lot_no')
+                          !!}
             </div>
             <div class="col-md-4">
-                <div class="form-group has-feedback {{ $errors->has('product_slab') ? ' has-error has-feedback' : '' }}">
-                    <label for="product_slab" class="control-label col-sm-5">Slab:</label>
-                    <div class="col-sm-7">
-
-                        <div class="input-group">
-                            {!! Former::text('product_slab')->data_bind("value: product_slab,valueUpdate: 'afterkeydown'")->raw()!!}
-                            <div class="input-group-addon">
-                                <b class="">Kg</b>
-                            </div>
-                        </div>
+                <label for="product_slab" class="control-label col-sm-5">Slab:</label>
+                <div class="input-group">
+                    {!! Former::text('product_slab')->data_bind("value: product_slab,valueUpdate: 'afterkeydown'")->raw()!!}
+                    <div class="input-group-addon">
+                        <b class="">Kg</b>
                     </div>
                 </div>
             </div>
+            {{--<div class="col-md-4">--}}
+                {{--<div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">--}}
+                    {{--<label for="type-name" class="control-label col-sm-5">Lot No:</label>--}}
+                    {{--<div class="col-sm-7">--}}
+                        {{--{!! Former::text('lot_no')->raw()--}}
+                           {{--!!}--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="col-md-4">--}}
+                {{--<div class="form-group has-feedback {{ $errors->has('product_slab') ? ' has-error has-feedback' : '' }}">--}}
+                    {{--<label for="product_slab" class="control-label col-sm-5">Slab:</label>--}}
+                    {{--<div class="col-sm-7">--}}
+
+                        {{--<div class="input-group">--}}
+                            {{--{!! Former::text('product_slab')->data_bind("value: product_slab,valueUpdate: 'afterkeydown'")->raw()!!}--}}
+                            {{--<div class="input-group-addon">--}}
+                                {{--<b class="">Kg</b>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
 
         <div class="row">

@@ -45,6 +45,10 @@
             },
             success: function(data) {
                 if(data.error == false){
+                    $.each(data , function (i,item) {
+                        $('#loading_location_id').append('<option value="' + item.id + '" selected>' + item.name + '-' + item.location + '-' + item.sublocation+ '<option>').trigger('change');
+                        $('#unloading_location_id').append('<option value="' + item.id + '" selected>' + item.name + '-' + item.location + '-' + item.sublocation+ '<option>').trigger('change');
+                    })
                     toastr.success( data.message,'Success');
                 }
                 else{

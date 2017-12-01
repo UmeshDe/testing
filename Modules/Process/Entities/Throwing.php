@@ -18,6 +18,8 @@ class Throwing extends Model
         'location_id',
         'carton_date',
         'throwing_input',
+        'throwing_input_bags',
+        'throwing_output_bags',
         'throwing_output',
         'comment'
     ];
@@ -25,5 +27,10 @@ class Throwing extends Model
     public function setcartonDateAttribute($value)
     {
         $this->attributes['carton_date'] = Carbon::parse($value);
+    }
+
+    public function carton()
+    {
+        return $this->belongsTo(Carton::class,'carton_id','id');
     }
 }

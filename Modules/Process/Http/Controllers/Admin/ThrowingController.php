@@ -48,7 +48,7 @@ class ThrowingController extends AdminBaseController
     public function create()
     {
         $cartonlocation = app(CartonRepository::class)->allWithBuilder()
-            ->select('*',DB::raw("    CONCAT('Carton Date :',coalesce(carton_date,''),' (', 'Qty :'  ,coalesce(no_of_cartons,''),')') AS product"),'id')
+            ->select('*',DB::raw("    CONCAT('Carton Date :',coalesce(carton_date,''),' (', 'Qty :'  ,coalesce(no_of_cartons,''),')') AS product"),'loose','id')
             ->get();
 
         $locations = app(LocationRepository::class)->allWithBuilder()
@@ -56,8 +56,8 @@ class ThrowingController extends AdminBaseController
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
             ->pluck('name','id');
         
-
-        return view('process::admin.throwings.create',compact('cartonlocation','locations'));
+        $throwing = new Throwing();
+        return view('process::admin.throwings.create',compact('cartonlocation','locations','throwing'));
     }
 
     /**
@@ -81,6 +81,7 @@ class ThrowingController extends AdminBaseController
           'carton_date' => $request->carton_date,
             'location_id' => $request->location_id,
             'no_of_cartons' => $request->throwing_output,
+            'loose' => $request->loose_bags
         ];
         $newCarton  =  $cartonRepo->create($data);
 
@@ -137,5 +138,13 @@ class ThrowingController extends AdminBaseController
 
         return redirect()->route('admin.process.throwing.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('process::throwings.title.throwings')]));
+    }
+
+
+    public function loose(Request $request)
+    {
+        $loosebags = app(CartonLocationRepository::class)->find($request->id);
+        
+        return response()->json(['success' => true , 'message' => 'Successful' , 'loose' => $loosebags ]);
     }
 }

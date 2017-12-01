@@ -6,6 +6,7 @@ namespace Modules\Process\Entities;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Admin\Entities\ApprovalNumber;
 use Modules\Admin\Entities\Bagcolor;
 use Modules\Admin\Entities\CartonType;
 use Modules\Admin\Entities\CodeMaster;
@@ -67,6 +68,12 @@ class Product extends Model
      */
     public function fishtype(){
         return $this->belongsTo(FishType::class,'fish_type','id');
+    }
+
+
+    public function approval()
+    {
+        return $this->belongsTo(ApprovalNumber::class,'approval_no','id');
     }
 
 

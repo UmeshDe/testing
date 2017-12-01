@@ -41,12 +41,10 @@
                                     $value = $column['function']($row->{$column['column_name']},$column['relation_column']);
                                 }
                                 else{
+                                    $column['relation_column'] = str_replace('.','->',$column['relation_column']);
                                     $value = isset($row->{$column['column_name']})?$row->{$column['column_name']}->{$column['relation_column']}:'';
                                 }
-
-
                             }
-
                         }
                         else if(isset($column['function'])){
                             $value = $column['function']($row->{$column['column_name']},$column['column_name']);

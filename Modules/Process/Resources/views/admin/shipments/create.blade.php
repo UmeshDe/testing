@@ -69,6 +69,8 @@
         $('#location_id').select2();
         $('#transfer_lot').select2();
         $('#supervisor_id').select2();
+        $('#varity').select2();
+        $('#grade').select2();
         $('#start_time').datetimepicker({
             format :'{{PHP_DATE_TIME_FORMAT}}',
             value : new moment()
@@ -79,22 +81,23 @@
         });
 
 
-        $('#location_id').select2().on('change' , function () {
+        $("#location_id,#varity").select2().on('change' , function () {
 
-            var location = $(this).val();
-
+            var location = $('#location_id').val();
+            var fishtype = $('#varity').val();
             $.ajax({
                 type: 'GET',
-                url: '{{URL::route('admin.process.carton.cartonLots')}}',
+                url: '{{URL::route('admin.process.carton.getCartonsfromRelation')}}',
                 data: {
                     id : location,
+                    fishtype : JSON.stringify(fishtype),
                     _token: $('meta[name="token"]').attr('value'),
                 },
                 success : function (response) {
 
                     $('#transfer_lot').html('');
                     $.each(response, function (i , item) {
-                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
                     });
 
                 },

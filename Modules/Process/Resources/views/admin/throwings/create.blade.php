@@ -89,9 +89,34 @@
                     $('#product').html('');
                     $.each(response, function (i , item) {
                         var d =    item.carton_id;
-                        $('#product').append('<option data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                        $('#product').append('<option value = '+item.id +' data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
                     });
 
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+
+            });
+        });
+
+        {{--var cartonLocation = JSON.parse('@json($cartonlocation)');--}}
+
+        {{--$('#available_loose_bages').val(cartonProducts);--}}
+
+       $('#product').select2({width:'100%'}).on('change', function () {
+            var product = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.throwing.loose')}}',
+                data: {
+                    id : product,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#available_loose_bags').html('');
+                    $.each(response, function (i , item) {
+                        $('#available_loose_bags').val(item.loose);
+                    });
                 },
                 error: function (xhr, ajaxOption, thrownError) {
                 }
@@ -105,5 +130,43 @@
             var cartonId = $('#product').children('option:selected').data('cartonid');
             $('#ctId').val(cartonId);
         });
+
+        var ViewModel = function(model) {
+
+            var self = this;
+            this.throwing_input = ko.observable(0);
+            this.throwing_output_bags = ko.observable(0);
+            this.loose_bags = ko.observable();
+
+            this.throwing_input_bags = ko.computed(function () {
+                var value = self.throwing_input() * 2;
+                return (value)?value:0;
+            });
+
+            this.throwing_output = ko.computed(function(){
+                if(self.throwing_output_bags() % 2 == 0 )
+                {
+                    var value = Math.ceil(self.throwing_output_bags()/2);
+                    return (value)?value:0;
+                }else {
+                    var value = Math.ceil(self.throwing_output_bags()/parseFloat(2)) - self.loose_bags();
+                    return (value)?value:0;
+                }
+            });
+
+            this.loose_bags = ko.computed(function () {
+               if(self.throwing_output_bags() % 2 == 0 )
+               {
+                   return 0;
+               }else {
+                   return 1;
+               }
+            });
+        };
+
+        ko.applyBindings(new ViewModel({{$throwing}}));
+
+
+
     </script>
 @endpush

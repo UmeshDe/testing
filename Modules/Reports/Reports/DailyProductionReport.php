@@ -31,8 +31,10 @@ class DailyProductionReport extends AbstractReport
             'format'=> REPORT_DATE_FORMAT
         ],
         'approval_no'=>[
-            'column_name'=>'approval_no',
+            'column_name'=>'approval',
             'display_name'=>'Approval No',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'app_number'
         ],
         'variety'=> [
             'column_name'=>'variety',
@@ -98,8 +100,9 @@ class DailyProductionReport extends AbstractReport
 
         $this->reportMaster->footer = 'Prepared by :'. auth()->user()->first_name." ".auth()->user()->last_name .'   Verified by :_________________  ' ;
 
-        $queryBuilder = Product::with('codes','variety','bagColor','cartonType');
-
+        $queryBuilder = Product::with('codes','variety','bagColor','cartonType')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        
+        
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

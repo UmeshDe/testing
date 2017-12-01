@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\FishTypeRepository;
+use Modules\Admin\Repositories\GradeRepository;
 use Modules\Admin\Repositories\LocationRepository;
 use Modules\Process\Entities\Shipment;
 use Modules\Process\Entities\ShipmentCarton;
@@ -55,9 +57,17 @@ class ShipmentController extends AdminBaseController
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
             ->pluck('name','id');
 
+        $grade = app(GradeRepository::class)->allWithBuilder()
+            ->orderBy('grade')
+            ->pluck('grade','id');
+
+        $varity = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
         $users = app(UserRepository::class)->all();
 
-        return view('process::admin.shipments.create',compact('locations','users'));
+        return view('process::admin.shipments.create',compact('locations','users','grade','varity'));
     }
 
     /**
@@ -78,6 +88,8 @@ class ShipmentController extends AdminBaseController
             'temperature' => $request->temperature,
             'start_time' =>Carbon::parse($request->loading_start_time),
             'end_time' =>Carbon::parse($request->loading_end_time) ,
+            'seal_no' => $request->seal_no,
+            'invoice_no' => $request->invoice_no
         ];
         $shipment = $this->shipment->create($data);
 
@@ -129,9 +141,17 @@ class ShipmentController extends AdminBaseController
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
             ->pluck('name','id');
 
+        $grade = app(GradeRepository::class)->allWithBuilder()
+            ->orderBy('grade')
+            ->pluck('grade','id');
+
+        $varity = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
         $users = app(UserRepository::class)->all();
 
-        return view('process::admin.shipments.edit', compact('shipment','users','locations'));
+        return view('process::admin.shipments.edit', compact('shipment','users','locations','grade','varity'));
     }
 
     /**

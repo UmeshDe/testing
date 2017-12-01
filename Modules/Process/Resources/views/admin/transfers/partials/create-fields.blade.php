@@ -50,6 +50,7 @@
                                 ->addClass('select')
                                 ->raw()
                              !!}
+                            <a href="#" data-toggle="modal" data-target="#location-modal"  >Add New Location</a>
                         </div>
                     </div>
                 </div>
@@ -61,17 +62,17 @@
                         <div class="col-sm-9">
                             {!!
                                  Former::select('status')
-                                 ->addOption(null)
-                                ->options(['0' => 'Loaded','1' => 'Completed'])
+                                ->options(['0' => 'Loaded'])
                                 ->addClass('select')
                                 ->raw()
                              !!}
-                        </div>
+                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                </div>
+                </div>
             </div>
-        </div>
-
     <div class="col-xs-12" hidden id="loading">
             <div class="box box-primary loading">
                 <div class="box-header with-border">

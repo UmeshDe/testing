@@ -12,24 +12,47 @@ if(!defined('REPORT_MODULE')) {
     //Column Types
     define('REPORT_ROWNO_COLUMN', 'ROW_NO');
     define('REPORT_RELATION_COLUMN', 'RELATION');
-
+    define('REPORT_MULRELATION_COLUMN', 'MULRELATION');
     //functions
     define('MODEL_ATTRIBUTE_AS_STRING', 'modelAttributeToCSString');
+    define('MODEL_ATTRIBUTE_FROM_RELATION', 'modelAttribute');
+    define('MODEL_ATTRIBUTE_FROM_INDEX','getAttribute');
 
     //paper size
     define('PAPER_SIZE_A1','A1');
     define('PAPER_SIZE_A2','A2');
     define('PAPER_SIZE_A3','A3');
     define('PAPER_SIZE_A4','A4');
+    define('PAPER_SIZE_LEAGAL','LEAGAL');
 
     //paper orientation
     define('ORIENTATION_LANDSCAPE','landscape');
     define('ORIENTATION_PORTRAIT','portrait');
 }
+//Coomented By Umesh For  addition of ,,,,,,,,,,,, in Report
+//function modelAttributeToCSString($models,$attribute){
+//    return (implode(",", collect($models->toArray())->pluck($attribute)->all()));
+//}
 
 function modelAttributeToCSString($models,$attribute){
     return (implode(",", collect($models->toArray())->pluck($attribute)->all()));
 }
+
+function modelAttribute($models,$attribute){
+    return (implode(collect($models->toArray())->pluck($attribute)->all()));
+}
+
+
+
+//Get Single Attribute Value
+//function getAttribute($model,$attributes){
+//    $variable ="";
+//    foreach ($model as $key => $value)
+//    {
+//        $variable .= $key;
+//    }
+//    return $variable;
+//}
 
 function formatValue($value,$format){
 

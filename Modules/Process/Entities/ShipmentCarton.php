@@ -17,4 +17,15 @@ class ShipmentCarton extends Model
         'carton_id',
         'quantity',
     ];
+
+
+    public function shipment()
+    {
+        return $this->belongsTo(Shipment::class,'shipment_id','id');
+    }
+    
+    public function carton()
+    {
+        return $this->belongsTo(Carton::class,'carton_id','id');
+    }
 }

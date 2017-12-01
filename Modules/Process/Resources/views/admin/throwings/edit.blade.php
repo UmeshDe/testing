@@ -6,7 +6,7 @@
 
 @section('content')
 
-    {{Former::populate($throwing)}}
+    {!! Former::populate($throwing) !!}
 
 
     {!! Former::horizontal_open()
@@ -21,10 +21,12 @@
             <div class="nav-tabs-custom">
                 <div class="box box-primary">
                     <div class="box box-primary">
-                @include('partials.form-tab-headers')
-                        <h4>
-                            {{ trans('process::throwings.title.edit throwing') }}
-                        </h4>
+                        <div class="box box-header">
+                            @include('partials.form-tab-headers')
+                                <h4>
+                                    {{ trans('process::throwings.title.edit throwing') }}
+                                </h4>
+                        </div>
                     </div>
                     <div class="body">
                 @include('process::admin.throwings.partials.create-fields')
@@ -80,3 +82,25 @@
 
     </script>
 @endpush
+{{--$('#location_id').select2().on('change' , function () {--}}
+{{--var location = $(this).val();--}}
+{{--$.ajax({--}}
+{{--type: 'GET',--}}
+{{--url: '{{URL::route('admin.process.carton.cartonLots')}}',--}}
+{{--data: {--}}
+{{--id : location,--}}
+{{--_token: $('meta[name="token"]').attr('value'),--}}
+{{--},--}}
+{{--success : function (response) {--}}
+{{--$('#product').html('');--}}
+{{--$.each(response, function (i , item) {--}}
+{{--var d =    item.carton_id;--}}
+{{--$('#product').append('<option  value ='+item.id + ' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');--}}
+{{--});--}}
+
+{{--},--}}
+{{--error: function (xhr, ajaxOption, thrownError) {--}}
+{{--}--}}
+
+{{--});--}}
+{{--});--}}

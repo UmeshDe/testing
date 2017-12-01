@@ -27,6 +27,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>Invoice No</th>
                                 <th>Vehicle No</th>
                                 <th>Container No</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
@@ -37,6 +38,7 @@
                             <?php if (isset($shipments)): ?>
                             <?php foreach ($shipments as $shipment): ?>
                             <tr>
+                                <td>{{$shipment->invoice_no}}</td>
                                 <td>{{$shipment->vehicle_no}}</td>
                                 <td>{{$shipment->container_no}}</td>
                                 <td>

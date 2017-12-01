@@ -5,6 +5,9 @@ namespace Modules\Process\Entities;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Admin\Entities\Grade;
+use Modules\Admin\Entities\Location;
+use Modules\User\Entities\Sentinel\User;
 
 class Shipment extends Model
 {
@@ -20,6 +23,34 @@ class Shipment extends Model
         'eqc',
         'temperature',
         'start_time',
-        'end_time'
+        'end_time',
+        'seal_no',
+        'invoice_no'
     ];
+
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id', 'id');
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'supervisor_id', 'id');
+    }
+
+    public function shipmentcarton()
+    {
+        return $this->hasOne(ShipmentCarton::class, 'shipment_id', 'id');
+    }
+
+    public function carton()
+    {
+        return $this->belongsTo(Carton::class, 'carton_id', 'id');
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class,'grade_id','id');
+    }
 }

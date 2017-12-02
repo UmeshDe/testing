@@ -25,10 +25,10 @@ class Shipment extends Model
         'start_time',
         'end_time',
         'seal_no',
-        'invoice_no'
+        'invoice_no',
+        'created_at',
+        'updated_at'
     ];
-
-
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id', 'id');
@@ -41,7 +41,7 @@ class Shipment extends Model
 
     public function shipmentcarton()
     {
-        return $this->hasOne(ShipmentCarton::class, 'shipment_id', 'id');
+        return $this->hasMany(ShipmentCarton::class, 'shipment_id', 'id');
     }
 
     public function carton()

@@ -1,7 +1,7 @@
 <?php
 
 
-if(!defined('REPORT_MODULE')) {
+if (!defined('REPORT_MODULE')) {
     define('REPORT_MODULE', 'REPORT_MODULE');
 
     //Column Formats
@@ -16,50 +16,30 @@ if(!defined('REPORT_MODULE')) {
     //functions
     define('MODEL_ATTRIBUTE_AS_STRING', 'modelAttributeToCSString');
     define('MODEL_ATTRIBUTE_FROM_RELATION', 'modelAttribute');
-    define('MODEL_ATTRIBUTE_FROM_INDEX','getAttribute');
-
+    define('MODEL_ATTRIBUTE_FROM_INDEX', 'getAttribute');
     //paper size
-    define('PAPER_SIZE_A1','A1');
-    define('PAPER_SIZE_A2','A2');
-    define('PAPER_SIZE_A3','A3');
-    define('PAPER_SIZE_A4','A4');
-    define('PAPER_SIZE_LEAGAL','LEAGAL');
+    define('PAPER_SIZE_A1', 'A1');
+    define('PAPER_SIZE_A2', 'A2');
+    define('PAPER_SIZE_A3', 'A3');
+    define('PAPER_SIZE_A4', 'A4');
+    define('PAPER_SIZE_LEAGAL', 'LEAGAL');
 
     //paper orientation
-    define('ORIENTATION_LANDSCAPE','landscape');
-    define('ORIENTATION_PORTRAIT','portrait');
+    define('ORIENTATION_LANDSCAPE', 'landscape');
+    define('ORIENTATION_PORTRAIT', 'portrait');
 }
-//Coomented By Umesh For  addition of ,,,,,,,,,,,, in Report
-//function modelAttributeToCSString($models,$attribute){
-//    return (implode(",", collect($models->toArray())->pluck($attribute)->all()));
-//}
 
-function modelAttributeToCSString($models,$attribute){
+
+function modelAttributeToCSString($models, $attribute){
     return (implode(",", collect($models->toArray())->pluck($attribute)->all()));
 }
 
-function modelAttribute($models,$attribute){
-    return (implode(collect($models->toArray())->pluck($attribute)->all()));
-}
+function formatValue($value, $format){
 
-
-
-//Get Single Attribute Value
-//function getAttribute($model,$attributes){
-//    $variable ="";
-//    foreach ($model as $key => $value)
-//    {
-//        $variable .= $key;
-//    }
-//    return $variable;
-//}
-
-function formatValue($value,$format){
-
-    if(!isset($value)){
+    if (!isset($value)) {
         return "";
     }
-    switch ($format){
+    switch ($format) {
         case "DATE":
             return \Carbon\Carbon::parse($value)->format(PHP_DATE_FORMAT);
             break;
@@ -67,7 +47,7 @@ function formatValue($value,$format){
             return \Carbon\Carbon::parse($value)->format(PHP_DATE_TIME_FORMAT);
             break;
         case "CURRENCY":
-            return "Rs ".$value;
+            return "Rs " . $value;
             break;
         default:
             return $value;

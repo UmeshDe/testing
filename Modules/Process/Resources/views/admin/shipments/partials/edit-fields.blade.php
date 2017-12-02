@@ -111,41 +111,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('transfer_lot') ? ' has-error has-feedback' : '' }}">
-                <label for="transfer_lot" class="control-label col-sm-3">Product:</label>
-                <div class="col-sm-9">
-                    {!!
-                         Former::select('transfer_lot')
-                         ->addOption(null)
-                        ->addClass('select')
-                        ->raw()
 
-                     !!}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
-                <label for="lot-no" class="control-label col-sm-6">Quantity:</label>
-                <div class="col-sm-6">
-                    {!!
-                        Former::text('quantity')->raw()
-                     !!}
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
-                <div class="col-sm-9">
-                    <button type="button" class="btn pull-right btn-flat" id="allLots" onclick="display()">Transfer</button>
-                    {!! $errors->first('vehicle_no', '<span class="help-block">:message</span>') !!}
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-lg-12">
             <table class="table table-bordered table-hover" id="records-table">
@@ -155,21 +121,21 @@
                     <th>Quantity</th>
 
                 </tr>
-                {{--@if(isset($shipment))--}}
-                    {{--@foreach($shipment->transfercarton as $shipmentcarton)--}}
-                        {{--<tr>--}}
-                            {{--<td>--}}
-                                {{--{{$shipmentcarton->carton->carton_date}}--}}
-                            {{--</td>--}}
-                            {{--<td>--}}
-                                {{--{{$shipmentcarton->carton->product->lot_no}}--}}
-                            {{--</td>--}}
-                            {{--<td>--}}
-                                {{--{{$shipmentcarton->quantity}}--}}
-                            {{--</td>--}}
-                        {{--</tr>--}}
-                    {{--@endforeach--}}
-                {{--@endif--}}
+                @if(isset($shipment))
+                    @foreach($shipment->shipmentcarton as $shipmentcarton)
+                        <tr>
+                            <td>
+                                {{\App\Libraries\Utils::parseDate($shipmentcarton->carton->carton_date)}}
+                            </td>
+                            <td>
+                                {{$shipmentcarton->carton->product->lot_no}}
+                            </td>
+                            <td>
+                                {{$shipmentcarton->quantity}}
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </table>
         </div>
     </div>

@@ -44,7 +44,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                      'admin.process.module.index'
                 );
                 $item->item(trans('process::products.title.products'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-product-hunt');
                     $item->weight(0);
                     $item->append('admin.process.product.create');
                     $item->route('admin.process.product.index');
@@ -53,7 +53,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('process::qualityparameters.title.qualityparameters'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-check-circle');
                     $item->weight(0);
                     $item->append('admin.process.qualityparameter.create');
                     $item->route('admin.process.qualityparameter.index');
@@ -62,7 +62,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('process::transfers.title.transfers'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-exchange');
                     $item->weight(0);
                     $item->append('admin.process.transfer.create');
                     $item->route('admin.process.transfer.index');
@@ -71,7 +71,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('process::throwings.title.throwings'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-database');
                     $item->weight(0);
                     $item->append('admin.process.throwing.create');
                     $item->route('admin.process.throwing.index');
@@ -80,7 +80,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('process::shipments.title.shipments'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-ship');
                     $item->weight(0);
                     $item->append('admin.process.shipment.create');
                     $item->route('admin.process.shipment.index');

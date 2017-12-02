@@ -106,11 +106,15 @@
                           !!}
             </div>
             <div class="col-md-4">
-                <label for="product_slab" class="control-label col-sm-5">Slab:</label>
-                <div class="input-group">
-                    {!! Former::text('product_slab')->data_bind("value: product_slab,valueUpdate: 'afterkeydown'")->raw()!!}
-                    <div class="input-group-addon">
-                        <b class="">Kg</b>
+                <div class="form-group has-feedback {{ $errors->has('no_of_cartons') ? ' has-error has-feedback' : '' }}">
+                    <label for="product_slab" class="control-label col-sm-5">Slab:</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            {!! Former::text('product_slab')->data_bind("value: product_slab,valueUpdate: 'afterkeydown'")->raw()!!}
+                            <div class="input-group-addon">
+                                <b class="">Kg</b>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

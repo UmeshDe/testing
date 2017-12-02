@@ -149,6 +149,10 @@ class ShipmentController extends AdminBaseController
             ->orderBy('type')
             ->pluck('type','id');
 
+        $shipment = $this->shipment->allWithBuilder()
+            ->with(['shipmentcarton','shipmentcarton.carton'])
+            ->find($shipment->id);
+        
         $users = app(UserRepository::class)->all();
 
         return view('process::admin.shipments.edit', compact('shipment','users','locations','grade','varity'));

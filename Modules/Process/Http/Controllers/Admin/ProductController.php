@@ -186,8 +186,6 @@ class ProductController extends AdminBaseController
 
         if(count($carton) == 1)
         {
-//            var_dump($request->all());
-//            return 'fgh';
             $cartons = app(CartonRepository::class)->updateCarton($carton->first(),$request->all());
 
             $cartontLocation = app(CartonLocationRepository::class)->updateCartonLocation($request->location_id,$cartons);

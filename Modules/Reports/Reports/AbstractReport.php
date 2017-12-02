@@ -73,6 +73,7 @@ class AbstractReport
         }
 
         $this->generatePDF();
+//        return "hfd";
         return $this->pdf->stream();
     }
 

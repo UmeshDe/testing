@@ -31,13 +31,11 @@ class ShipmentReport extends AbstractReport
             'column_name'=>'shipment',
             'display_name'=>'Stuffing Place',
             'type' => REPORT_RELATION_COLUMN,
-//            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
-            'relation_column' =>'location_id'
+            'relation_column' =>'location'
         ],
         'start_time'=>[
             'column_name'=>'shipment',
             'display_name'=>'Start Time',
-//            'type' => REPORT_DATETIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,REPORT_DATE_FORMAT,
             'relation_column' =>'start_time'
         ],
@@ -54,18 +52,16 @@ class ShipmentReport extends AbstractReport
             'relation_column' => 'invoice_no'
         ],
         'approval_no'=> [
-            'column_name'=>'carton',
+            'column_name'=>'carton.product.approval',
             'display_name'=>'Approval No',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
-            'relation_column' => 'approval_no'
+            'relation_column' => 'app_number'
         ],
         'varity'=> [
-            'column_name'=>'carton',
+            'column_name'=>'carton.product.fishtype',
             'display_name'=>'Varity',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
-            'relation_column' =>'fish_type'
+            'relation_column' =>'type'
         ],
         'grade'=> [
             'column_name'=>'grade',
@@ -77,7 +73,6 @@ class ShipmentReport extends AbstractReport
             'column_name'=>'carton',
             'display_name'=>'Total Cartons',
             'type' => REPORT_RELATION_COLUMN,
-//            'function' => MODEL_ATTRIBUTE_AS_STRING,
             'relation_column' =>'no_of_cartons'
         ],
         'cartons_loading'=>[
@@ -91,10 +86,10 @@ class ShipmentReport extends AbstractReport
             'relation_column' =>'seal_no'
         ],
         'supervisor'=>[
-            'column_name'=>'shipment',
+            'column_name'=>'shipment.supervisor',
             'display_name'=>'Supervisor',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'supervisor_id'
+            'relation_column' =>'first_name'
         ],
         'eqc'=> [
             'column_name'=>'shipment',
@@ -119,14 +114,14 @@ class ShipmentReport extends AbstractReport
 
     public function setup(){
 
-        $this->reportMaster->sub_title = 'Date: '.Carbon::parse( $this->startDate)->format(PHP_DATE_FORMAT);
+        $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by :'. auth()->user()->first_name." ".auth()->user()->last_name .'   Verified by :_________________  '. 'Printed by :_________________'  ;
+        $this->reportMaster->footer = 'Prepared by :_________________'.'   Verified by :_________________  '. 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
 
-        $queryBuilder = ShipmentCarton::with('carton','carton.product','shipment');
-
+        $queryBuilder = ShipmentCarton::with('carton','carton.product','shipment')->whereHas('shipment' ,function($q){
+            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

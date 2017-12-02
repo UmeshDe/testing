@@ -5,7 +5,7 @@
 
 @section('content')
 
-    {!! Former::populate($shipment) !!}}
+    {!! Former::populate($shipment) !!}
 
     {!! Former::horizontal_open()
        ->route('admin.process.shipment.update', $shipment->id)
@@ -25,11 +25,11 @@
                         </h4>
                     </div>
                     <div class="body">
-                @include('process::admin.shipments.partials.create-fields')
+                @include('process::admin.shipments.partials.edit-fields')
                     </div>
                     <div class="box-footer">
                         <a class="btn btn-danger btn-flat" href="{{ route('admin.process.shipment.index')}}" style="margin-left: 35%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%">{{ trans('core::core.button.update') }}</button>
+                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%"><i class="fa fa-floppy-o" aria-hidden="true"></i>{{ trans('core::core.button.update') }}</button>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}

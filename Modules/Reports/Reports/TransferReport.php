@@ -8,7 +8,6 @@
 
 namespace Modules\Reports\Reports;
 
-
 use Modules\Process\Entities\TransferCarton;
 use Carbon\Carbon;
 use PDF;
@@ -22,10 +21,9 @@ class TransferReport extends AbstractReport
             'type'=> REPORT_ROWNO_COLUMN
         ],
         'product_date'=> [
-            'column_name'=>'carton',
+            'column_name'=>'carton.product',
             'display_name'=>'Product Date',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
             'relation_column' => 'product_date'
         ],
         'load_gp_no'=> [
@@ -41,17 +39,15 @@ class TransferReport extends AbstractReport
             'relation_column' =>'carton_date'
         ],
         'variety'=> [
-            'column_name'=>'carton',
+            'column_name'=>'carton.product.fishtype',
             'display_name'=>'Varity',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
-            'relation_column' => 'fish_type'
+            'relation_column' => 'type'
         ],
         'lot_no'=>[
-            'column_name'=>'carton',
+            'column_name'=>'carton.product',
             'display_name'=>'Lot No',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
             'relation_column' => 'lot_no'
         ],
         'gread'=> [
@@ -59,17 +55,16 @@ class TransferReport extends AbstractReport
             'display_name'=>'Gread',
         ],
         'appr_no'=>[
-            'column_name'=>'carton',
+            'column_name'=>'carton.product.approval',
             'display_name'=>'Approval No',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
-            'relation_column' => 'approval_no'
+            'relation_column' => 'app_number'
         ],
         'carton_type'=> [
-            'column_name'=>'carton',
+            'column_name'=>'carton.cartontype',
             'display_name'=>'PRINTED/PLAIN',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'cartontype'
+            'relation_column' =>'type'
         ],
         'no_of_cartons'=>[
             'column_name'=>'quantity',
@@ -82,10 +77,9 @@ class TransferReport extends AbstractReport
             'relation_column' =>'loadinglocation'
         ],
         'loading_sup'=>[
-            'column_name'=>'transfer',
+            'column_name'=>'transfer.loadingsupervisor',
             'display_name'=>'Loading Supervisor',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
             'relation_column' =>'first_name'
         ],
         'unload_gp_no'=> [
@@ -94,11 +88,6 @@ class TransferReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_gate_pass_no'
         ],
-//        'unloadlot_no'=>[
-//            'column_name'=>'carton.product.lot_no',
-//            'display_name'=>'Unloading Lot No',
-//            'type' => REPORT_RELATION_COLUMN
-//        ],
         'unloading_no_qty'=>[
             'column_name'=>'received_quantity',
             'display_name'=>'Unloading Quantity',
@@ -110,13 +99,11 @@ class TransferReport extends AbstractReport
             'relation_column' =>'unloadinglocation'
         ],
         'unloading_sup'=>[
-            'column_name'=>'transfer',
+            'column_name'=>'transfer.unloadingsupervisor',
             'display_name'=>'Unloading Supervisor',
             'type' => REPORT_RELATION_COLUMN,
-            'function' => MODEL_ATTRIBUTE_FROM_RELATION,
             'relation_column' =>'first_name'
         ],
-
         'remark'=>[
             'column_name'=>'transfer',
             'display_name'=>'Remark',
@@ -132,13 +119,14 @@ class TransferReport extends AbstractReport
     public function setup(){
 
 
-        $this->reportMaster->sub_title = 'Date: '.Carbon::parse( $this->startDate)->format(PHP_DATE_FORMAT);
+        $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by :'. auth()->user()->first_name." ".auth()->user()->last_name .'   Verified by :_________________  ' ;
+        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name .' .  Verified by :_________________  ' .'Prepared by:_________________';
 
-        $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor');
+        $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
 
         $this->data = $queryBuilder->get();
 

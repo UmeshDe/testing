@@ -16,6 +16,8 @@ class ShipmentCarton extends Model
         'shipment_id',
         'carton_id',
         'quantity',
+        'created_at',
+        'updated_at'
     ];
 
 

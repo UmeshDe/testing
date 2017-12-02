@@ -28,6 +28,7 @@ class EloquentQualityParameterRepository extends EloquentBaseRepository implemen
             'suwari_work_force' => $request->suwari_work_force,
             'suwari_length' => $request->suwari_length,
             'suwari_gel_strength' => $request->suwari_gel_strength,
+            'supervisor_id' => $request->supervisor_id,
         ]);
     }
 }

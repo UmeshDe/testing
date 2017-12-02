@@ -28,7 +28,7 @@
                     </div>
                     <div class="box-footer">
                         <a class="btn btn-danger btn-flat" href="{{ route('admin.process.shipment.index')}}" style="margin-left: 35%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%">{{ trans('core::core.button.create') }}</button>
+                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%"><i class="fa fa-floppy-o" aria-hidden="true"></i>{{ trans('core::core.button.create') }}</button>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}

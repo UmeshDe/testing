@@ -49,7 +49,7 @@ class RegisterReportsSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 foreach ($reportModules as $reportModule) {
                     $item->item(trans($reportModule->name),function (Item $item) use($reportModule) {
                         $item->icon($reportModule->icon_class);
-                        $item->weight($reportModule->order);
+//                        $item->weight($reportModule->order);
                         $item->append('admin.reports.reportlog.create');
                         $item->route('admin.reports.reportlog.index',$reportModule->id);
                         $item->authorize(

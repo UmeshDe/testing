@@ -4,11 +4,6 @@
     <h1>
         {{ trans('process::qualityparameters.title.edit qualityparameter') }}
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.process.qualityparameter.index') }}">{{ trans('process::qualityparameters.title.qualityparameters') }}</a></li>
-        <li class="active">{{ trans('process::qualityparameters.title.edit qualityparameter') }}</li>
-    </ol>
 @stop
 
 @section('content')
@@ -79,6 +74,7 @@
 
             $('#supervisor_id').select2();
 
+            $('#ic_id').select2();
 
             var ViewModel = function(model) {
                 var self = this;

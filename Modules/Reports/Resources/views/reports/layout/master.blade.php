@@ -13,9 +13,11 @@
         <style type="text/css">
             @page { margin: 100px 25px; }
             header { position: fixed; top: -60px; left: 0px; right: 0px; height: 50px; }
+            thead { position: fixed; top: -60px; left: 0px; right: 0px; height: 50px; }
             footer { position: fixed; bottom: -60px; left: 0px; right: 0px;  height: 50px; }
             p { page-break-after: always; }
             p:last-child { page-break-after: never; }
+            .pagenum:before { content: counter(page); }
 
             .report-title{
                 text-align: center;
@@ -73,6 +75,11 @@
             @include('reports::reports.layout.header')
         </header>
 
+        <body>
+        @yield('content')
+        @show
+        </body>
+
         <footer>
             @section('footer')
             @show
@@ -80,8 +87,8 @@
 
         </footer>
 
-        @yield('content')
-        @show
+
+
 
     </body>
 </html>

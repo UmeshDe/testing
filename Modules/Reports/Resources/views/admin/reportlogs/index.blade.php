@@ -23,9 +23,8 @@
                      ->id('reportform')
                      ->route('admin.report.generate')
                      ->method('POST') !!}
-
+                <div class="row">
                     <div class="col-md-6">
-
                         <div class="form-group">
                             <label for="report_Type" class="control-label col-lg-4 col-sm-4">
                                 Report Type
@@ -37,10 +36,12 @@
                                         ->select('1')
                                         ->raw()
                                 !!}
-
                             </div>
                         </div>
-
+                    </div>
+                 </div>
+                 <div class="row">
+                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="reportrange" class="control-label col-lg-4 col-sm-4">
                                 Date
@@ -57,6 +58,69 @@
                                 </div>
                             </div>
                         </div>
+                     </div>
+                     <div class="col-md-3">
+                         <div class="form-group">
+                             <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                 Grade
+                             </label>
+                             <div class="col-lg-8 col-sm-8">
+                                 {!!
+                                     Former::select('grade')
+                                         ->fromQuery($grade,'grade','id')
+                                         ->select('1')
+                                         ->raw()
+                                 !!}
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-3">
+                         <div class="form-group">
+                             <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                Variety
+                             </label>
+                             <div class="col-lg-8 col-sm-8">
+                                 {!!
+                                     Former::select('variety')
+                                         ->fromQuery($variety,'type','id')
+                                         ->select('1')
+                                         ->raw()
+                                 !!}
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    BuyerCode
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    {!!
+                                        Former::select('buyer')
+                                            ->fromQuery($buyercode,'buyer_code','id')
+                                            ->select('1')
+                                            ->raw()
+                                    !!}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    PO
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    {!!
+                                        Former::select('po')
+                                            ->fromQuery($po,'po_no','id')
+                                            ->select('1')
+                                            ->raw()
+                                    !!}
+                                </div>
+                            </div>
+                        </div>
 
                         {!! Former::actions()
                             ->large_primary_submit('Generate')
@@ -64,7 +128,6 @@
                             ->addClass('col-lg-offset-4 col-sm-offset-4 col-lg-10 col-sm-8')
                             ->raw()
                          !!}
-
                     </div>
 
                     {!! Former::close() !!}

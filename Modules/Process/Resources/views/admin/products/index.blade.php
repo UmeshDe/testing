@@ -40,9 +40,6 @@
                                 <th>Fish Type</th>
                                 <th>Bag Color</th>
                                 <th>Production Slab</th>
-                                <th>No.Of Cartons</th>
-                                <th>Rejected</th>
-                                <th>Loose</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -56,9 +53,6 @@
                                 <td>{{$product->fishtype['type']}}</td>
                                 <td>{{$product->bagcolor['color']}}</td>
                                 <td>{{$product->product_slab}}</td>
-                                <td>{{$product->no_of_cartons}}</td>
-                                <td>{{$product->rejected}}</td>
-                                <td>{{$product->loose}}</td>
                                 <td>
                                     <a href="{{ route('admin.process.product.edit', [$product->id]) }}">
                                         {{ $product->created_at }}

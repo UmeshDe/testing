@@ -14,41 +14,63 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 {
 
     public function createProduct(CreateProductRequest $request){
-    
+        
+        $user = auth()->user();
+        
         return $this->create([
             'product_date' =>Carbon::parse($request->product_date),
-            'carton_date' => $request->carton_date,
             'no_of_cartons' => $request->no_of_cartons,
             'rejected' => $request->rejected,
             'loose' => $request->loose,
-            'bag_color' => $request->bag_color,
-            'carton_type' => $request->carton_type,
             'location_id' => $request->location_id,
             'approval_no' => $request->approval_no,
             'po_no' => $request->po_no,
+            'bag_color' => $request->bag_color,
             'lot_no' => $request->lot_no,
             'product_slab' => $request->product_slab,
             'fish_type'=>$request->fish_type,
-            'remark' => $request->remark
+            'remark' => $request->remark,
+            'buyercode_id' => $request->buyercode_id,
+            'fm_id' => $request->fm_id,
+            'fr_id' => $request->fr_id,
+            'd_id' => $request->d_id,
+            's_id' => $request->s_id,
+            'a_id' => $request->a_id,
+            'c_id' => $request->c_id,
+            'p_id' => $request->p_id,
+            'b_id' => $request->b_id,
+            'm_id' => $request->m_id,
+            'w_id' => $request->w_id,
+            'q_id' => $request->q_id,
+            'sc_id' => $request->sc_id,
+            'lc_id' => $request->lc_id,
+            'user_id' => $user->id
         ]);
     }
 
     public function updateProduct(UpdateProductRequest $request,$product){
+
+        $user = auth()->user();
+
         return $this->update($product,
             [
                 'product_date' => Carbon::parse($request->product_date),
-                'carton_date' => $request->carton_date,
+                'carton_date' => Carbon::parse($request->carton_date),
                 'no_of_cartons' => $request->no_of_cartons,
                 'rejected' => $request->rejected,
                 'loose' => $request->loose,
                 'carton_type' => $request->carton_type,
-                'location_id' => $request->location_id,
-                'approval_no' => $request->approval_no,
+//                'location_id' => $request->location_id,
+//                'approval_no' => $request->approval_no,
                 'po_no' => $request->po_no,
                 'lot_no' => $request->lot_no,
                 'product_slab' => $request->product_slab,
-                'fish_type'=>$request->fish_type,
-                'remark' => $request->remark
+//                'fish_type'=>$request->fish_type,
+                'remark' => $request->remark,
+                'human_error_slab' => $request->human_error_slab,
+                'diff_in_kg' => $request->diff_in_kg,
+                'packingdone' => true,
+                'packingdone_by' => $user->id,
             ]);
     }
 }

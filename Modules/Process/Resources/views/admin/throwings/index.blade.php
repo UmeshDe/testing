@@ -31,10 +31,9 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Carton Date</th>
+                                <th>Thowing Date</th>
                                 <th>Throwing Input</th>
-                                <th>Throwing Output</th>
-                                <th>Comment</th>
+                                <th>Remark</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -45,7 +44,6 @@
                             <tr>
                                 <td>{{isset($throwing->carton_date)?\Carbon\Carbon::parse($throwing->carton_date)->format(PHP_DATE_FORMAT) : '' }}</td>
                                 <td>{{$throwing->throwing_input}}</td>
-                                <td>{{$throwing->throwing_output}}</td>
                                 <td>{{$throwing->comment}}</td>
                                 <td>
                                     <a href="{{ route('admin.process.throwing.edit', [$throwing->id]) }}">

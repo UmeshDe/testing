@@ -70,7 +70,7 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'BagcolorController@update',
         'middleware' => 'can:admin.bagcolors.edit'
     ]);
-       $router->post('bagcolors/update', [
+    $router->post('bagcolors/update', [
         'as' => 'admin.admin.bagcolor.update',
         'uses' => 'BagcolorController@update',
         'middleware' => 'can:admin.bagcolors.edit'
@@ -423,7 +423,85 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'DesignationController@destroy',
         'middleware' => 'can:admin.designations.destroy'
     ]);
+    $router->bind('buyercode', function ($id) {
+        return app('Modules\Admin\Repositories\BuyercodeRepository')->find($id);
+    });
+    $router->get('buyercodes', [
+        'as' => 'admin.admin.buyercode.index',
+        'uses' => 'BuyercodeController@index',
+        'middleware' => 'can:admin.buyercodes.index'
+    ]);
+    $router->get('buyercodes/create', [
+        'as' => 'admin.admin.buyercode.create',
+        'uses' => 'BuyercodeController@create',
+        'middleware' => 'can:admin.buyercodes.create'
+    ]);
+    $router->post('buyercodes', [
+        'as' => 'admin.admin.buyercode.store',
+        'uses' => 'BuyercodeController@store',
+        'middleware' => 'can:admin.buyercodes.create'
+    ]);
+    $router->get('buyercodes/{buyercode}/edit', [
+        'as' => 'admin.admin.buyercode.edit',
+        'uses' => 'BuyercodeController@edit',
+        'middleware' => 'can:admin.buyercodes.edit'
+    ]);
+    $router->put('buyercodes/{buyercode}', [
+        'as' => 'admin.admin.buyercode.update',
+        'uses' => 'BuyercodeController@update',
+        'middleware' => 'can:admin.buyercodes.edit'
+    ]);
+    $router->post('buyercodes/update', [
+        'as' => 'admin.admin.buyercode.update',
+        'uses' => 'BuyercodeController@update',
+        'middleware' => 'can:admin.buyercodes.edit'
+    ]);
+    $router->delete('buyercodes/{buyercode}', [
+        'as' => 'admin.admin.buyercode.destroy',
+        'uses' => 'BuyercodeController@destroy',
+        'middleware' => 'can:admin.buyercodes.destroy'
+    ]);
+    $router->bind('internalcode', function ($id) {
+        return app('Modules\Admin\Repositories\InternalcodeRepository')->find($id);
+    });
+    $router->get('internalcodes', [
+        'as' => 'admin.admin.internalcode.index',
+        'uses' => 'InternalcodeController@index',
+        'middleware' => 'can:admin.internalcodes.index'
+    ]);
+    $router->get('internalcodes/create', [
+        'as' => 'admin.admin.internalcode.create',
+        'uses' => 'InternalcodeController@create',
+        'middleware' => 'can:admin.internalcodes.create'
+    ]);
+    $router->post('internalcodes', [
+        'as' => 'admin.admin.internalcode.store',
+        'uses' => 'InternalcodeController@store',
+        'middleware' => 'can:admin.internalcodes.create'
+    ]);
+    $router->get('internalcodes/{internalcode}/edit', [
+        'as' => 'admin.admin.internalcode.edit',
+        'uses' => 'InternalcodeController@edit',
+        'middleware' => 'can:admin.internalcodes.edit'
+    ]);
+    $router->put('internalcodes/{internalcode}', [
+        'as' => 'admin.admin.internalcode.update',
+        'uses' => 'InternalcodeController@update',
+        'middleware' => 'can:admin.internalcodes.edit'
+    ]);
+    $router->post('internalcodes/update', [
+        'as' => 'admin.admin.internalcode.update',
+        'uses' => 'InternalcodeController@update',
+        'middleware' => 'can:admin.internalcodes.edit'
+    ]);
+    $router->delete('internalcodes/{internalcode}', [
+        'as' => 'admin.admin.internalcode.destroy',
+        'uses' => 'InternalcodeController@destroy',
+        'middleware' => 'can:admin.internalcodes.destroy'
+    ]);
 // append
+
+
 
 
 

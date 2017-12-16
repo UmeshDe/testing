@@ -98,23 +98,29 @@ class ShipmentReport extends AbstractReport
             'relation_column' =>'eqc'
         ],
         'photo'=> [
-            'column_name'=>'photo',
+            'column_name'=>'shipment',
             'display_name'=>'Photo',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'photo'
         ],
         'temp'=>[
-            'column_name'=>'temp',
+            'column_name'=>'shipment',
             'display_name'=>'Temp',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'temp'
+            'relation_column' =>'temperature'
         ],
     ];
 
 
     public function setup(){
 
-        $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+        {
+            $this->reportMaster->sub_title = 'Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+        }
+        else{
+            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 

@@ -59,7 +59,7 @@ class TransferController extends AdminBaseController
         
         $locations = app(LocationRepository::class)->allWithBuilder()
             ->orderBy('name')
-            ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
+            ->select(DB::raw("CONCAT(name,'-',location) AS name"),'id')
             ->pluck('name','id');
         
         $users = app(UserRepository::class)->all();

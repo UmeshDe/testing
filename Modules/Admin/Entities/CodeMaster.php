@@ -19,7 +19,6 @@ class CodeMaster extends Model
     public function __toString() {
         return $this->code;
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -27,7 +26,6 @@ class CodeMaster extends Model
     {
         return $this->hasMany(CodeMaster::class,'is_parent','id');
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

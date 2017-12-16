@@ -54,7 +54,7 @@ class ShipmentController extends AdminBaseController
     {
         $locations = app(LocationRepository::class)->allWithBuilder()
             ->orderBy('name')
-            ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
+            ->select(DB::raw("CONCAT(name,'-',location) AS name"),'id')
             ->pluck('name','id');
 
         $grade = app(GradeRepository::class)->allWithBuilder()
@@ -78,7 +78,8 @@ class ShipmentController extends AdminBaseController
      */
     public function store(CreateShipmentRequest $request)
     {
-        
+
+        $user = auth()->user();
         $data = [
             'container_no' => $request->container_no,
             'vehicle_no' => $request->vehicle_no,
@@ -89,7 +90,12 @@ class ShipmentController extends AdminBaseController
             'start_time' =>Carbon::parse($request->loading_start_time),
             'end_time' =>Carbon::parse($request->loading_end_time) ,
             'seal_no' => $request->seal_no,
-            'invoice_no' => $request->invoice_no
+            'invoice_no' => $request->invoice_no,
+            'shipment_via' => $request->shipment_via,
+            'photo' => $request->photo,
+            'grade' => $request->grade,
+            'approval_no' => $request->approval_no,
+            'shipmentdone_by' => $user->id
         ];
         $shipment = $this->shipment->create($data);
 
@@ -138,7 +144,7 @@ class ShipmentController extends AdminBaseController
     {
         $locations = app(LocationRepository::class)->allWithBuilder()
             ->orderBy('name')
-            ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
+            ->select(DB::raw("CONCAT(name,'-',location) AS name"),'id')
             ->pluck('name','id');
 
         $grade = app(GradeRepository::class)->allWithBuilder()
@@ -185,5 +191,17 @@ class ShipmentController extends AdminBaseController
 
         return redirect()->route('admin.process.shipment.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('process::shipments.title.shipments')]));
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function shipped(Request $request)
+    {
+        $shipment = $this->shipment->find($request->shipmentId);
+        $shipment->shipment = $request->shipment;
+        $shipment->save();
+        return response()->json(['success' => true ,'message' => 'Shipped']);
     }
 }

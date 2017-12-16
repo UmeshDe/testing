@@ -2,10 +2,20 @@
 
 @section('styles')
 
+<?php
+use Dompdf\FontMetrics;
+?>
 @endsection
 
 @section('content')
-    <table>
+    <table style="margin-top: 5%">
+        <thead>
+        <tr>
+            <td colspan="9" align="center"> {{$report->reportMaster->title}}</td>
+        </tr>
+        <tr>
+            <td colspan="9" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+        </tr>
         <tr>
             @foreach($report->columns as $column)
                 <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
@@ -13,6 +23,7 @@
                 </th>
             @endforeach
         </tr>
+        </thead>
         <?php
             $i = 0;
         ?>

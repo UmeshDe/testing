@@ -18,6 +18,12 @@ class QualityCheckReport extends AbstractReport
             'column_name'=>'inspection_date',
             'display_name'=>'Inspection Date',
         ],
+        'product_date'=>[
+            'column_name'=>'carton.product',
+            'display_name'=>'Product Date',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' => 'product_date'
+        ],
         'lot_no'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Lot No',
@@ -26,7 +32,7 @@ class QualityCheckReport extends AbstractReport
         ],
         'kind'=> [
             'column_name'=>'kinds',
-            'display_name'=>'Kind',
+            'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'kind'
         ],
@@ -85,7 +91,13 @@ class QualityCheckReport extends AbstractReport
 
     public function setup(){
 
-        $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+        {
+            $this->reportMaster->sub_title = 'Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+        }
+        else{
+            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 

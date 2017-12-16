@@ -28,7 +28,8 @@
                     </div>
                     <div class="box-footer">
                         <a class="btn btn-danger btn-flat" href="{{ route('admin.process.shipment.index')}}" style="margin-left: 35%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%"><i class="fa fa-floppy-o" aria-hidden="true"></i>{{ trans('core::core.button.create') }}</button>
+                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%"><i class="fa fa-floppy-o" aria-hidden="true"></i>Prepare</button>
+                        {{--{{ trans('core::core.button.create') }}--}}
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
@@ -70,7 +71,6 @@
         $('#transfer_lot').select2();
         $('#supervisor_id').select2();
         $('#varity').select2();
-        $('#grade').select2();
         $('#start_time').datetimepicker({
             format :'{{PHP_DATE_TIME_FORMAT}}',
             value : new moment()
@@ -97,6 +97,7 @@
 
                     $('#transfer_lot').html('');
                     $.each(response, function (i , item) {
+                        $('#transfer_lot').append(null);
                         $('#transfer_lot').append('<option data-quantity ='+item.available_quantity + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
                     });
 

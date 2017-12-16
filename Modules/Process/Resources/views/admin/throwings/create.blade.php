@@ -69,12 +69,22 @@
     <script>
         $('#product').select2();
         $('#location_id').select2();
+        $('#thowing_supervisor').select2();
 
         $('#carton_date').datetimepicker({
             timepicker:false,
             format:'{{PHP_DATE_FORMAT}}',
             value : new moment()
         });
+        $('#thowing_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#thowing_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+
 
         $('#location_id').select2().on('change' , function () {
             var location = $(this).val();

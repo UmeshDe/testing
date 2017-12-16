@@ -50,6 +50,11 @@
                                     <div class="btn-group">
                                         <a href="{{ route('admin.process.shipment.edit', [$shipment->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
                                         <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.shipment.destroy', [$shipment->id]) }}"><i class="fa fa-trash"></i></button>
+                                        @if($shipment->shipment == 0)
+                                        <button class="btn btn-info btn-flat shipment" data-id="{{$shipment->id}}" data-toggle="modal" data-target="#shipment-modal" ><span style="color:white">Not Shipped</span></button>
+                                        @else
+                                        <button class="btn btn-success btn-flat shipment" data-id="{{$shipment->id}}" data-toggle="modal" data-target="#shipment-modal" ><span style="color:white">Shipped</span></button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -71,6 +76,7 @@
         </div>
     </div>
     @include('core::partials.delete-modal')
+    @include('process::modal.shipment-done')
 @stop
 
 @section('footer')
@@ -108,6 +114,11 @@
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }
             });
+        });
+    </script>
+    <script>
+        $('.shipment').click(function () {
+            $("#shipment-modal").find('input[name="shipmentId"]').val($(this).data("id"));
         });
     </script>
 @endpush

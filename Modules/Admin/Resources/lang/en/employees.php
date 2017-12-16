@@ -6,12 +6,12 @@ return [
     'edit resource' => 'Edit employees',
     'destroy resource' => 'Destroy employees',
     'title' => [
-        'employees' => 'Employee',
-        'create employee' => 'Create a employee',
-        'edit employee' => 'Edit a employee',
+        'employees' => 'Supervisor',
+        'create employee' => 'Create a supervisor',
+        'edit employee' => 'Edit a supervisor',
     ],
     'button' => [
-        'create employee' => 'Create a employee',
+        'create employee' => 'Create a supervisor',
     ],
     'table' => [
     ],

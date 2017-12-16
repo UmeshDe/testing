@@ -38,6 +38,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('invoice_no') ? ' has-error has-feedback' : '' }}">
+                <label for="invoice-no" class="control-label col-sm-3">Invoice No:</label>
+                <div class="col-sm-9">
+                    {!!
+                        Former::text('invoice_no')->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -81,6 +91,43 @@
                          ->addOption(null)
                          ->fromQuery($users,'first_name','id')
                         ->addClass('select')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('shipment_via') ? ' has-error has-feedback' : '' }}">
+                <label for="shipment_via" class="control-label col-sm-3">Shipment Via:</label>
+                <div class="col-sm-9">
+                    {!!
+                        Former::radio('shipment_via')->check()
+                        ->radios(['0' => 'Local', '1' => 'Global'])->inline()
+                        ->check(0)
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('photo') ? ' has-error has-feedback' : '' }}">
+                <label for="photo" class="control-label col-sm-3">Photo:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::text('photo')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
+                <label for="grade" class="control-label col-sm-3">Grade:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::text('grade')
                         ->raw()
                      !!}
                 </div>

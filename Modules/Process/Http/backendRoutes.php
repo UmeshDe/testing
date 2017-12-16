@@ -17,6 +17,16 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'ProductController@create',
         'middleware' => 'can:process.products.create'
     ]);
+    $router->get('products/packing', [
+        'as' => 'admin.process.product.packing',
+        'uses' => 'ProductController@packingcreate',
+        'middleware' => 'can:process.products.create'
+    ]);
+    $router->get('products/packingindex', [
+        'as' => 'admin.process.product.packingindex',
+        'uses' => 'ProductController@packingindex',
+        'middleware' => 'can:process.products.index'
+    ]);
     $router->post('products', [
         'as' => 'admin.process.product.store',
         'uses' => 'ProductController@store',
@@ -301,6 +311,11 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'ShipmentController@store',
         'middleware' => 'can:process.shipments.create'
     ]);
+    $router->post('shipments/shipped', [
+        'as' => 'admin.process.shipment.shipped',
+        'uses' => 'ShipmentController@shipped',
+        'middleware' => 'can:process.shipments.create'
+    ]);
     $router->get('shipments/{shipment}/edit', [
         'as' => 'admin.process.shipment.edit',
         'uses' => 'ShipmentController@edit',
@@ -349,7 +364,110 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'ShipmentCartonController@destroy',
         'middleware' => 'can:process.shipmentcartons.destroy'
     ]);
+    $router->bind('repack', function ($id) {
+        return app('Modules\Process\Repositories\RepackRepository')->find($id);
+    });
+    $router->get('repacks', [
+        'as' => 'admin.process.repack.index',
+        'uses' => 'RepackController@index',
+        'middleware' => 'can:process.repacks.index'
+    ]);
+    $router->get('repacks/create', [
+        'as' => 'admin.process.repack.create',
+        'uses' => 'RepackController@create',
+        'middleware' => 'can:process.repacks.create'
+    ]);
+    $router->post('repacks', [
+        'as' => 'admin.process.repack.store',
+        'uses' => 'RepackController@store',
+        'middleware' => 'can:process.repacks.create'
+    ]);
+    $router->get('repacks/{repack}/edit', [
+        'as' => 'admin.process.repack.edit',
+        'uses' => 'RepackController@edit',
+        'middleware' => 'can:process.repacks.edit'
+    ]);
+    $router->put('repacks/{repack}', [
+        'as' => 'admin.process.repack.update',
+        'uses' => 'RepackController@update',
+        'middleware' => 'can:process.repacks.edit'
+    ]);
+    $router->delete('repacks/{repack}', [
+        'as' => 'admin.process.repack.destroy',
+        'uses' => 'RepackController@destroy',
+        'middleware' => 'can:process.repacks.destroy'
+    ]);
+    $router->bind('repacking', function ($id) {
+        return app('Modules\Process\Repositories\RepackingRepository')->find($id);
+    });
+    $router->get('repackings', [
+        'as' => 'admin.process.repacking.index',
+        'uses' => 'RepackingController@index',
+        'middleware' => 'can:process.repackings.index'
+    ]);
+    $router->get('repackings/create', [
+        'as' => 'admin.process.repacking.create',
+        'uses' => 'RepackingController@create',
+        'middleware' => 'can:process.repackings.create'
+    ]);
+    $router->post('repackings', [
+        'as' => 'admin.process.repacking.store',
+        'uses' => 'RepackingController@store',
+        'middleware' => 'can:process.repackings.create'
+    ]);
+    $router->get('repackings/{repacking}/edit', [
+        'as' => 'admin.process.repacking.edit',
+        'uses' => 'RepackingController@edit',
+        'middleware' => 'can:process.repackings.edit'
+    ]);
+    $router->put('repackings/{repacking}', [
+        'as' => 'admin.process.repacking.update',
+        'uses' => 'RepackingController@update',
+        'middleware' => 'can:process.repackings.edit'
+    ]);
+    $router->delete('repackings/{repacking}', [
+        'as' => 'admin.process.repacking.destroy',
+        'uses' => 'RepackingController@destroy',
+        'middleware' => 'can:process.repackings.destroy'
+    ]);
+    $router->bind('packing', function ($id) {
+        return app('Modules\Process\Repositories\PackingRepository')->find($id);
+    });
+    $router->get('packings', [
+        'as' => 'admin.process.packing.index',
+        'uses' => 'PackingController@index',
+        'middleware' => 'can:process.packings.index'
+    ]);
+    $router->get('packings/create', [
+        'as' => 'admin.process.packing.create',
+        'uses' => 'PackingController@create',
+        'middleware' => 'can:process.packings.create'
+    ]);
+    $router->post('packings', [
+        'as' => 'admin.process.packing.store',
+        'uses' => 'PackingController@store',
+        'middleware' => 'can:process.packings.create'
+    ]);
+    $router->get('packings/{packing}/edit', [
+        'as' => 'admin.process.packing.edit',
+        'uses' => 'PackingController@edit',
+        'middleware' => 'can:process.packings.edit'
+    ]);
+    $router->put('packings/{packing}', [
+        'as' => 'admin.process.packing.update',
+        'uses' => 'PackingController@update',
+        'middleware' => 'can:process.packings.edit'
+    ]);
+    $router->delete('packings/{packing}', [
+        'as' => 'admin.process.packing.destroy',
+        'uses' => 'PackingController@destroy',
+        'middleware' => 'can:process.packings.destroy'
+    ]);
 // append
+
+
+
+
 
 
 

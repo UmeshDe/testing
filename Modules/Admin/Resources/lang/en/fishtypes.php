@@ -6,7 +6,7 @@ return [
     'edit resource' => 'Edit fishtypes',
     'destroy resource' => 'Destroy fishtypes',
     'title' => [
-        'fishtypes' => 'FishType',
+        'fishtypes' => 'Variety',
         'create fishtype' => 'Create a fishtype',
         'edit fishtype' => 'Edit a fishtype',
     ],

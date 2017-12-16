@@ -9,7 +9,7 @@ class CreateLocationRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:admin__locations,name|max:255',
+            'name' => 'required|max:255',
             'location' => 'required|max:255',
         ];
     }
@@ -28,7 +28,6 @@ class CreateLocationRequest extends BaseFormRequest
     {
         return [
             'name.required' => 'Please Enter Name',
-            'name.unique' => 'Name Already Exist',
             'location.required' => 'Please Enter Location',
         ];
     }

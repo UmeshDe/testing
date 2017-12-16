@@ -92,6 +92,43 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('shipment_via') ? ' has-error has-feedback' : '' }}">
+                <label for="shipment_via" class="control-label col-sm-3">Shipment Area:</label>
+                <div class="col-sm-9">
+                    {!!
+                        Former::radio('shipment_via')->check()
+                        ->radios(['0' => 'Local', '1' => 'Global'])->inline()
+                        ->check(0)
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('photo') ? ' has-error has-feedback' : '' }}">
+                <label for="photo" class="control-label col-sm-3">Photo:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::text('photo')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
+                <label for="grade" class="control-label col-sm-3">Grade:</label>
+                <div class="col-sm-9">
+                    {!!
+                         Former::text('grade')
+                        ->raw()
+                     !!}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -132,20 +169,6 @@
                 </div>
             </div>
         </div>
-        {{--<div class="col-md-3">--}}
-            {{--<div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">--}}
-                {{--<label for="grade" class="control-label col-sm-6">Grade:</label>--}}
-                {{--<div class="col-sm-6">--}}
-                    {{--{!!--}}
-                         {{--Former::multiselect('grade')--}}
-                         {{--->addOption(null)--}}
-                         {{--->fromQuery($grade,'grade','id')--}}
-                        {{--->addClass('select')--}}
-                        {{--->raw()--}}
-                     {{--!!}--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
         <div class="col-md-6">
             <div class="form-group has-feedback {{ $errors->has('varity') ? ' has-error has-feedback' : '' }}">
                 <label for="varity" class="control-label col-sm-3">Varity:</label>

@@ -80,6 +80,15 @@
             value : new moment()
         });
 
+        $('#thowing_start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+        $('#thowing_end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value : new moment()
+        });
+
     </script>
 @endpush
 {{--$('#location_id').select2().on('change' , function () {--}}

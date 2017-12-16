@@ -108,21 +108,13 @@ class AdminTables extends Migration
         Schema::create('admin__employees', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-
             $table->unsignedInteger('user_id')->references('id')->on('users')->nullable();
-
-
             $table->string('emp_id')->unique();
-
             $table->integer('designation_id')->unsigned()->nullable();
             $table->foreign('designation_id')->references('id')->on('admin__designations');
-
             $table->integer('department_id')->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('admin__departments');
-
-
             $table->string('shift')->nullable();
-
             $table->date('joining_date')->nullable();
             $table->string('pan_no')->nullable();
             $table->string('adhar_card_no')->nullable();

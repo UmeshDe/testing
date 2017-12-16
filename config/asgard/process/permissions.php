@@ -59,6 +59,12 @@ return [
         'edit' => 'process::shipments.edit resource',
         'destroy' => 'process::shipments.destroy resource',
     ],
+    'process.repacks' => [
+        'index' => 'process::repacks.list resource',
+        'create' => 'process::repacks.create resource',
+        'edit' => 'process::repacks.edit resource',
+        'destroy' => 'process::repacks.destroy resource',
+    ],
 // append
 
 

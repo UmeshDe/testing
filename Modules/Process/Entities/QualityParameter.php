@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Grade;
+use Modules\Admin\Entities\Internalcode;
 use Modules\Admin\Entities\Kind;
 use Modules\User\Entities\Sentinel\User;
 
@@ -22,6 +23,8 @@ class QualityParameter extends Model
         'date',
         'grade',
         'moisture',
+        'machine_moisture',
+        'machine_kamaboko_hw',
         'kamaboko_hw',
         'ashi',
         'contam',
@@ -35,7 +38,10 @@ class QualityParameter extends Model
         'approved_by',
         'created_by',
         'supervisor_id',
-        'inspection_date'
+        'inspection_date',
+        'qcr_pageno',
+        'ic_id',
+        'qualitycheckdone_by'
     ];
 
     /**
@@ -45,7 +51,6 @@ class QualityParameter extends Model
     {
         $this->attributes['inspection_date'] = Carbon::parse($value);
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -53,7 +58,6 @@ class QualityParameter extends Model
     {
         return $this->belongsTo(Carton::class,'carton_id','id');
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -61,7 +65,6 @@ class QualityParameter extends Model
     {
         return $this->belongsTo(Kind::class,'kind_id','id');
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -69,10 +72,27 @@ class QualityParameter extends Model
     {
         return $this->belongsTo(User::class,'supervisor_id','id');
     }
-    
-    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function grades()
     {
         return $this->belongsTo(Grade::class,'grade_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function ic()
+    {
+        return $this->belongsTo(Internalcode::class,'ic_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function qualitychechdone()
+    {
+        return $this->belongsTo(User::class, 'qualitycheckdone_by','id');
     }
 }

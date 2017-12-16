@@ -4,10 +4,6 @@
     <h1>
         {{ trans('process::qualityparameters.title.qualityparameters') }}
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('process::qualityparameters.title.qualityparameters') }}</li>
-    </ol>
 @stop
 
 @section('content')

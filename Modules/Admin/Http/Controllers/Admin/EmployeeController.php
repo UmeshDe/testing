@@ -10,6 +10,7 @@ use Modules\Admin\Http\Requests\UpdateEmployeeRequest;
 use Modules\Admin\Repositories\EmployeeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\User\Contracts\Authentication;
+use Modules\User\Repositories\UserRepository;
 
 class EmployeeController extends AdminBaseController
 {
@@ -43,10 +44,7 @@ class EmployeeController extends AdminBaseController
      */
     public function index()
     {
-        $employees = $this->employee->allWithBuilder()
-            ->with(['designation', 'department', 'user', 'currentShift', 'type'])
-            ->get();
-
+        $employees = $this->employee->all();
         return view('admin::admin.employees.index', compact('employees'));
     }
 
@@ -55,20 +53,9 @@ class EmployeeController extends AdminBaseController
      *
      * @return Response
      */
-    public function create($id = null)
+    public function create()
     {
-        $roles = app(getRepoName('Role', 'User'))->all();
-
-        $departments = app(getRepoName('Department', 'Profile'))->getNameValue();
-        $designations = app(getRepoName('Designation', 'Profile'))->getNameValue('designation');
-        $shifts = app(getRepoName('Shift', 'Attendance'))->getNameValue();
-        $types = app(getRepoName('EmployeeType', 'Profile'))->getNameValue();
-        $qualifications = app(getRepoName('Qualification', 'Profile'))->getNameValue();
-        $languages = config('asgard.profile.config.languages');
-        $bloodgroups = config('asgard.profile.config.bloodgroups');
-        $managers = $this->employee->getAllManagers(true);
-
-        return view('admin::admin.employees.create', compact('departments', 'designations', 'shifts', 'types', 'managers', 'languages', 'bloodgroups', 'roles', 'qualifications', 'useraddresses'));
+        return view('admin::admin.employees.create', compact('departments'));
     }
 
     /**
@@ -79,7 +66,15 @@ class EmployeeController extends AdminBaseController
      */
     public function store(CreateEmployeeRequest $request)
     {
-        $this->employee->create($request->all());
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password'=> 'ULKA'
+        ];
+        $user = app(UserRepository::class)->createWithRoles($data, 1 , true);
+
+        $this->employee->create($request->all() + ['user_id' => $user->id]);
 
         return redirect()->route('admin.admin.employee.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('admin::employees.title.employees')]));
@@ -105,6 +100,14 @@ class EmployeeController extends AdminBaseController
      */
     public function update(Employee $employee, UpdateEmployeeRequest $request)
     {
+        $employee = $this->employee->find($request->supervisor_id);
+
+        $user = app(UserRepository::class)->find($employee->user_id);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->save();
+
         $this->employee->update($employee, $request->all());
 
         return redirect()->route('admin.admin.employee.index')
@@ -114,7 +117,7 @@ class EmployeeController extends AdminBaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Employee $employee
+     * @eparam  Employee $employee
      * @return Response
      */
     public function destroy(Employee $employee)

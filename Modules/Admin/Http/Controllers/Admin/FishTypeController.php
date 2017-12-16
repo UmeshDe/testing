@@ -63,6 +63,7 @@ class FishTypeController extends AdminBaseController
     {
         $data = [
             'type' => $request->type,
+            'shortform' => $request->short_form,
             'created_by' => $this->auth->user()->id,
         ];
         $this->fishtype->create($data);
@@ -94,6 +95,7 @@ class FishTypeController extends AdminBaseController
         $fishtype = $this->fishtype->find($request->fishtype_id);
         $data = [
             'type' => $request->type,
+            'shortform' => $request->short_form,
             'created_by' => $this->auth->user()->id,
         ];
         $this->fishtype->update($fishtype, $data);

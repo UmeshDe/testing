@@ -12,5 +12,10 @@ class Employee extends Model
 
     protected $table = 'admin__employees';
     public $translatedAttributes = [];
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'user_id'
+    ];
 }

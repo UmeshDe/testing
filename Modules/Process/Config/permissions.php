@@ -65,7 +65,29 @@ return [
         'edit' => 'process::shipmentcartons.edit resource',
         'destroy' => 'process::shipmentcartons.destroy resource',
     ],
+    'process.repacks' => [
+        'index' => 'process::repacks.list resource',
+        'create' => 'process::repacks.create resource',
+        'edit' => 'process::repacks.edit resource',
+        'destroy' => 'process::repacks.destroy resource',
+    ],
+    'process.repackings' => [
+        'index' => 'process::repackings.list resource',
+        'create' => 'process::repackings.create resource',
+        'edit' => 'process::repackings.edit resource',
+        'destroy' => 'process::repackings.destroy resource',
+    ],
+    'process.packings' => [
+        'index' => 'process::packings.list resource',
+        'create' => 'process::packings.create resource',
+        'edit' => 'process::packings.edit resource',
+        'destroy' => 'process::packings.destroy resource',
+    ],
 // append
+
+
+
+
 
 
 

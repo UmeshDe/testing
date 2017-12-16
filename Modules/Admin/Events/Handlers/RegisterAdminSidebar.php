@@ -142,18 +142,25 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('admin.designations.index')
                     );
                 });
+                $item->item(trans('admin::buyercodes.title.buyercodes'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.admin.buyercode.create');
+                    $item->route('admin.admin.buyercode.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('admin.buyercodes.index')
+                    );
+                });
+                $item->item(trans('admin::internalcodes.title.internalcodes'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.admin.internalcode.create');
+                    $item->route('admin.admin.internalcode.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('admin.internalcodes.index')
+                    );
+                });
 // append
-
-
-
-
-
-
-
-
-
-
-
             });
         });
 

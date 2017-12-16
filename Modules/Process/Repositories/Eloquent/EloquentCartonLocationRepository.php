@@ -8,12 +8,14 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentCartonLocationRepository extends EloquentBaseRepository implements CartonLocationRepository
 {
-    public function addCarton($locationId, $carton)
+    public function addCarton($carton)
     {
 
         return $this->create([
             'carton_id' => $carton->id,
-            'location_id' => $locationId,
+            //Commented By umesh we are getting carton location direactly from carton
+//            'location_id' => $locationId,
+            'location_id' => $carton->location_id,
             'available_quantity' => $carton->no_of_cartons,
             'transit' => 0,
             'loose' => $carton->loose,

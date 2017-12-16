@@ -25,6 +25,8 @@
                                 <th>City Name</th>
                                 <th>Location</th>
                                 <th>Sublocation</th>
+                                <th>Landmark</th>
+                                <th>Street</th>
                                 <th>Details</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
@@ -37,6 +39,8 @@
                                 <td>{{$location->name}}</td>
                                 <td>{{$location->location}}</td>
                                 <td>{{$location->sublocation}}</td>
+                                <td>{{$location->landmark}}</td>
+                                <td>{{$location->street}}</td>
                                 <td>{{$location->details}}</td>
                                 <td>
                                     <a href="{{ route('admin.admin.location.edit', [$location->id]) }}">
@@ -45,7 +49,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a class="btn btn-default btn-flat category-edit-button" data-name="{{$location->name}}" data-location="{{$location->location}}" data-sublocation="{{$location->sublocation}}" data-details="{{$location->details}}" data-id="{{$location->id}}"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-default btn-flat category-edit-button" data-name="{{$location->name}}" data-location="{{$location->location}}" data-sublocation="{{$location->sublocation}}" data-landmark="{{$location->landmark}}" data-street="{{$location->street}}" data-details="{{$location->details}}" data-id="{{$location->id}}"><i class="fa fa-pencil"></i></a>
                                         <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.location.destroy', [$location->id]) }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </td>
@@ -89,9 +93,19 @@
                         <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "sublocation" autofocus placeholder="Enter Sublocation" value="{{ old('sublocation') }}">
                         {!! $errors->first('sublocation', '<span class="help-block">:message</span>') !!}
                     </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('landmark') ? ' has-error has-feedback' : '' }}">
+                        <label for="type-name">Landmark</label>
+                        <input type="text" class="form-control -flip-horizontal" id="type-landmark"  name = "landmark" autofocus placeholder="Enter Landmark" value="{{ old('landmark') }}">
+                        {!! $errors->first('landmark', '<span class="help-block">:message</span>') !!}
+                    </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('street') ? ' has-error has-feedback' : '' }}">
+                        <label for="type-name">Street</label>
+                        <input type="text" class="form-control -flip-horizontal" id="type-street"  name = "street" autofocus placeholder="Enter Street" value="{{ old('street') }}">
+                        {!! $errors->first('street', '<span class="help-block">:message</span>') !!}
+                    </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('details') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Details</label>
-                        <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "details" autofocus placeholder="Enter Details" value="{{ old('details') }}">
+                        <input type="text" class="form-control -flip-horizontal" id="type-details"  name = "details" autofocus placeholder="Enter Details" value="{{ old('details') }}">
                         {!! $errors->first('details', '<span class="help-block">:message</span>') !!}
                     </div>
                     <input type="hidden" name="location_id" id="location-id">
@@ -133,9 +147,19 @@
                         <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "sublocation" autofocus placeholder="Enter Sublocation" value="{{ old('sublocation') }}">
                         {!! $errors->first('sublocation', '<span class="help-block">:message</span>') !!}
                     </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('landmark') ? ' has-error has-feedback' : '' }}">
+                        <label for="type-name">Landmark</label>
+                        <input type="text" class="form-control -flip-horizontal" id="type-landmark"  name = "landmark" autofocus placeholder="Enter Landmark" value="{{ old('landmark') }}">
+                        {!! $errors->first('landmark', '<span class="help-block">:message</span>') !!}
+                    </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('street') ? ' has-error has-feedback' : '' }}">
+                        <label for="type-name">Street</label>
+                        <input type="text" class="form-control -flip-horizontal" id="type-street"  name = "street" autofocus placeholder="Enter Street" value="{{ old('street') }}">
+                        {!! $errors->first('street', '<span class="help-block">:message</span>') !!}
+                    </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('details') ? ' has-error has-feedback' : '' }}">
                         <label for="type-name">Details</label>
-                        <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "details" autofocus placeholder="Enter Details" value="{{ old('details') }}">
+                        <input type="text" class="form-control -flip-horizontal" id="type-details"  name = "details" autofocus placeholder="Enter Details" value="{{ old('details') }}">
                         {!! $errors->first('details', '<span class="help-block">:message</span>') !!}
                     </div>
 
@@ -217,6 +241,8 @@
                 $("#update-form").find('input[name="name"]').val($(this).data("name"));
                 $("#update-form").find('input[name="location"]').val($(this).data("location"));
                 $("#update-form").find('input[name="sublocation"]').val($(this).data("sublocation"));
+                $("#update-form").find('input[name="landmark"]').val($(this).data("landmark"));
+                $("#update-form").find('input[name="street"]').val($(this).data("street"));
                 $("#update-form").find('input[name="details"]').val($(this).data("details"));
                 $("#update-div").show();
             });

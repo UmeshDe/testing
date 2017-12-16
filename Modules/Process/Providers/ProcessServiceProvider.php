@@ -168,7 +168,47 @@ class ProcessServiceProvider extends ServiceProvider
                 return new \Modules\Process\Repositories\Cache\CacheShipmentCartonDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Process\Repositories\RepackRepository',
+            function () {
+                $repository = new \Modules\Process\Repositories\Eloquent\EloquentRepackRepository(new \Modules\Process\Entities\Repack());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Process\Repositories\Cache\CacheRepackDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Process\Repositories\RepackingRepository',
+            function () {
+                $repository = new \Modules\Process\Repositories\Eloquent\EloquentRepackingRepository(new \Modules\Process\Entities\Repacking());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Process\Repositories\Cache\CacheRepackingDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Process\Repositories\PackingRepository',
+            function () {
+                $repository = new \Modules\Process\Repositories\Eloquent\EloquentPackingRepository(new \Modules\Process\Entities\Packing());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Process\Repositories\Cache\CachePackingDecorator($repository);
+            }
+        );
 // add bindings
+
+
+
+
 
 
 

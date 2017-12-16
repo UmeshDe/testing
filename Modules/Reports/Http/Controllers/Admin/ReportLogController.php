@@ -7,6 +7,10 @@ use App\Libraries\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\BuyercodeRepository;
+use Modules\Admin\Repositories\FishTypeRepository;
+use Modules\Admin\Repositories\GradeRepository;
 use Modules\Page\Repositories\PageRepository;
 use Modules\Process\Repositories\ProductRepository;
 use Modules\Reports\Entities\ReportLog;
@@ -51,7 +55,24 @@ class ReportLogController extends AdminBaseController
             ->where('module_id','=',$module)
             ->pluck('name','id');
 
-        return view('reports::admin.reportlogs.index', compact('reports'));
+        $grade = app(GradeRepository::class)->allWithBuilder()
+            ->orderBy('grade')
+            ->pluck('grade','id');
+
+        $variety = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
+        $buyercode = app(BuyercodeRepository::class)->allWithBuilder()
+            ->orderBy('buyer_code')
+            ->pluck('buyer_code','id');
+        
+        $po = app(ProductRepository::class)->allWithBuilder()
+            ->orderBy('po_no')
+            ->pluck('po_no','id');
+        
+        
+        return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po'));
 
     }
 
@@ -129,13 +150,30 @@ class ReportLogController extends AdminBaseController
     {
         $reportType = app(ReportMasterRepository::class)->find($request->input('report_Type'));
         $reportClass = 'Modules\\Reports\\Reports\\'.Str::studly($reportType->class).'Report';
-
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));
-        $report = new $reportClass($reportType,$startDate, $endDate,true);
+        $buyercode = $request->buyer;
+        $grade = $request->grade;
+        $variety = $request->variety;
+        $po = $request->po;
 
+
+        $lastlot = app(ProductRepository::class)->allWithBuilder()
+            ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
+            ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
+            ->orderBy('lot_no','desc')
+            ->pluck('lot_no','id')
+            ->first();
+
+        $sum = app(ProductRepository::class)->allWithBuilder()
+            ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
+            ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
+            ->sum('no_of_cartons');
         
-
-        return $report->viewPDF();
+        
+        $report = new $reportClass($reportType,$startDate,$endDate,$sum,$lastlot,$buyercode,$grade,$variety,$po,true);
+        
+        return  $report->viewPDF();
+//        return view('reports::reports.dailyproduction' ,compact('report'));
     }
 }

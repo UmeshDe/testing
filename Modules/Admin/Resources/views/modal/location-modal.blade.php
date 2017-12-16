@@ -24,6 +24,16 @@
                     <input type="text" class="form-control" id="type-sublocation"  name = "sublocation" autofocus placeholder="Enter Sublocation" value="{{ old('sublocation') }}">
                     {!! $errors->first('sublocation', '<span class="help-block">:message</span>') !!}
                 </div>
+                <div class="form-group has-feedback {{ $errors->has('landmark') ? ' has-error has-feedback' : '' }}">
+                    <label for="type-landmark">Landmark</label>
+                    <input type="text" class="form-control" id="type-landmark"  name = "landmark" autofocus placeholder="Enter Landmark" value="{{ old('landmark') }}">
+                    {!! $errors->first('landmark', '<span class="help-block">:message</span>') !!}
+                </div>
+                <div class="form-group has-feedback {{ $errors->has('street') ? ' has-error has-feedback' : '' }}">
+                    <label for="type-street">Street</label>
+                    <input type="text" class="form-control" id="type-street"  name = "street" autofocus placeholder="Enter Street" value="{{ old('street') }}">
+                    {!! $errors->first('street', '<span class="help-block">:message</span>') !!}
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{ trans('core::core.button.cancel') }}</button>
@@ -41,6 +51,8 @@
                 name : $('#city-name').val(),
                 location : $('#type-location').val(),
                 sublocation : $('#type-sublocation').val(),
+                landmark : $('#type-landmark').val(),
+                street : $('#type-street').val(),
                 _token:$('meta[name="token"]').attr('value'),
             },
             success: function(data) {

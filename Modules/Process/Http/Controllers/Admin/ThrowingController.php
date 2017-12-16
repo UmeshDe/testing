@@ -2,6 +2,7 @@
 
 namespace Modules\Process\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use Modules\Process\Repositories\CartonLocationRepository;
 use Modules\Process\Repositories\CartonRepository;
 use Modules\Process\Repositories\ThrowingRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Repositories\UserRepository;
 
 class ThrowingController extends AdminBaseController
 {
@@ -53,11 +55,13 @@ class ThrowingController extends AdminBaseController
 
         $locations = app(LocationRepository::class)->allWithBuilder()
             ->orderBy('name')
-            ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
+            ->select(DB::raw("CONCAT(name,'-',location) AS name"),'id')
             ->pluck('name','id');
-        
+
+        $users = app(UserRepository::class)->all();
+
         $throwing = new Throwing();
-        return view('process::admin.throwings.create',compact('cartonlocation','locations','throwing'));
+        return view('process::admin.throwings.create',compact('cartonlocation','locations','throwing','users'));
     }
 
     /**
@@ -68,6 +72,7 @@ class ThrowingController extends AdminBaseController
      */
     public function store(CreateThrowingRequest $request)
     {
+        $user = auth()->user();
         $cartonRepo = app(CartonRepository::class)->find($request->cartId);
         $cartonRepo->no_of_cartons = $cartonRepo->no_of_cartons - $request->throwing_input;
         $cartonRepo->save();
@@ -81,13 +86,26 @@ class ThrowingController extends AdminBaseController
           'carton_date' => $request->carton_date,
             'location_id' => $request->location_id,
             'no_of_cartons' => $request->throwing_output,
-            'loose' => $request->loose_bags
+            'loose' => $request->loose_bags,
         ];
         $newCarton  =  $cartonRepo->create($data);
 
-        $this->throwing->create($request->all() + ['carton_id' => $newCarton->id ]);
+        $thowdata = [
+            'carton_date' => $request->carton_date,
+            'location_id' => $request->location_id,
+            'thowing_start_time' =>Carbon::parse($request->thowing_start_time),
+            'thowing_end_time' =>Carbon::parse($request->thowing_end_time),
+            'thowing_supervisor' => $request->thowing_supervisor,
+            'comment' => $request->comment,
+            'throwing_input' => $request->throwing_input,
+            'carton_id' => $newCarton->id,
+            'user_id' => $user->id,
+            'thowingdone_by' => $user->id
+        ];
 
-        $productLocation = app(CartonLocationRepository::class)->addCarton($request->location_id,$newCarton);
+        $this->throwing->create($thowdata);
+
+//        $productLocation = app(CartonLocationRepository::class)->addCarton($request->location_id,$newCarton);
 
 
         return redirect()->route('admin.process.throwing.index')
@@ -107,8 +125,9 @@ class ThrowingController extends AdminBaseController
             ->orderBy('name')
             ->select(DB::raw("CONCAT(name,'-',location,'-',sublocation) AS name"),'id')
             ->pluck('name','id');
+        $users = app(UserRepository::class)->all();
 
-        return view('process::admin.throwings.edit', compact('throwing','locations'));
+        return view('process::admin.throwings.edit', compact('throwing','locations','users'));
     }
 
     /**

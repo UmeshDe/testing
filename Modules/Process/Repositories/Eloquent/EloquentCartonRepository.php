@@ -11,14 +11,16 @@ use Modules\Process\Repositories\ProductRepository;
 class EloquentCartonRepository extends EloquentBaseRepository implements CartonRepository
 {
     public function createCarton(Product $product,$input){
-
+        
         $input['product_id'] = $product->id;
         $input['shipped'] = 0;
         $input['local_sale'] = 0;
         $input['waste'] = 0;
         $input['missing'] = 0;
         $input['qualitycheckdone'] = false;
-
+        $input['carton_type'] = $product->carton_type;
+        $input['bag_color'] = $product->bag_color;
+        $input['location_id'] = $product->location_id;
         return $this->create($input);
 
     }

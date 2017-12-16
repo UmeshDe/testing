@@ -6,6 +6,7 @@ return [
     'edit resource' => 'Edit Production',
     'destroy resource' => 'Destroy Production',
     'title' => [
+        'packing' => 'Packing',
         'products' => 'Production',
         'create product' => 'New Production',
         'edit product' => 'Edit',
@@ -13,6 +14,11 @@ return [
     'button' => [
         'create product' => 'New Production',
     ],
+    
+    'packing' => [
+        'create packing' => 'New Packing',  
+    ],
+    
     'table' => [
     ],
     'form' => [
@@ -22,7 +28,7 @@ return [
     'validation' => [
     ],
     'productdate' => 'Product Date',
-    'fishtype' => 'Fish Type',
+    'fishtype' => 'Variety',
     'cartontype' => 'Carton Type',
     'remark' => 'Remark',
 ];

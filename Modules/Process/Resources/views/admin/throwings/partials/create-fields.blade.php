@@ -2,12 +2,44 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group has-feedback {{ $errors->has('carton_date') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-4">New CartonDate:</label>
+                <label class="control-label col-sm-4">Thowing Date:</label>
                 <div class="col-sm-7">
                     <div class="input-group">
                         {!! Former::text('carton_date')->raw() !!}
                         <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="bootstrap-timepicker">
+                <div class="form-group has-feedback">
+                    <label class="control-label col-sm-4">Start Time:</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            {!! Former::text('thowing_start_time')->raw() !!}
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bootstrap-timepicker">
+                <div class="form-group has-feedback">
+                    <label class="control-label col-sm-4">End Time:</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            {!! Former::text('thowing_end_time')->raw() !!}
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -27,6 +59,20 @@
                      !!}
                 </div>
                 <input type="hidden" name="cartId" id="ctId">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group has-feedback {{ $errors->has('thowing_supervisor') ? ' has-error has-feedback' : '' }}">
+                <label for="thowing_supervisor" class="control-label col-sm-4">Supervisor:</label>
+                <div class="col-sm-7">
+                    {!!
+                         Former::select('thowing_supervisor')
+                         ->addOption(null)
+                        ->fromQuery($users,'first_name','id')
+                        ->addClass('select')
+                        ->raw()
+                     !!}
+                </div>
             </div>
         </div>
     </div>
@@ -62,84 +108,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-                <div class="col-sm-7">
-                    <div class="input-group">
-                        {!! Former::text('throwing_input_bags')->raw()
-                          ->data_bind("value: throwing_input_bags,valueUpdate: 'afterkeydown'")
-                          !!}
-                        <div class="input-group-addon">
-                            <b class="">Bags</b>
-                        </div>
-                    </div>
-                </div>
-        </div>
+        {{--<div class="col-md-6">--}}
+                {{--<div class="col-sm-7">--}}
+                    {{--<div class="input-group">--}}
+                        {{--{!! Former::text('throwing_input_bags')->raw()--}}
+                          {{--->data_bind("value: throwing_input_bags,valueUpdate: 'afterkeydown'")--}}
+                          {{--!!}--}}
+                        {{--<div class="input-group-addon">--}}
+                            {{--<b class="">Bags</b>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+        {{--</div>--}}
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('throwing_output_bags') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-4">Throwing Output:</label>
-                <div class="col-sm-7">
-                    <div class="input-group">
-                        {!! Former::text('throwing_output_bags')->raw()
-                            ->data_bind("value: throwing_output_bags,valueUpdate: 'afterkeydown'")
-                         !!}
-                        <div class="input-group-addon">
-                            <b class="">Bags</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="col-sm-7">
-                <div class="input-group">
-                    {!! Former::text('throwing_output')->raw()
-                         ->data_bind("value: throwing_output,valueUpdate: 'afterkeydown'")
-                     !!}
-                    <div class="input-group-addon">
-                        <b class="">Cartons</b>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('loose_bags') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-4">Loose Bags:</label>
-                <div class="col-sm-7">
-                    <div class="input-group">
-                        {!! Former::text('loose_bags')->raw()
-                            ->data_bind("value: loose_bags,valueUpdate: 'afterkeydown'")
-                         !!}
-                        <div class="input-group-addon">
-                            <b class="">Bags</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('available_loose_bags') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-3">Available Bags:</label>
-                <div class="col-sm-7">
-                    <div class="input-group">
-                        {!! Former::text('available_loose_bags')->raw()
-                         !!}
-                        {{--->data_bind("value: available_loose_bags,valueUpdate: 'afterkeydown'")--}}
-                        <div class="input-group-addon">
-                            <b class="">Bags</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group has-feedback {{ $errors->has('approval_no') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-4">Comment:</label>
+                <label class="control-label col-sm-4">Remark:</label>
                 <div class="col-sm-7">
                     {!!
                         Former::textarea('comment')->raw()

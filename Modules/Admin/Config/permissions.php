@@ -72,7 +72,21 @@ return [
         'edit' => 'admin::designations.edit resource',
         'destroy' => 'admin::designations.destroy resource',
     ],
+    'admin.buyercodes' => [
+        'index' => 'admin::buyercodes.list resource',
+        'create' => 'admin::buyercodes.create resource',
+        'edit' => 'admin::buyercodes.edit resource',
+        'destroy' => 'admin::buyercodes.destroy resource',
+    ],
+    'admin.internalcodes' => [
+        'index' => 'admin::internalcodes.list resource',
+        'create' => 'admin::internalcodes.create resource',
+        'edit' => 'admin::internalcodes.edit resource',
+        'destroy' => 'admin::internalcodes.destroy resource',
+    ],
 // append
+
+
 
 
 

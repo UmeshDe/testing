@@ -104,6 +104,8 @@ class LocationController extends AdminBaseController
             'name' => $request->name,
             'location' => $request->location,
             'sublocation' => $request->sublocation,
+            'landmark' => $request->landmark,
+            'street' => $request->street,
             'details' => $request->details,
             'created_by' => $this->auth->user()->id,
         ];

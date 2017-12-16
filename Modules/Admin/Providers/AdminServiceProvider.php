@@ -179,7 +179,33 @@ class AdminServiceProvider extends ServiceProvider
                 return new \Modules\Admin\Repositories\Cache\CacheDesignationDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Admin\Repositories\BuyercodeRepository',
+            function () {
+                $repository = new \Modules\Admin\Repositories\Eloquent\EloquentBuyercodeRepository(new \Modules\Admin\Entities\Buyercode());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Admin\Repositories\Cache\CacheBuyercodeDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Admin\Repositories\InternalcodeRepository',
+            function () {
+                $repository = new \Modules\Admin\Repositories\Eloquent\EloquentInternalcodeRepository(new \Modules\Admin\Entities\Internalcode());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Admin\Repositories\Cache\CacheInternalcodeDecorator($repository);
+            }
+        );
 // add bindings
+
+
 
 
 

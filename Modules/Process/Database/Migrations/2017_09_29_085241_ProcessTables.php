@@ -28,8 +28,6 @@ class ProcessTables extends Migration
             $table->string('product_slab')->nadmin__locationsullable();
             $table->unsignedInteger('fish_type');
             $table->foreign('fish_type')->references('id')->on('admin__fishtypes');
-
-
             $table->string('record_status')->nullable()->default("A");
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

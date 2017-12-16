@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\ApprovalNumber;
 use Modules\Admin\Entities\Bagcolor;
+use Modules\Admin\Entities\Buyercode;
 use Modules\Admin\Entities\CartonType;
 use Modules\Admin\Entities\CodeMaster;
 use Modules\Admin\Entities\FishType;
 use Modules\Admin\Entities\Location;
+use Modules\Admin\Repositories\BuyercodeRepository;
+use Modules\User\Entities\Sentinel\User;
 
 class Product extends Model
 {
@@ -76,7 +79,121 @@ class Product extends Model
         return $this->belongsTo(ApprovalNumber::class,'approval_no','id');
     }
 
-
-
-
+    public function buyer()
+    {
+        return $this->belongsTo(Buyercode::class,'buyercode_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function fm()
+    {
+        return $this->belongsTo(CodeMaster::class,'fm_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function fr()
+    {
+        return $this->belongsTo(CodeMaster::class,'fr_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function d()
+    {
+        return $this->belongsTo(CodeMaster::class,'d_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function s()
+    {
+        return $this->belongsTo(CodeMaster::class,'s_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function a()
+    {
+        return $this->belongsTo(CodeMaster::class,'a_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function c()
+    {
+        return $this->belongsTo(CodeMaster::class,'c_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function p()
+    {
+        return $this->belongsTo(CodeMaster::class,'p_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function b()
+    {
+        return $this->belongsTo(CodeMaster::class,'b_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function m()
+    {
+        return $this->belongsTo(CodeMaster::class,'m_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function w()
+    {
+        return $this->belongsTo(CodeMaster::class,'w_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function q()
+    {
+        return $this->belongsTo(CodeMaster::class,'q_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sc()
+    {
+        return $this->belongsTo(CodeMaster::class,'sc_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function lc()
+    {
+        return $this->belongsTo(CodeMaster::class,'lc_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function lastlot()
+    {
+        return $this->belongsTo(Product::class,'lot_no','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function packingdone()
+    {
+        return $this->belongsTo(User::class,'packingdone_by','id');
+    }
 }
+    

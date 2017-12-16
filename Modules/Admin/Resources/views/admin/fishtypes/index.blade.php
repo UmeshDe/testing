@@ -22,7 +22,8 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Type</th>
+                                <th>Variety</th>
+                                <th>Short Form</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -32,6 +33,7 @@
                             @foreach ($fishtypes as $fishtype)
                             <tr>
                                 <td>{{$fishtype->type}}</td>
+                                <td>{{$fishtype->shortform}}</td>
                                 <td>
                                     <a href="{{ route('admin.admin.fishtype.edit', [$fishtype->id]) }}">
                                         {{ $fishtype->created_at }}
@@ -39,7 +41,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a class="btn btn-default btn-flat category-edit-button" data-type="{{$fishtype->type}}" data-id="{{$fishtype->id}}"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-default btn-flat category-edit-button" data-type="{{$fishtype->type}}" data-id="{{$fishtype->id}}" data-shortform="{{$fishtype->shortform}}"><i class="fa fa-pencil"></i></a>
                                         <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.fishtype.destroy', [$fishtype->id]) }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </td>
@@ -73,6 +75,11 @@
                         <input type="text" class="form-control -flip-horizontal" id="type-type"  name = "type" autofocus placeholder="Enter Fish Name" value="{{ old('type') }}">
                         {!! $errors->first('type', '<span class="help-block">:message</span>') !!}
                     </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('short_form') ? ' has-error has-feedback' : '' }}">
+                        <label for="short-form">Short Form</label>
+                        <input type="text" class="form-control -flip-horizontal" id="short-form"  name = "short_form" autofocus placeholder="Enter Short Form" value="{{ old('short_form') }}">
+                        {!! $errors->first('short-form', '<span class="help-block">:message</span>') !!}
+                    </div>
                     <input type="hidden" name="fishtype_id" id="fishtype-id">
                     <input type="hidden" name="old_name" id="old-name">
 
@@ -90,7 +97,7 @@
             <!-- general form elements -->
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Fish Type</h3>
+                    <h3 class="box-title">Variety Type</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
@@ -98,9 +105,14 @@
                 {!! Form::open(['route' => ['admin.admin.fishtype.store'], 'method' => 'post','id'=>'create-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('type') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Fish Name</label>
+                        <label for="type-name">Variety Name</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-type"  name = "type" autofocus placeholder="Enter Fish Name" value="{{ old('type') }}">
                         {!! $errors->first('type', '<span class="help-block">:message</span>') !!}
+                    </div>
+                    <div class="form-group -flip-horizontal {{ $errors->has('short_form') ? ' has-error has-feedback' : '' }}">
+                        <label for="short-form">Short Form</label>
+                        <input type="text" class="form-control -flip-horizontal" id="short-form"  name = "short_form" autofocus placeholder="Enter Short Form" value="{{ old('short_form') }}">
+                        {!! $errors->first('short-form', '<span class="help-block">:message</span>') !!}
                     </div>
 
                 </div>
@@ -180,6 +192,7 @@
 
 
                 $("#update-form").find('input[name="type"]').val($(this).data("type"));
+                $("#update-form").find('input[name="short_form"]').val($(this).data("shortform"));
                 $("#update-div").show();
             });
 

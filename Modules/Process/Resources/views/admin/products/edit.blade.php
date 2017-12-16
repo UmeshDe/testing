@@ -1,16 +1,9 @@
 @extends('layouts.master')
 
 @section('content-header')
-    <h1>
-        {{ trans('process::products.title.edit product') }}
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i
-                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.process.product.index') }}">{{ trans('process::products.title.products') }}</a>
-        </li>
-        <li class="active">{{ trans('process::products.title.edit product') }}</li>
-    </ol>
+    {{--<h1>--}}
+        {{--{{ trans('process::products.packing.create packing') }}--}}
+    {{--</h1>--}}
 @stop
 
 @section('content')
@@ -28,12 +21,11 @@
     <div class="row">
         <div class="col-md-12">
             @include('partials.form-tab-headers')
-            @include('process::admin.products.partials.create-fields')
+            @include('process::admin.products.partials.edit-fields')
 
-            <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.update') }}</button>
+            <button type="submit" class="btn btn-primary pull-right btn-flat"><i class="fa fa-save"></i>{{ trans('core::core.button.create') }}</button>
             <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.product.index')}}"><i
                         class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-
         </div> {{-- end nav-tabs-custom --}}
     </div>
 
@@ -64,7 +56,6 @@
     });
 </script>
 <script>
-
 
     var selectcodes;
 
@@ -126,9 +117,11 @@
         var self = this;
         this.product_slab = ko.observable(model.product_slab);
         this.rejected = ko.observable(model.rejected);
+        this.human_error_slab = ko.observable(model.human_error_slab);
+        this.no_of_cartons = ko.observable(model.no_of_cartons);
 
         this.no_of_cartons = ko.computed(function () {
-            var value = self.product_slab() / 20 - Math.ceil((self.rejected() / parseFloat(2)));
+            var value = self.product_slab() / 20 - Math.ceil((self.rejected() / parseFloat(2))) - Math.ceil((self.human_error_slab() / parseFloat(2)));
             return (value) ? value : 0;
         });
 
@@ -136,14 +129,14 @@
             var value = (self.rejected() % 2);
             return (value) ? value : 0;
         });
+
+        this.diff_in_kg = ko.computed(function () {
+           var value = self.product_slab() - (self.no_of_cartons() * 20);
+           return (value) ? value : 0;
+        });
     };
 
     ko.applyBindings(new ViewModel(@json($product)));
 </script>
 
-{{--<style>--}}
-{{--.address{--}}
-{{--width: 100% !important;--}}
-{{--}--}}
-{{--</style>--}}
 @endpush

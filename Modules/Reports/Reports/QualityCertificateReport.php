@@ -42,7 +42,7 @@ class QualityCertificateReport extends AbstractReport
             'display_name' => 'Breaking',
         ],
         'depth' => [
-            'column_name' => 'depth',
+            'column_name' => 'length',
             'display_name' => 'Depth',
         ],
         'standard_gl' => [
@@ -50,7 +50,7 @@ class QualityCertificateReport extends AbstractReport
             'display_name' => 'Gel Strength',
         ],
         'whiteness' => [
-            'column_name' => 'whiteness',
+            'column_name' => 'kamaboko_hw',
             'display_name' => 'Whiteness',
         ],
         'contam' => [
@@ -71,12 +71,15 @@ class QualityCertificateReport extends AbstractReport
 
     public function setup()
     {
-
-        $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+        {
+            $this->reportMaster->sub_title = 'Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+        }
+        else{
+            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
-
-        $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
 
         $queryBuilder = QualityParameter::with('carton','carton.product', 'user', 'kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 

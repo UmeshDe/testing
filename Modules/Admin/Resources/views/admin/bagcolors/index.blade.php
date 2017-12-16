@@ -65,7 +65,6 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-
                 {!! Form::open(['route' => ['admin.admin.bagcolor.update'], 'method' => 'post','id'=>'update-form']) !!}
                 <div class="box-body">
                     <div class="form-group -flip-horizontal {{ $errors->has('color') ? ' has-error has-feedback' : '' }}">

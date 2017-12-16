@@ -5,7 +5,10 @@ namespace Modules\Process\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Admin\Repositories\EmployeeRepository;
+use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Admin\Repositories\GradeRepository;
+use Modules\Admin\Repositories\InternalcodeRepository;
 use Modules\Admin\Repositories\KindRepository;
 use Modules\Process\Entities\Carton;
 use Modules\Process\Entities\QualityParameter;
@@ -58,13 +61,23 @@ class QualityParameterController extends AdminBaseController
             ->orderBy('grade')
             ->pluck('grade','id');
 
-        $kinds = app(KindRepository::class)->allWithBuilder()
-            ->orderBy('kind')
-            ->pluck('kind','id');
 
+        //Kind means Fishtype
+        $kinds = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
+        $internalcode = app(InternalcodeRepository::class)->allWithBuilder()
+             ->orderBy('internal_code')
+            ->pluck('internal_code','id');
+
+        $supervisor = app(EmployeeRepository::class)->allWithBuilder()
+            ->orderBy('first_name')
+            ->pluck('first_name','id');
+        
         $users = app(UserRepository::class)->all();
 
-        return view('process::admin.qualityparameters.create',compact('kinds','grades','qualityparameter','cartons','users'));
+        return view('process::admin.qualityparameters.create',compact('kinds','grades','qualityparameter','cartons','users','supervisor','internalcode'));
     }
 
     /**
@@ -111,13 +124,22 @@ class QualityParameterController extends AdminBaseController
             ->orderBy('grade')
             ->pluck('grade','id');
 
-        $kinds = app(KindRepository::class)->allWithBuilder()
-            ->orderBy('kind')
-            ->pluck('kind','id');
+        //Kind Means Fishtype
+        $kinds = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
+        $internalcode = app(InternalcodeRepository::class)->allWithBuilder()
+            ->orderBy('internal_code')
+            ->pluck('internal_code','id');
+
+        $supervisor = app(EmployeeRepository::class)->allWithBuilder()
+            ->orderBy('first_name')
+            ->pluck('first_name','id');
 
         $cartons = app(CartonRepository::class)->findByAttributes(['id' => $qualityparameter->carton_id]);
 
-        return view('process::admin.qualityparameters.edit', compact('qualityparameter','cartons','grades','kinds','users'));
+        return view('process::admin.qualityparameters.edit', compact('qualityparameter','cartons','grades','kinds','users','internalcode','supervisor'));
 
     }
 

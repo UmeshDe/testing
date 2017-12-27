@@ -33,6 +33,12 @@ class TransferReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'type'
         ],
+        'vehicle_no' => [
+            'column_name'=>'transfer',
+            'display_name'=>'Vehicle No',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'vehicle_no'
+        ],
         'lot_no'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Loading Lot No',
@@ -40,10 +46,10 @@ class TransferReport extends AbstractReport
             'relation_column' => 'lot_no'
         ],
         'bc'=> [
-            'column_name'=>'carton.product',
+            'column_name'=>'carton.product.buyer',
             'display_name'=>'BC',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' => 'buyer'
+            'relation_column' => 'buyer_code'
         ],
         'appr_no'=>[
             'column_name'=>'carton.product.approval',
@@ -67,6 +73,26 @@ class TransferReport extends AbstractReport
             'column_name'=>'quantity',
             'display_name'=>'Loading No Of Cartons',
         ],
+        'loading_start_time'=> [
+            'column_name'=>'transfer',
+            'display_name'=>'Loading Start Time',
+            'format' => REPORT_DATETIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'loading_start_time'
+        ],
+        'loading_end_time'=> [
+            'column_name'=>'transfer',
+            'display_name'=>'Loading End Time',
+            'format' => REPORT_DATETIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'loading_end_time'
+        ],
+        'loading_supervisor'=> [
+            'column_name'=>'transfer.loadingsupervisor',
+            'display_name'=>'Loading Supervisor',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'first_name'
+        ],
         'loading_sub_loc'=> [
             'column_name'=>'transfer',
             'display_name'=>'Loading Sub Location',
@@ -81,13 +107,33 @@ class TransferReport extends AbstractReport
         ],
         'unloading_lot_no'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Lot No',
+            'display_name'=>'Unloading Lot No',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'lot_no'
         ],
         'unloading_no_qty'=>[
             'column_name'=>'received_quantity',
             'display_name'=>'Unloading Carton',
+        ],
+        'unloading_start_time'=> [
+            'column_name'=>'transfer',
+            'display_name'=>'Loading Start Time',
+            'format' => REPORT_DATETIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'unloading_start_time'
+        ],
+        'unloading_end_time'=> [
+            'column_name'=>'transfer',
+            'display_name'=>'Loading End Time',
+            'format' => REPORT_DATETIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'unloading_end_time'
+        ],
+        'unloading_supervisor'=> [
+            'column_name'=>'transfer.unloadingsupervisor',
+            'display_name'=>'Unoading Supervisor',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'first_name'
         ],
         'unloading_sub_loc'=> [
             'column_name'=>'transfer',

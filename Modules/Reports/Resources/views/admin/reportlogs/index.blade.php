@@ -67,6 +67,7 @@
                              <div class="col-lg-8 col-sm-8">
                                  {!!
                                      Former::select('grade')
+                                          ->addOption(null)
                                          ->fromQuery($grade,'grade','id')
                                          ->select('1')
                                          ->raw()
@@ -82,6 +83,7 @@
                              <div class="col-lg-8 col-sm-8">
                                  {!!
                                      Former::select('variety')
+                                         ->addOption(null)
                                          ->fromQuery($variety,'type','id')
                                          ->select('1')
                                          ->raw()
@@ -99,6 +101,7 @@
                                 <div class="col-lg-8 col-sm-8">
                                     {!!
                                         Former::select('buyer')
+                                            ->addOption(null)
                                             ->fromQuery($buyercode,'buyer_code','id')
                                             ->select('1')
                                             ->raw()
@@ -108,17 +111,32 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                <label for="report_Type" class="control-label col-lg-2 col-sm-2">
                                     PO
                                 </label>
-                                <div class="col-lg-8 col-sm-8">
-                                    {!!
-                                        Former::select('po')
-                                            ->fromQuery($po,'po_no','id')
-                                            ->select('1')
-                                            ->raw()
-                                    !!}
+                                {{--<div class="col-lg-8 col-sm-8">--}}
+                                    {{--{!!--}}
+                                        {{--Former::select('po')--}}
+                                            {{--->fromQuery($po,'po_no','id')--}}
+                                            {{--->select('1')--}}
+                                            {{--->raw()--}}
+                                    {{--!!}--}}
+                                {{--</div>--}}
+                                <div class="form-group has-feedback {{ $errors->has('po') ? ' has-error has-feedback' : '' }}">
+                                    {!! $errors->first('po', '<span class="help-block">:message</span>') !!}
+                                    <select class="itemName dropdown" id="po" name="po">
+                                        <option></option>
+                                            @foreach($po as $p)
+                                                <option value="{{$p->po_no}}">
+                                                    {{$p->po_no}}
+                                                </option>
+                                                @endforeach
+
+                                    </select>
                                 </div>
+
+
+
                             </div>
                         </div>
 
@@ -206,6 +224,9 @@
                 actions: [
                     { key: 'c', route: "<?= route('admin.reports.reportlog.create') ?>" }
                 ]
+            });
+            $('#po').select2({
+                width: '50%'
             });
         });
     </script>

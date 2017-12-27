@@ -19,12 +19,14 @@ class BuyerCodewiseShipmentReport extends AbstractReport
             'column_name'=>'carton.product',
             'display_name'=>'Product Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format'=> REPORT_DATE_FORMAT,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format'=> REPORT_DATE_FORMAT,
             'relation_column' => 'carton_date'
         ],
         'variety'=> [
@@ -58,7 +60,7 @@ class BuyerCodewiseShipmentReport extends AbstractReport
             'relation_column' =>'no_of_cartons'
         ],
         'grade'=>[
-            'column_name'=>'carton.qualitycheck',
+            'column_name'=>'carton.qualitycheck.grades',
             'display_name'=>'Grade',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'grade'
@@ -141,26 +143,25 @@ class BuyerCodewiseShipmentReport extends AbstractReport
         ],
     ];
 
+    public $code;
+
 
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->reportMaster->sub_title = 'Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by :_________________'.'   Verified by :_________________  '. 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
+        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
 
 //        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
 //            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
 
         $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
-            $q->where('buyercode_id', $this->buyer );});
+            $q->where('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
+            $query->orderBy('po_no');
+        });
+
+
 
 
         $this->data = $queryBuilder->get();

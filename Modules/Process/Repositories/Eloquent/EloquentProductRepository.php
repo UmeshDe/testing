@@ -18,11 +18,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $user = auth()->user();
         
         return $this->create([
-            'product_date' =>Carbon::parse($request->product_date),
+            'product_date' => Carbon::parse($request->product_date),
             'no_of_cartons' => $request->no_of_cartons,
             'rejected' => $request->rejected,
             'loose' => $request->loose,
-            'location_id' => $request->location_id,
             'approval_no' => $request->approval_no,
             'po_no' => $request->po_no,
             'bag_color' => $request->bag_color,
@@ -44,7 +43,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             'q_id' => $request->q_id,
             'sc_id' => $request->sc_id,
             'lc_id' => $request->lc_id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'cm' => $request->cm
         ]);
     }
 
@@ -60,7 +60,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 'rejected' => $request->rejected,
                 'loose' => $request->loose,
                 'carton_type' => $request->carton_type,
-//                'location_id' => $request->location_id,
+                'location_id' => $request->location_id,
 //                'approval_no' => $request->approval_no,
                 'po_no' => $request->po_no,
                 'lot_no' => $request->lot_no,
@@ -71,6 +71,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 'diff_in_kg' => $request->diff_in_kg,
                 'packingdone' => true,
                 'packingdone_by' => $user->id,
+                'cm' => $request->cm
             ]);
     }
 }

@@ -4,6 +4,9 @@ namespace Modules\Reports\Reports;
 
 use Hamcrest\Text\SubstringMatcher;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\FishTypeRepository;
+use Modules\Admin\Repositories\GradeRepository;
+use Modules\Process\Entities\CartonLocation;
 use Modules\Process\Entities\QualityParameter;
 use Carbon\Carbon;
 use Modules\Process\Repositories\CartonLocationRepository;
@@ -20,12 +23,14 @@ class SurimiProductionQualityStockReport extends AbstractReport
         'product_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Production Date',
+            'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
+            'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'carton_date'
         ],
@@ -143,6 +148,7 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
         'inspection_date'=>[
             'column_name'=>'inspection_date',
+            'format' => REPORT_DATE_FORMAT,
             'display_name'=>'Inspection Date',
         ],
         'no_of_cartons'=>[
@@ -211,6 +217,9 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
     ];
 
+    public $date;
+
+    public $total;
 
     public function formatCode($codes){
         return count($codes);
@@ -218,21 +227,57 @@ class SurimiProductionQualityStockReport extends AbstractReport
 
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->reportMaster->sub_title = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->reportMaster->sub_title = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        $this->reportMaster->footer =  'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
 
-        $queryBuilder = QualityParameter::with('carton','carton.cartonlocation','carton.product','carton.product.codes','user','kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        if($this->grade != null || $this->grade != "")
+        {
+            $grade = app(GradeRepository::class)->find($this->grade);
+            $this->date = 'Grade: ' . $grade->grade ;
+            $queryBuilder = QualityParameter::with('carton','carton.cartonlocation','carton.product','carton.product.codes','user')
+            ->where('grade_id',$this->grade);
 
-        $this->reportMaster->subfooter = app(CartonLocationRepository::class)->all()->sum('available_quantity');
+            $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
+                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
+                ->where('grade_id',$this->grade)
+                ->get();
+        }
+        else if($this->variety != null || $this->variety != "") {
+
+            $fishtype = app(FishTypeRepository::class)->find($this->variety);
+            $this->date = 'Fish Type: ' . $fishtype->type ;
+            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
+                $q->where('fish_type', $this->variety);
+            });
+
+            $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
+                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
+                ->where('fish_type',$this->variety)
+                ->get();
+
+        }
+        else
+        {
+            $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '_____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton', function ($q) {
+                $q->whereDate('carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('carton_date', '<=', $this->endDate->format('Y-m-d'));
+            });
+
+            $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
+                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
+                ->whereDate('process__cartons.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__cartons.carton_date', '<=', $this->endDate->format('Y-m-d'))
+                ->get();
+
+        }
 
         $this->data = $queryBuilder->get();
 

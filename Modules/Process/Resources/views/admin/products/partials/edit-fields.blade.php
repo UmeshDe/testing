@@ -455,7 +455,6 @@
                     <div class="col-sm-8">
                         {!!
                              Former::select('location_id')
-                            ->disabled()
                              ->addOption(null)
                             ->fromQuery($locations,'name','id')
                             ->addClass('select')
@@ -496,6 +495,14 @@
                           ->addClass('select')
                           ->raw()
                        !!}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group has-feedback {{ $errors->has('cm') ? 'has-erro has-feedback' : '' }}">
+                    <label for="cm" class="control-label col-sm-5">CM:</label>
+                    <div class="col-sm-7">
+                        {!! Former::text('cm')->raw() !!}
                     </div>
                 </div>
             </div>

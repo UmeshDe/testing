@@ -8,6 +8,11 @@
 @endsection
 
 @section('content')
+    <?php
+            $buyer = app(\Modules\Admin\Repositories\BuyercodeRepository::class)->find($report->buyer);
+    ?>
+
+
 
     <table class="export-table">
         <thead>
@@ -15,7 +20,7 @@
             <td colspan="22" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="22" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="22" align="left"> {{$report->reportMaster->sub_title = 'Buyer Code :' . $buyer->buyer_code}}</td>
         </tr>
         <tr>
             <td colspan="10" align="left"> </td>
@@ -95,6 +100,14 @@
                 @endforeach
             </tr>
         @endforeach
+        {{--<tfoot>--}}
+        {{--<tr>--}}
+            {{--<td colspan="12" align="center"></td>--}}
+            {{--<td colspan="3"> SHIPPED</td>--}}
+            {{--<td>{{$report->reportMaster->subfooter}}</td>--}}
+
+        {{--</tr>--}}
+        {{--</tfoot>--}}
     </table>
 @endsection
 

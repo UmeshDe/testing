@@ -74,6 +74,7 @@ class EloquentTransferRepository extends EloquentBaseRepository implements Trans
         $transfer->unloading_date = Carbon::parse ($request->unloading_date);
         $transfer->unloading_supervisor = $request->unloading_supervisor;
         $transfer->unloading_start_time = Carbon::parse($request->unloading_start_time) ;
+        $transfer->unloading_end_time = Carbon::parse($request->unloading_end_time) ;
         $transfer->status = $request->status;
         $transfer->unloading_gate_pass_no = $request->unloading_gate_pass_no;
         $transfer->unloading_remark = $request->unloading_remark;

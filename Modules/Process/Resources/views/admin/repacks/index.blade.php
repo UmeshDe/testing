@@ -29,9 +29,8 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Carton Date</th>
+                                <th>Repack Date</th>
                                 <th>Location</th>
-                                <th>Damaged Cartons</th>
                                 <th>Repacked Cartons</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
@@ -42,12 +41,11 @@
                             <?php foreach ($repacks as $repack): ?>
                             <tr>
                                 <td>
-                                    {{isset($repack->carton_date)?\Carbon\Carbon::parse($repack->carton_date)->format(PHP_DATE_FORMAT) : '' }}
+                                    {{isset($repack->repack_date)?\Carbon\Carbon::parse($repack->repack_date)->format(PHP_DATE_FORMAT) : '' }}
                                 </td>
                                 <td>
                                     {{$repack->location}}
                                 </td>
-                                <td>{{$repack->damaged_cartons}}</td>
                                 <td>{{$repack->repacked_cartons}}</td>
                                 <td>
                                     <a href="{{ route('admin.process.repack.edit', [$repack->id]) }}">

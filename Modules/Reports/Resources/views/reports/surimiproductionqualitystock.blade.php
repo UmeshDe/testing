@@ -15,8 +15,12 @@
             <td colspan="35" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="15" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
-            <td colspan="20" align="center">Total {{$report->reportMaster->subfooter}}</td>
+            <td colspan="15" align="left"> {{$report->date}}</td>
+            <td colspan="20" align="center">
+            @foreach($report->total as $total)
+                {{$total->total}}
+                @endforeach
+            </td>
         </tr>
         <tr>
             <td colspan="26" align="left"> </td>
@@ -100,7 +104,9 @@
         <tr>
             <td colspan="24" align="center"></td>
             <td colspan="2"> Total No. Of Cartons</td>
-            <td>{{$report->reportMaster->subfooter}}</td>
+            @foreach($report->total as $total)
+                <td>{{$total->total}}</td>
+            @endforeach
             <td colspan="9"></td>
         </tr>
         </tfoot>

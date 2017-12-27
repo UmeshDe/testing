@@ -81,14 +81,14 @@ class ThrowingController extends AdminBaseController
         $updateCartonLocation->available_quantity = $updateCartonLocation->available_quantity - $request->throwing_input;
         $updateCartonLocation->save();
 
-        $data = [
-            'product_id' => $cartonRepo->product_id,
-          'carton_date' => $request->carton_date,
-            'location_id' => $request->location_id,
-            'no_of_cartons' => $request->throwing_output,
-            'loose' => $request->loose_bags,
-        ];
-        $newCarton  =  $cartonRepo->create($data);
+//        $data = [
+//            'product_id' => $cartonRepo->product_id,
+//          'carton_date' => $request->carton_date,
+//            'location_id' => $request->location_id,
+//            'no_of_cartons' => $request->throwing_output,
+//            'loose' => $request->loose_bags,
+//        ];
+//        $newCarton  =  $cartonRepo->create($data);
 
         $thowdata = [
             'carton_date' => $request->carton_date,
@@ -98,7 +98,7 @@ class ThrowingController extends AdminBaseController
             'thowing_supervisor' => $request->thowing_supervisor,
             'comment' => $request->comment,
             'throwing_input' => $request->throwing_input,
-            'carton_id' => $newCarton->id,
+            'carton_id' => $request->cartId,
             'user_id' => $user->id,
             'thowingdone_by' => $user->id
         ];

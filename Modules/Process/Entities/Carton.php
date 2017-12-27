@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\Entities\Bagcolor;
 use Modules\Admin\Entities\CartonType;
+use Modules\Admin\Entities\Location;
 
 class Carton extends Model
 {
@@ -79,6 +80,13 @@ class Carton extends Model
     public function cartonlocation()
     {
         return $this->hasOne(CartonLocation::class,'carton_id','id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class,'location_id','id');
     }
 
 }

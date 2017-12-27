@@ -103,7 +103,7 @@ class QualityCheckReport extends AbstractReport
 
         $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name . "\n" . ' . Qualitycheckdone by :_________________' ;
 
-        $queryBuilder = QualityParameter::with('carton','carton.product','user','kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

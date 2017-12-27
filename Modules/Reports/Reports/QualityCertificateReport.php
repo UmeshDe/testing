@@ -81,7 +81,7 @@ class QualityCertificateReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $queryBuilder = QualityParameter::with('carton','carton.product', 'user', 'kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = QualityParameter::with('carton','carton.product', 'user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

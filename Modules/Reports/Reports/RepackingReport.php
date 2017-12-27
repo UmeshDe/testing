@@ -13,72 +13,105 @@ class RepackingReport extends AbstractReport
             'display_name'=>'Sr No',
             'type'=> REPORT_ROWNO_COLUMN
         ],
-        'vehicle_no'=>[
-            'column_name'=>'shipment',
-            'display_name'=>'Variety',
+        'production_date' => [
+            'column_name' => 'carton.product',
+            'display_name' => 'Production Date',
+            'format' => REPORT_DATE_FORMAT,
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'product_date'
+         ],
+        'carton_date' => [
+            'column_name' => 'carton',
+            'display_name' => 'Carton Date',
+            'format' => REPORT_DATE_FORMAT,
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'carton_date'
         ],
-        'date'=>[
-            'column_name'=>'date',
-            'display_name'=>'Date',
+        'variety' => [
+            'column_name' => 'carton.product',
+            'display_name' => 'Variety',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'fishtype'
         ],
         'lot_no'=> [
-            'column_name'=>'shipment',
+            'column_name'=> 'carton.product',
             'display_name'=>'Lot No',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'lot_no'
         ],
         'bag_color'=> [
-            'column_name'=>'shipment',
+            'column_name'=>'carton',
             'display_name'=>'Bag Color',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'bagColor'
         ],
         'no_of_cartons'=> [
-            'column_name'=>'shipment',
+            'column_name'=>'carton',
             'display_name'=>'No.Of.Cartons',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'no_of_cartons'
         ],
         'repacked_spp' => [
-            'column_name'=>'shipment',
+            'column_name'=>'fishtype',
             'display_name'=>'Repacke SPP',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'type'
         ],
         'repacked_date' => [
-            'column_name'=>'shipment',
+            'column_name'=>'repack_date',
+            'format' => REPORT_DATE_FORMAT,
             'display_name'=>'Repacke Date',
         ],
         'repacked_lotno' => [
-            'column_name'=>'shipment',
+            'column_name'=>'lot_no',
             'display_name'=>'Repacke Lot No',
         ],
         'repacked_bagcolor' => [
-            'column_name'=>'shipment',
+            'column_name'=>'bagcolor',
             'display_name'=>'Repacke Bag Color',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'color'
         ],
         'repacked_cartons' => [
-            'column_name'=>'shipment',
+            'column_name'=>'repacked_cartons',
             'display_name'=>'Repacke Cartons',
         ],
         'repacked_grade' => [
-            'column_name'=>'shipment',
+            'column_name'=>'grade',
             'display_name'=>'Repacke Grade',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'grade'
         ],
         'remark' => [
-            'column_name'=>'shipment',
+            'column_name'=>'remark',
             'display_name'=>'Remark',
         ],
+        'repackingdone_by' => [
+            'column_name'=>'repack',
+            'display_name'=>'Repacking Done By',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'first_name'
+        ],
     ];
-
-
+    
+    public $date;
+    
+    
     public function setup(){
 
         if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
         {
-            $this->reportMaster->sub_title = 'Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Repacking Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
         }
         else{
-            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Repacking From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Repacking To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
         }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by :_________________'.'   Verified by :_________________  '. 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
+        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
 
-        $queryBuilder = Repack::with('carton')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = Repack::with('carton','carton.product')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

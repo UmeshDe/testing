@@ -70,4 +70,12 @@ class Throwing extends Model
     {
         return $this->belongsTo(User::class,'thowingdone_by','id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class,'thowing_supervisor','id');
+    }
 }

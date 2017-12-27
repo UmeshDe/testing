@@ -142,13 +142,6 @@ class DailyProductionReport extends AbstractReport
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'code'
         ],
-//        'code' =>[
-//            'column_name'=>'codes',
-//            'display_name'=>'Code No',
-//            'type'=>REPORT_RELATION_COLUMN,
-//            'function' => MODEL_ATTRIBUTE_AS_STRING,
-//            'relation_column' =>'code'
-//        ],
         'bc' =>[
             'column_name'=>'buyer',
             'display_name'=>'Buyer Code',
@@ -170,6 +163,8 @@ class DailyProductionReport extends AbstractReport
             'relation_column' =>'first_name'
         ],
     ];
+    
+    public $date;
 
 
     public function formatCode($codes){
@@ -180,10 +175,10 @@ class DailyProductionReport extends AbstractReport
 
         if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
         {
-            $this->reportMaster->sub_title = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
         }
         else{
-            $this->reportMaster->sub_title = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
         }
 
         $this->reportMaster->sub_title_style = 'text-align:left';

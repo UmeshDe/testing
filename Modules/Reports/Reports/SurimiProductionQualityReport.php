@@ -4,6 +4,7 @@ namespace Modules\Reports\Reports;
 
 use Modules\Process\Entities\QualityParameter;
 use Carbon\Carbon;
+use Modules\Process\Repositories\ProductRepository;
 use PDF;
 
 class SurimiProductionQualityReport extends AbstractReport
@@ -200,24 +201,33 @@ class SurimiProductionQualityReport extends AbstractReport
     public function formatCode($codes){
         return count($codes);
     }
-
+    
+    public $date;
+    public $sum;
+    
     public function setup(){
 
         if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
         {
-            $this->reportMaster->sub_title = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
         }
         else{
-            $this->reportMaster->sub_title = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
         }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name ;
+        $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name ;
 
+
+        $this->sum = app(ProductRepository::class)->allWithBuilder()
+            ->whereDate('created_at' , '>=' ,  $this->startDate->format('Y-md-d'))
+            ->whereDate('created_at' , '<=' ,  $this->endDate->format('Y-m-d'))
+            ->sum('no_of_cartons');
+        
         $this->reportMaster->subfooter = $this->sum;
 
-        $queryBuilder = QualityParameter::with('carton','carton.product','carton.product.codes','user','kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = QualityParameter::with('carton','carton.product','carton.product.codes','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

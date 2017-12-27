@@ -44,72 +44,64 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     'admin.admin.module.index'
                 );
                 $item->item(trans('admin::approvalnumbers.title.approvalnumbers'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-check');
                     $item->weight(0);
-                    $item->append('admin.admin.approvalnumber.create');
                     $item->route('admin.admin.approvalnumber.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.approvalnumbers.index')
                     );
                 });
                 $item->item(trans('admin::bagcolors.title.bagcolors'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-eyedropper');
                     $item->weight(0);
-                    $item->append('admin.admin.bagcolor.create');
                     $item->route('admin.admin.bagcolor.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.bagcolors.index')
                     );
                 });
                 $item->item(trans('admin::cartontypes.title.cartontypes'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-shopping-basket');
                     $item->weight(0);
-                    $item->append('admin.admin.cartontype.create');
                     $item->route('admin.admin.cartontype.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.cartontypes.index')
                     );
                 });
                 $item->item(trans('admin::codemasters.title.codemasters'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-code');
                     $item->weight(0);
-                    $item->append('admin.admin.codemaster.create');
                     $item->route('admin.admin.codemaster.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.codemasters.index')
                     );
                 });
                 $item->item(trans('admin::departments.title.departments'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-building');
                     $item->weight(0);
-                    $item->append('admin.admin.department.create');
                     $item->route('admin.admin.department.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.departments.index')
                     );
                 });
                 $item->item(trans('admin::employees.title.employees'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-user');
                     $item->weight(0);
-                    $item->append('admin.admin.employee.create');
                     $item->route('admin.admin.employee.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.employees.index')
                     );
                 });
                 $item->item(trans('admin::fishtypes.title.fishtypes'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-cutlery');
                     $item->weight(0);
-                    $item->append('admin.admin.fishtype.create');
                     $item->route('admin.admin.fishtype.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.fishtypes.index')
                     );
                 });
                 $item->item(trans('admin::grades.title.grades'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-thermometer-three-quarters');
                     $item->weight(0);
-                    $item->append('admin.admin.grade.create');
                     $item->route('admin.admin.grade.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.grades.index')
@@ -118,43 +110,38 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item(trans('admin::kinds.title.kinds'), function (Item $item) {
                     $item->icon('fa fa-copy');
                     $item->weight(0);
-                    $item->append('admin.admin.kind.create');
                     $item->route('admin.admin.kind.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.kinds.index')
                     );
                 });
                 $item->item(trans('admin::locations.title.locations'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-map-marker');
                     $item->weight(0);
-                    $item->append('admin.admin.location.create');
                     $item->route('admin.admin.location.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.locations.index')
                     );
                 });
                 $item->item(trans('admin::designations.title.designations'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-user-md');
                     $item->weight(0);
-                    $item->append('admin.admin.designation.create');
                     $item->route('admin.admin.designation.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.designations.index')
                     );
                 });
                 $item->item(trans('admin::buyercodes.title.buyercodes'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-cart-arrow-down');
                     $item->weight(0);
-                    $item->append('admin.admin.buyercode.create');
                     $item->route('admin.admin.buyercode.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.buyercodes.index')
                     );
                 });
                 $item->item(trans('admin::internalcodes.title.internalcodes'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-file-code-o');
                     $item->weight(0);
-                    $item->append('admin.admin.internalcode.create');
                     $item->route('admin.admin.internalcode.index');
                     $item->authorize(
                         $this->auth->hasAccess('admin.internalcodes.index')

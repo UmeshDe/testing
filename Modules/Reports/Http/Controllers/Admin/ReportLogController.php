@@ -67,10 +67,8 @@ class ReportLogController extends AdminBaseController
             ->orderBy('buyer_code')
             ->pluck('buyer_code','id');
         
-        $po = app(ProductRepository::class)->allWithBuilder()
-            ->orderBy('po_no')
-            ->pluck('po_no','id');
-        
+        $po = app(ProductRepository::class)->all();
+
         
         return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po'));
 
@@ -157,7 +155,6 @@ class ReportLogController extends AdminBaseController
         $variety = $request->variety;
         $po = $request->po;
 
-
         $lastlot = app(ProductRepository::class)->allWithBuilder()
             ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
             ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
@@ -165,13 +162,12 @@ class ReportLogController extends AdminBaseController
             ->pluck('lot_no','id')
             ->first();
 
-        $sum = app(ProductRepository::class)->allWithBuilder()
-            ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
-            ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
-            ->sum('no_of_cartons');
+//        $sum = app(ProductRepository::class)->allWithBuilder()
+//            ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
+//            ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
+//            ->sum('no_of_cartons');
         
-        
-        $report = new $reportClass($reportType,$startDate,$endDate,$sum,$lastlot,$buyercode,$grade,$variety,$po,true);
+        $report = new $reportClass($reportType,$startDate,$endDate,$lastlot,$buyercode,$grade,$variety,$po,true);
         
         return  $report->viewPDF();
 //        return view('reports::reports.dailyproduction' ,compact('report'));

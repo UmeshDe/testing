@@ -17,20 +17,22 @@ class MandWReport extends AbstractReport
         'product_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Product Date',
+            'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
+            'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'carton_date'
         ],
         'kind'=> [
-            'column_name'=>'kinds',
+            'column_name'=>'carton.product',
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'kind'
+            'relation_column' => 'fishtype'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -61,22 +63,24 @@ class MandWReport extends AbstractReport
             'relation_column' =>'remark'
         ],
     ];
-
-
+    
+    public $date;
+    
+    
     public function setup(){
 
         if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
         {
-            $this->reportMaster->sub_title = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
         }
         else{
-            $this->reportMaster->sub_title = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
         }
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        $this->reportMaster->footer =  'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
 
-        $queryBuilder = QualityParameter::with('carton','carton.product','user','kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereDate('inspection_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('inspection_date' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

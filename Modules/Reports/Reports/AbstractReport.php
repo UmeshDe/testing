@@ -17,10 +17,11 @@ class AbstractReport
     public $grade;
     public $variety;
     public $po;
-    
+    public $gradesum;
     
     public $options;
     public $createdBy;
+    
     
     public $defaultViewName = 'report';
     public $pageSize;
@@ -41,18 +42,18 @@ class AbstractReport
 
     public $reportMaster;
 
-    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$sum,$lastlot,$buyer,$grade,$variety,$po,$pageSize = null, $pageOrientation =null,$options = false)
+    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$lastlot,$buyer,$grade,$variety,$po,$gradesum,$pageSize = null, $pageOrientation =null,$options = false)
     {
         $this->reportMaster = $reportMaster;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->options = $options;
-        $this->sum = $sum;
         $this->lastlot = $lastlot;
         $this->buyer = $buyer;
         $this->grade = $grade;
         $this->variety = $variety;
         $this->po = $po;
+        $this->gradesum = $gradesum;
      
         if($pageSize != null )
         {
@@ -77,7 +78,7 @@ class AbstractReport
         if(!$this->setupDone){
             $this->setup();
         }
-        return view('reports::reports'.$this->reportMaster->viewname)->with('report',$this);
+        return view('reports::reports.'.$this->reportMaster->viewname)->with('report',$this);
     }
 
     public function viewPDF(){

@@ -11,14 +11,14 @@
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="12" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="13" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="7" align="left"> {{$report->reportMaster->sub_title = 'Thowing From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Thowing To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="7" align="left"> {{$report->date}}</td>
             <td colspan="2">Location</td>
             <td colspan="1">Start Time</td>
             <td colspan="1">End Time</td>
-            <td colspan="1">Supervisor Name</td>
+            <td colspan="2">Supervisor Name</td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

@@ -23,10 +23,10 @@
                             <thead>
                             <tr>
                                 <th>City Name</th>
+                                <th>Place</th>
+                                <th>Chember/Zone/Floar</th>
                                 <th>Location</th>
-                                <th>Sublocation</th>
-                                <th>Landmark</th>
-                                <th>Street</th>
+                                <th>Pallet No.</th>
                                 <th>Details</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
@@ -84,17 +84,17 @@
                         {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('location') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Location</label>
+                        <label for="type-name">Place</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-location"  name = "location" autofocus placeholder="Enter Location" value="{{ old('location') }}">
                         {!! $errors->first('location', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('sublocation') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Sublocation</label>
+                        <label for="type-name">Chember/Zone/Floar</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "sublocation" autofocus placeholder="Enter Sublocation" value="{{ old('sublocation') }}">
                         {!! $errors->first('sublocation', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('landmark') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Landmark</label>
+                        <label for="type-name">Pallet No.</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-landmark"  name = "landmark" autofocus placeholder="Enter Landmark" value="{{ old('landmark') }}">
                         {!! $errors->first('landmark', '<span class="help-block">:message</span>') !!}
                     </div>
@@ -138,17 +138,17 @@
                         {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('location') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Location</label>
+                        <label for="type-name">Place</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-location"  name = "location" autofocus placeholder="Enter Location" value="{{ old('location') }}">
                         {!! $errors->first('location', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('sublocation') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Sublocation</label>
+                        <label for="type-name">Chember/Zone/Floar</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-sublocation"  name = "sublocation" autofocus placeholder="Enter Sublocation" value="{{ old('sublocation') }}">
                         {!! $errors->first('sublocation', '<span class="help-block">:message</span>') !!}
                     </div>
                     <div class="form-group -flip-horizontal {{ $errors->has('landmark') ? ' has-error has-feedback' : '' }}">
-                        <label for="type-name">Landmark</label>
+                        <label for="type-name">Pallet No.</label>
                         <input type="text" class="form-control -flip-horizontal" id="type-landmark"  name = "landmark" autofocus placeholder="Enter Landmark" value="{{ old('landmark') }}">
                         {!! $errors->first('landmark', '<span class="help-block">:message</span>') !!}
                     </div>

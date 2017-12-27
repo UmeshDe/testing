@@ -151,7 +151,7 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
 
         $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name  ;
 
-        $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.buyer','user','kinds')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.buyer','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

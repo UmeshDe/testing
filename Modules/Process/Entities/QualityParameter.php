@@ -41,6 +41,26 @@ class QualityParameter extends Model
         'inspection_date',
         'qcr_pageno',
         'ic_id',
+        'w1',
+        'w2',
+        'w3',
+        'w4',
+        'w5',
+        'l1',
+        'l2',
+        'l3',
+        'l4',
+        'l5',
+        'sw1',
+        'sw2',
+        'sw3',
+        'sw4',
+        'sw5',
+        'sl1',
+        'sl2',
+        'sl3',
+        'sl4',
+        'sl5',
         'qualitycheckdone_by'
     ];
 
@@ -58,13 +78,7 @@ class QualityParameter extends Model
     {
         return $this->belongsTo(Carton::class,'carton_id','id');
     }
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function kinds()
-    {
-        return $this->belongsTo(Kind::class,'kind_id','id');
-    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

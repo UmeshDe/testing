@@ -21,9 +21,11 @@
         <div class="col-md-12">
                 @include('process::admin.qualityparameters.partials.create-fields')
         </div>
+        <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right btn-flat"><i class="fa fa-save"></i>{{ trans('core::core.button.create') }}</button>
+        <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.create') }}</button>
-    <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
 
     {!! Form::close() !!}
 @stop
@@ -82,17 +84,52 @@
             this.suwari_length = ko.observable(0);
             this.work_force = ko.observable(0);
             this.length = ko.observable(0);
+            this.w1 = ko.observable(0);
+            this.w2 = ko.observable(0);
+            this.w3 = ko.observable(0);
+            this.w4 = ko.observable(0);
+            this.w5 = ko.observable(0);
+            this.l1 = ko.observable(0);
+            this.l2 = ko.observable(0);
+            this.l3 = ko.observable(0);
+            this.l4 = ko.observable(0);
+            this.l5 = ko.observable(0);
+            this.sw1 = ko.observable(0);
+            this.sw2 = ko.observable(0);
+            this.sw3 = ko.observable(0);
+            this.sw4 = ko.observable(0);
+            this.sw5 = ko.observable(0);
+            this.sl1 = ko.observable(0);
+            this.sl2 = ko.observable(0);
+            this.sl3 = ko.observable(0);
+            this.sl4 = ko.observable(0);
+            this.sl5 = ko.observable(0);
 
 
-
-            this.suwari_gel_strength = ko.computed(function () {
-                var value = self.suwari_work_force() * self.suwari_length();
+            this.work_force = ko.computed(function () {
+                var value = Math.ceil(Math.ceil(self.w1()) + Math.ceil(self.w2()) + Math.ceil(self.w3()) + Math.ceil(self.w4()) + Math.ceil(self.w5()));
                 return (value)?value:0;
+            });
+            this.length = ko.computed(function () {
+                var value = Math.ceil(Math.ceil(self.l1()) + Math.ceil(self.l2()) + Math.ceil(self.l3()) + Math.ceil(self.l4()) + Math.ceil(self.l5()));
+                return (value)?value:0;
+            });
+            this.suwari_work_force = ko.computed(function () {
+                var value = Math.ceil(Math.ceil(self.sw1()) + Math.ceil(self.sw2()) + Math.ceil(self.sw3()) + Math.ceil(self.sw4()) + Math.ceil(self.sw5()));
+                return (value)?value:0;
+            });
+            this.suwari_length = ko.computed(function () {
+                var value = Math.ceil(Math.ceil(self.sl1()) + Math.ceil(self.sl2()) + Math.ceil(self.sl3()) + Math.ceil(self.sl4()) + Math.ceil(self.sl5()));
+                return (value)?value:0;
+            });
+            this.suwari_gel_strength = ko.computed(function () {
+                var value = self.suwari_work_force()/ parseFloat(5) * self.suwari_length()/ parseFloat(5);
+                return (value)?value.toFixed(2):0;
             });
 
             this.gel_strength = ko.computed(function () {
-               var value = self.work_force() * self.length();
-               return (value)?value:0;
+               var value = self.work_force()/ parseFloat(5) * self.length()/ parseFloat(5);
+               return (value)?value.toFixed(2):0;
             });
         };
         ko.applyBindings(new ViewModel());

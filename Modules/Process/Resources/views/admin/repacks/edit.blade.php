@@ -76,6 +76,11 @@
     <script>
         $('#location_id').select2();
         $('#product').select2();
+        $('#fishtype_id').select2();
+        $('#bagcolor_id').select2();
+        $('#cartontype_id').select2();
+        $('#grade_id').select2();
+
 
         $('#carton_date').datetimepicker({
             timepicker:false,

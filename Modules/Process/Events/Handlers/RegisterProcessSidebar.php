@@ -53,7 +53,7 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('process::products.title.packing'), function (Item $item) {
-                    $item->icon('fa fa-product-hunt');
+                    $item->icon('fa fa-shopping-bag');
                     $item->weight(1);
                     $item->append('admin.process.product.packing');
                     $item->route('admin.process.product.packingindex');

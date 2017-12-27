@@ -8,30 +8,21 @@
 @endsection
 
 @section('content')
-    <table style="margin-top: 5%">
+    <?php
+    $fishtype = app(\Modules\Admin\Repositories\FishTypeRepository::class)->find($report->variety);
+    ?>
+
+
+
+    <table class="export-table">
         <thead>
         <tr>
-            <td colspan="19" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="11" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="19" align="left"> {{$report->reportMaster->sub_title = 'Transfer From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Transfer To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="11" align="left"> {{$report->reportMaster->sub_title = 'Fish Type :' . $fishtype->type }}</td>
         </tr>
-        <tr>
-            <td colspan="14">Loading Date<br>
-                From<br>
-                Start Time<br>
-                End Time<br>
-                Vehicle No <br>
-                Loading Supervisor Name
-            </td>
-            <td colspan="5">Unloading Date<br>
-                To<br>
-                Start Time<br>
-                End Time <br>
-                Temp<br>
-                Unloading Supervisor Name
-            </td>
-        </tr>
+
         <tr>
             @foreach($report->columns as $column)
                 <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
@@ -63,15 +54,12 @@
                             }
                             //Column type is set and it is a relation column
                             else if($column['type'] === REPORT_RELATION_COLUMN){
-
                                 //Get the final relation model
                                 $modelArray  = explode('.',$column['column_name']);
                                 $relationModel = $row;
-
                                 foreach ($modelArray as $subModel){
                                     $relationModel = $relationModel->{$subModel};
                                 }
-
                                 //Custom function is set so call custom function
                                 if(isset($column['function'])){
                                     $value = $column['function']($relationModel,$column['relation_column']);
@@ -84,7 +72,6 @@
                         else{
                             $value = $row->{$column['column_name']};
                         }
-
                         //Format the value of the model
                         if(isset($column['format'])){
                             $value = formatValue($value,$column['format']);
@@ -99,13 +86,22 @@
                             }
                         }
                         ?>
-
-
                         {{$value}}
-
                     </td>
                 @endforeach
             </tr>
         @endforeach
+        <tr>
+            <td colspan="10"></td>
+
+            @foreach($report->total as $total)
+            <td>{{$total->total}}</td>
+                @endforeach
+        </tr>
     </table>
+@endsection
+
+@section('script')
+
+
 @endsection

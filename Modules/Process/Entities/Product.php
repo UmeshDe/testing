@@ -191,7 +191,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function packingdone()
+    public function users()
     {
         return $this->belongsTo(User::class,'packingdone_by','id');
     }

@@ -2,6 +2,7 @@
 namespace Modules\Reports\Reports;
 
 
+use Modules\Process\Entities\CartonLocation;
 use Modules\Process\Entities\Shipment;
 use Modules\Process\Entities\ShipmentCarton;
 use Carbon\Carbon;
@@ -29,10 +30,10 @@ class PowiseShipmentReport extends AbstractReport
             'relation_column' => 'carton_date'
         ],
         'approval_no'=> [
-            'column_name'=>'approval_no',
+            'column_name'=>'carton.product.approval',
             'display_name'=>'Approval_no',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'type'
+            'relation_column' =>'app_number'
         ],
         'variety'=> [
             'column_name'=>'carton.product.fishtype',
@@ -53,7 +54,7 @@ class PowiseShipmentReport extends AbstractReport
             'relation_column' =>'no_of_cartons'
         ],
         'grade'=>[
-            'column_name'=>'carton.qualitycheck',
+            'column_name'=>'carton.qualitycheck.grades',
             'display_name'=>'Grade',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'grade'
@@ -119,12 +120,18 @@ class PowiseShipmentReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by :_________________'.'   Verified by :_________________  '. 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
+        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
 
-        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
-            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
+//        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
+//            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
 
-        $this->reportMaster->subfooter = app(CartonLocationRepository::class)->all()->sum('shipped');
+        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
+            $q->where('po_no', $this->po );
+        });
+
+        $this->reportMaster->subfooter = CartonLocation::with('carton','carton.product')->whereHas('carton.product' ,function($q){
+            $q->where('po_no', $this->po );
+        })->sum('shipped');
         
         $this->data = $queryBuilder->get();
 

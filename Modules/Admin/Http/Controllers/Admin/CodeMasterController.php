@@ -38,8 +38,10 @@ class CodeMasterController extends AdminBaseController
      */
     public function index()
     {
-        $codemasters = $this->codemaster->allWithBuilder()->with('parentCode')->get();
-        return view('admin::admin.codemasters.index', compact('codemasters'));
+        $codes = $this->codemaster->all();
+        
+        $codemasters = $this->codemaster->allWithBuilder()->where('is_parent',0)->get();
+        return view('admin::admin.codemasters.index', compact('codemasters','codes'));
     }
 
     /**

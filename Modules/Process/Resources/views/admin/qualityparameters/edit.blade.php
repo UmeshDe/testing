@@ -18,12 +18,13 @@
         <div class="col-md-12">
                 @include('process::admin.qualityparameters.partials.create-fields')
         </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary pull-right btn-flat"><i class="fa fa-save"></i>{{ trans('core::core.button.update') }}</button>
+            <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+        </div>
     </div>
 
-    {{--<div class="box-footer">--}}
-        <button type="submit" class="btn btn-primary pull-right btn-flat">{{ trans('core::core.button.update') }}</button>
-        <a class="btn btn-danger pull-left btn-flat" href="{{ route('admin.process.qualityparameter.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
-    {{--</div>--}}
+
 
     {!! Form::close() !!}
 @stop
@@ -82,23 +83,57 @@
                 this.suwari_length = ko.observable(model.suwari_length);
                 this.work_force = ko.observable(model.work_force);
                 this.length = ko.observable(model.length);
+                this.w1 = ko.observable(model.w1);
+                this.w2 = ko.observable(model.w2);
+                this.w3 = ko.observable(model.w3);
+                this.w4 = ko.observable(model.w4);
+                this.w5 = ko.observable(model.w5);
+                this.l1 = ko.observable(model.l1);
+                this.l2 = ko.observable(model.l2);
+                this.l3 = ko.observable(model.l3);
+                this.l4 = ko.observable(model.l4);
+                this.l5 = ko.observable(model.l5);
+                this.sw1 = ko.observable(model.sw1);
+                this.sw2 = ko.observable(model.sw2);
+                this.sw3 = ko.observable(model.sw3);
+                this.sw4 = ko.observable(model.sw4);
+                this.sw5 = ko.observable(model.sw4);
+                this.sl1 = ko.observable(model.sl1);
+                this.sl2 = ko.observable(model.sl2);
+                this.sl3 = ko.observable(model.sl3);
+                this.sl4 = ko.observable(model.sl4);
+                this.sl5 = ko.observable(model.sl5);
 
 
-
-                this.suwari_gel_strength = ko.computed(function () {
-                    var value = self.suwari_work_force() * self.suwari_length();
+                this.work_force = ko.computed(function () {
+                    var value = Math.ceil(Math.ceil(self.w1()) + Math.ceil(self.w2()) + Math.ceil(self.w3()) + Math.ceil(self.w4()) + Math.ceil(self.w5()));
                     return (value)?value:0;
+                });
+                this.length = ko.computed(function () {
+                    var value = Math.ceil(Math.ceil(self.l1()) + Math.ceil(self.l2()) + Math.ceil(self.l3()) + Math.ceil(self.l4()) + Math.ceil(self.l5()));
+                    return (value)?value:0;
+                });
+                this.suwari_work_force = ko.computed(function () {
+                    var value = Math.ceil(Math.ceil(self.sw1()) + Math.ceil(self.sw2()) + Math.ceil(self.sw3()) + Math.ceil(self.sw4()) + Math.ceil(self.sw5()));
+                    return (value)?value:0;
+                });
+                this.suwari_length = ko.computed(function () {
+                    var value = Math.ceil(Math.ceil(self.sl1()) + Math.ceil(self.sl2()) + Math.ceil(self.sl3()) + Math.ceil(self.sl4()) + Math.ceil(self.sl5()));
+                    return (value)?value:0;
+                });
+                this.suwari_gel_strength = ko.computed(function () {
+                    var value = self.suwari_work_force()/ parseFloat(5) * self.suwari_length()/ parseFloat(5);
+                    return (value)?value.toFixed(2):0;
                 });
 
                 this.gel_strength = ko.computed(function () {
-                    var value = self.work_force() * self.length();
-                    return (value)?value:0;
+                    var value = self.work_force()/ parseFloat(5) * self.length()/ parseFloat(5);
+                    return (value)?value.toFixed(2):0;
                 });
             };
             ko.applyBindings(new ViewModel(@json($qualityparameter)));
 
         });
-
 
     </script>
 

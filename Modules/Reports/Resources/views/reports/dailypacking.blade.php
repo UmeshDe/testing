@@ -14,7 +14,7 @@
             <td colspan="29" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="29" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="29" align="left"> {{ $report->date}}</td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

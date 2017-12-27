@@ -1,25 +1,27 @@
 @extends('layouts.master')
 
 @section('content-header')
+    <div  class="row">
+        <div class="col-md-6">
+            <h4>     {{ trans('process::transfers.title.transfers') }} </h4>
+        </div>
+        <div class="col-md-6">
+            <h4>
+                <a href="{{ route('admin.process.transfer.create') }}" class="btn btn-primary btn-flat pull-right"
+                   style="padding: 4px 10px;">
+                    <i class="fa fa-pencil"></i> {{ trans('process::transfers.button.create transfer') }}
+                </a>
+            </h4>
+        </div>
+    </div>
     <h1>
-        {{ trans('process::transfers.title.transfers') }}
+
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('process::transfers.title.transfers') }}</li>
-    </ol>
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.process.transfer.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('process::transfers.button.create transfer') }}
-                    </a>
-                </div>
-            </div>
             <div class="box box-primary">
                 <div class="box-header">
                 </div>

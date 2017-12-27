@@ -194,20 +194,21 @@ class DailyPackingReport extends AbstractReport
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'location'
         ],
-//        'Remark'=>[
-//            'column_name'=>'product',
-//            'display_name'=>'Remark',
-//            'type'=>REPORT_RELATION_COLUMN,
-//            'relation_column' =>'remark'
-//        ],
-        'packing_done'=>[
+        'Remark'=>[
             'column_name'=>'product',
+            'display_name'=>'Remark',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'remark'
+        ],
+        'packing_done'=>[
+            'column_name'=>'product.users',
             'display_name'=>'Packing Done By',
             'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' => 'packingdone'
+            'relation_column' => 'first_name'
         ],
     ];
-
+    
+    public $date;
 
     public function formatCode($codes){
         return count($codes);
@@ -217,17 +218,17 @@ class DailyPackingReport extends AbstractReport
 
         if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
         {
-            $this->reportMaster->sub_title = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
         }
         else{
-            $this->reportMaster->sub_title = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
         }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
         $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
 
-        $queryBuilder = Carton::with('product','product.packingdone','product.approval','product.variety','product.bagColor','product.cartonType','product.fm','product.fr','product.d','product.s','product.a','product.c','product.p','product.b','product.m','product.w','product.q','product.sc','product.lc')->whereDate('carton_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('carton_date' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = Carton::with('product','product.users','product.approval','product.variety','product.bagColor','product.cartonType','product.fm','product.fr','product.d','product.s','product.a','product.c','product.p','product.b','product.m','product.w','product.q','product.sc','product.lc')->whereDate('carton_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('carton_date' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

@@ -29,20 +29,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if(isset($codemasters))
-                                @foreach ($codemasters as $codemaster)
+                            @if(isset($codes))
+                                @foreach ($codes as $code)
                                 <tr>
-                                    <td>{{$codemaster->code}}</td>
-                                    <td>{{($codemaster->parentCode != null)?$codemaster->parentCode->code:''}}</td>
+                                    <td>{{$code->code}}</td>
+                                    <td>{{($code->parentCode != null)?$code->parentCode->code:''}}</td>
                                     <td>
-                                        <a href="{{ route('admin.admin.codemaster.edit', [$codemaster->id]) }}">
-                                            {{ $codemaster->created_at }}
+                                        <a href="{{ route('admin.admin.codemaster.edit', [$code->id]) }}">
+                                            {{ $code->created_at }}
                                         </a>
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-default btn-flat category-edit-button" data-name="{{$codemaster->name}}" data-id="{{$codemaster->id}}"><i class="fa fa-pencil"></i></a>
-                                            <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.codemaster.destroy', [$codemaster->id]) }}"><i class="fa fa-trash"></i></button>
+                                            <a class="btn btn-default btn-flat category-edit-button" data-name="{{$code->name}}" data-id="{{$code->id}}"><i class="fa fa-pencil"></i></a>
+                                            <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.admin.codemaster.destroy', [$code->id]) }}"><i class="fa fa-trash"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('is_parent') ? ' has-error has-feedback' : '' }}">
-                        <label for="name" class ="control-label col-sm-2">Is Parent:</label>
+                        <label for="name" class ="control-label col-sm-2">Parent:</label>
                         <div class="col-sm-8">
                             <select id="is-parent" name="is_parent" class="itemName dropdown">
                                 @foreach($codemasters as $parentcode)

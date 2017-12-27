@@ -11,10 +11,10 @@ use Dompdf\FontMetrics;
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="9" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="7" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="9" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="7" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

@@ -74,9 +74,10 @@
     <script>
         $('#location_id').select2();
         $('#product').select2();
-        $('#fish_type').select2();
-        $('#bag_color').select2();
-        $('#carton_type').select2();
+        $('#fishtype_id').select2();
+        $('#bagcolor_id').select2();
+        $('#cartontype_id').select2();
+        $('#grade_id').select2();
 
         $('#product').select2().on('change', function () {
             var cartonId = $('#product').children('option:selected').data('cartonid');
@@ -84,7 +85,7 @@
         });
 
 
-        $('#carton_date').datetimepicker({
+        $('#repack_date').datetimepicker({
             timepicker:false,
             format:'{{PHP_DATE_FORMAT}}',
             value : new moment()

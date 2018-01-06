@@ -12,13 +12,13 @@
     <table class="export-table">
         <thead>
         <tr>
-            <td colspan="22" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="23" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="22" align="left"> {{$report->date}}</td>
+            <td colspan="23" align="left"> {{$report->date}}</td>
         </tr>
         <tr>
-            <td colspan="12" align="left"> </td>
+            <td colspan="13" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
             <td colspan="3" align="center">SUWARI</td>
             <td colspan="4"></td>

@@ -13,10 +13,15 @@ class AbstractReport
 
     public $startDate;
     public $endDate;
+    public $reportDate;
     public $buyer;
     public $grade;
     public $variety;
     public $po;
+    public $ic;
+    public $vehicle;
+    public $container;
+    public $place;
     public $gradesum;
     
     public $options;
@@ -42,17 +47,22 @@ class AbstractReport
 
     public $reportMaster;
 
-    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$lastlot,$buyer,$grade,$variety,$po,$gradesum,$pageSize = null, $pageOrientation =null,$options = false)
+    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$reportDate,$lastlot,$buyer,$grade,$variety,$po,$ic,$vehicle,$container,$place,$gradesum,$pageSize = null, $pageOrientation =null,$options = false)
     {
         $this->reportMaster = $reportMaster;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->reportDate = $reportDate;
         $this->options = $options;
         $this->lastlot = $lastlot;
         $this->buyer = $buyer;
         $this->grade = $grade;
         $this->variety = $variety;
         $this->po = $po;
+        $this->ic = $ic;
+        $this->vehicle = $vehicle;
+        $this->container = $container;
+        $this->place = $place;
         $this->gradesum = $gradesum;
      
         if($pageSize != null )
@@ -95,7 +105,7 @@ class AbstractReport
     public function generatePDF()
     {
         $this->pdf = PDF::loadView('reports::reports.'.$this->reportMaster->viewname,['report'=>$this])
-            ->setPaper('legal', $this->reportMaster->orientation);
+            ->setPaper($this->reportMaster->papersize, $this->reportMaster->orientation);
     }
 
     public function downloadPDF(){

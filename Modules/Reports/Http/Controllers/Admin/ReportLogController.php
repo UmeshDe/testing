@@ -11,8 +11,12 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\Repositories\BuyercodeRepository;
 use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Admin\Repositories\GradeRepository;
+use Modules\Admin\Repositories\InternalcodeRepository;
+use Modules\Admin\Repositories\LocationRepository;
 use Modules\Page\Repositories\PageRepository;
+use Modules\Process\Entities\Transfer;
 use Modules\Process\Repositories\ProductRepository;
+use Modules\Process\Repositories\TransferRepository;
 use Modules\Reports\Entities\ReportLog;
 use Modules\Reports\Http\Requests\CreateReportLogRequest;
 use Modules\Reports\Http\Requests\UpdateReportLogRequest;
@@ -67,10 +71,43 @@ class ReportLogController extends AdminBaseController
             ->orderBy('buyer_code')
             ->pluck('buyer_code','id');
         
-        $po = app(ProductRepository::class)->all();
-
+        $place = app(LocationRepository::class)->allWithBuilder()
+            ->orderBy('location')
+            ->pluck('location','id');
         
-        return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po'));
+        $po = app(ProductRepository::class)->all();
+        
+        $transferData = app(TransferRepository::class)->all();
+
+//        $orders= DB::table('process__shipments','process__shipments')
+//            ->select(DB::raw('process__shipments.vehicle_no','process__transfers.vehicle_no'))
+//            ->get();
+
+        $shipmentVehicle =DB::table('process__shipments')
+            ->distinct()
+            ->select('vehicle_no');
+
+        $vehicle = DB::table('process__transfers')
+            ->distinct()
+            ->select('vehicle_no')
+            ->union($shipmentVehicle)
+            ->get();
+
+        $shipmentContainer =DB::table('process__shipments')
+            ->distinct()
+            ->select('container_no');
+
+        $container = DB::table('process__transfers')
+            ->distinct()
+            ->select('container_no')
+            ->union($shipmentContainer)
+            ->get();
+
+        $ic = app(InternalcodeRepository::class)->allWithBuilder()
+            ->orderBy('internal_code')
+            ->pluck('internal_code','id');
+        
+        return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po','ic','transferData','vehicle','container','place'));
 
     }
 
@@ -150,10 +187,16 @@ class ReportLogController extends AdminBaseController
         $reportClass = 'Modules\\Reports\\Reports\\'.Str::studly($reportType->class).'Report';
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));
+        $reportDate = $request->report_date;
         $buyercode = $request->buyer;
         $grade = $request->grade;
         $variety = $request->variety;
         $po = $request->po;
+        $ic = $request->ic;
+        $vehicle = $request->vehicle_no;
+        $container = $request->container_no;
+        $place = $request->place;
+        
 
         $lastlot = app(ProductRepository::class)->allWithBuilder()
             ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
@@ -161,13 +204,8 @@ class ReportLogController extends AdminBaseController
             ->orderBy('lot_no','desc')
             ->pluck('lot_no','id')
             ->first();
-
-//        $sum = app(ProductRepository::class)->allWithBuilder()
-//            ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
-//            ->whereDate('created_at' , '<=' , $endDate->format('Y-m-d'))
-//            ->sum('no_of_cartons');
         
-        $report = new $reportClass($reportType,$startDate,$endDate,$lastlot,$buyercode,$grade,$variety,$po,true);
+        $report = new $reportClass($reportType,$startDate,$endDate,$reportDate,$lastlot,$buyercode,$grade,$variety,$po,$ic,$vehicle,$container,$place,true);
         
         return  $report->viewPDF();
 //        return view('reports::reports.dailyproduction' ,compact('report'));

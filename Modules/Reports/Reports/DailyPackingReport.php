@@ -37,17 +37,17 @@ class DailyPackingReport extends AbstractReport
             'format'=> REPORT_DATE_FORMAT,
             'display_name'=>'Carton Date',
         ],
-//        'approval_no'=>[
-//            'column_name'=>'product.approval',
-//            'display_name'=>'Approval No',
-//            'type'=>REPORT_RELATION_COLUMN,
-//            'relation_column' =>'app_number'
-//        ],
         'variety'=> [
             'column_name'=>'product',
             'display_name'=>'Varity',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'variety'
+        ],
+        'cm'=> [
+            'column_name'=>'product.cm',
+            'display_name'=>'CM',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
         ],
         'lot_no'=>[
             'column_name'=>'product',
@@ -106,87 +106,15 @@ class DailyPackingReport extends AbstractReport
         ],
         'po_no'=>[
             'column_name'=>'product',
-            'display_name'=>'PO NO',
+            'display_name'=>'PO No.',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'po_no',
         ],
-        'fm' => [
-            'column_name'=>'product',
-            'display_name'=>'FM',
+        'bc'=>[
+            'column_name'=>'product.buyer',
+            'display_name'=>'BC',
             'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'fm'
-        ],
-        'fr' => [
-            'column_name'=>'product',
-            'display_name'=>'FR',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'fr'
-        ],
-        'd' => [
-            'column_name'=>'product',
-            'display_name'=>'D',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'d'
-        ],
-        's' => [
-            'column_name'=>'product',
-            'display_name'=>'S',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'s'
-        ],
-        'a' => [
-            'column_name'=>'product',
-            'display_name'=>'A',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'a'
-        ],
-        'c' => [
-            'column_name'=>'product',
-            'display_name'=>'C',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'c'
-        ],
-        'p' => [
-            'column_name'=>'product',
-            'display_name'=>'P',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'p'
-        ],
-        'b' => [
-            'column_name'=>'product',
-            'display_name'=>'B',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'b'
-        ],
-        'm' => [
-            'column_name'=>'product',
-            'display_name'=>'M',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'m'
-        ],
-        'w' => [
-            'column_name'=>'product',
-            'display_name'=>'W',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'w'
-        ],
-        'q' => [
-            'column_name'=>'product',
-            'display_name'=>'Q',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'q'
-        ],
-        'sc' => [
-            'column_name'=>'product',
-            'display_name'=>'SC',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'sc'
-        ],
-        'lc' => [
-            'column_name'=>'product',
-            'display_name'=>'LC',
-            'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'lc'
+            'relation_column' => 'buyer_code',
         ],
         'location'=>[
             'column_name'=>'product',
@@ -196,9 +124,9 @@ class DailyPackingReport extends AbstractReport
         ],
         'Remark'=>[
             'column_name'=>'product',
-            'display_name'=>'Remark',
+            'display_name'=>'Packing Remark',
             'type'=>REPORT_RELATION_COLUMN,
-            'relation_column' =>'remark'
+            'relation_column' =>'packing_remark'
         ],
         'packing_done'=>[
             'column_name'=>'product.users',
@@ -216,19 +144,37 @@ class DailyPackingReport extends AbstractReport
 
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        if($this->reportDate == 0)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
 
-        $queryBuilder = Carton::with('product','product.users','product.approval','product.variety','product.bagColor','product.cartonType','product.fm','product.fr','product.d','product.s','product.a','product.c','product.p','product.b','product.m','product.w','product.q','product.sc','product.lc')->whereDate('carton_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('carton_date' ,'<=',$this->endDate->format('Y-m-d'));
+            $queryBuilder = Carton::with('product','product.users','product.buyer','product.approval','product.variety','product.bagColor','product.cartonType','product.fm','product.fr','product.d','product.s','product.a','product.c','product.p','product.b','product.m','product.w','product.q','product.sc','product.lc')->whereHas('product' ,function($q){
+                $q->where('product_date','>=',$this->startDate )->where('product_date','<=',$this->endDate );});
+
+        }
+        elseif ($this->reportDate == 1)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = Carton::with('product','product.users','product.buyer','product.approval','product.variety','product.bagColor','product.cartonType','product.fm','product.fr','product.d','product.s','product.a','product.c','product.p','product.b','product.m','product.w','product.q','product.sc','product.lc')->whereDate('carton_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('carton_date' ,'<=',$this->endDate->format('Y-m-d'));
+        }
+
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
+
 
         $this->data = $queryBuilder->get();
 

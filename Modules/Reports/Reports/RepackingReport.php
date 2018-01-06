@@ -33,6 +33,18 @@ class RepackingReport extends AbstractReport
             'type'=> REPORT_RELATION_COLUMN,
             'relation_column' =>'fishtype'
         ],
+        'cm' => [
+            'column_name' => 'carton.product.cm',
+            'display_name' => 'CM',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
+        ],
+        'grade' => [
+            'column_name' => 'carton.qualitycheck.grades',
+            'display_name' => 'Old Grade',
+            'type'=> REPORT_RELATION_COLUMN,
+            'relation_column' =>'grade'
+        ],
         'lot_no'=> [
             'column_name'=> 'carton.product',
             'display_name'=>'Lot No',
@@ -109,9 +121,9 @@ class RepackingReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
-        $queryBuilder = Repack::with('carton','carton.product')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = Repack::with('carton','carton.product','carton.qualitycheck.grades')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

@@ -8,9 +8,6 @@
 @endsection
 
 @section('content')
-    <?php
-    $fishtype = app(\Modules\Admin\Repositories\FishTypeRepository::class)->find($report->variety);
-    ?>
 
 
 
@@ -20,7 +17,7 @@
             <td colspan="11" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="11" align="left"> {{$report->reportMaster->sub_title = 'Fish Type :' . $fishtype->type }}</td>
+            <td colspan="11" align="left"> {{$report->reportMaster->sub_title}}</td>
         </tr>
 
         <tr>
@@ -92,7 +89,8 @@
             </tr>
         @endforeach
         <tr>
-            <td colspan="10"></td>
+            <td colspan="9"></td>
+            <td colspan="1">Total</td>
 
             @foreach($report->total as $total)
             <td>{{$total->total}}</td>

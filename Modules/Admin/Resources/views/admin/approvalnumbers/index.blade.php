@@ -22,7 +22,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Approval Number</th>
+                                <th>EIA Number</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -61,7 +61,7 @@
             </div>
             <div id="update-div" class="box box-primary" hidden>
                 <div class="box-header with-border">
-                    <h3 class="box-title">Update Approval Number</h3>
+                    <h3 class="box-title">Update EIA Number</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
@@ -89,7 +89,7 @@
             <!-- general form elements -->
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Approval Number</h3>
+                    <h3 class="box-title">EIA Number</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->

@@ -2,6 +2,7 @@
 namespace Modules\Reports\Reports;
 
 
+use Modules\Admin\Repositories\BuyercodeRepository;
 use Modules\Process\Entities\Shipment;
 use Modules\Process\Entities\ShipmentCarton;
 use Carbon\Carbon;
@@ -29,11 +30,30 @@ class BuyerCodewiseShipmentReport extends AbstractReport
             'format'=> REPORT_DATE_FORMAT,
             'relation_column' => 'carton_date'
         ],
+        'inspection_date'=>[
+            'column_name'=>'carton.qualitycheck',
+            'display_name'=>'Inspection Date',
+            'type' => REPORT_RELATION_COLUMN,
+            'format'=> REPORT_DATE_FORMAT,
+            'relation_column' => 'inspection_date'
+        ],
+        'app_no'=> [
+            'column_name'=>'carton.product.approval',
+            'display_name'=>'EIA No.',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'app_number'
+        ],
         'variety'=> [
             'column_name'=>'carton.product.fishtype',
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'type'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -43,33 +63,15 @@ class BuyerCodewiseShipmentReport extends AbstractReport
         ],
         'qcr_pageno'=>[
             'column_name'=>'carton.qualitycheck',
-            'display_name'=>'QCR PAGE',
+            'display_name'=>'QCR Page',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'qcr_pageno'
-        ],
-        'inspection_date'=>[
-            'column_name'=>'carton.qualitycheck',
-            'display_name'=>'Inspection Date',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' => 'inspection_date'
         ],
         'total_cartons'=> [
             'column_name'=>'carton',
             'display_name'=>'Total Cartons',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'no_of_cartons'
-        ],
-        'grade'=>[
-            'column_name'=>'carton.qualitycheck.grades',
-            'display_name'=>'Grade',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'grade'
-        ],
-        'moisture'=> [
-            'column_name'=>'carton.qualitycheck',
-            'display_name'=>'Moisture',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'moisture'
         ],
         'standar_wf'=> [
             'column_name'=>'carton.qualitycheck',
@@ -89,23 +91,119 @@ class BuyerCodewiseShipmentReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'gel_strength'
         ],
-        'suwari_wf'=>[
-            'column_name'=>'carton.qualitycheck',
-            'display_name'=>'20%W',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'suwari_work_force'
+        'fm' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'FM',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'fm'
         ],
-        'suwari_l'=> [
-            'column_name'=>'carton.qualitycheck',
-            'display_name'=>'20%L',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'suwari_length'
+        'fr' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'FR',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'fr'
         ],
-        'suwari_gl'=>[
+        'd' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'D',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'d'
+        ],
+        's' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'S',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'s'
+        ],
+        'a' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'A',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'a'
+        ],
+        'c' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'C',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'c'
+        ],
+        'p' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'P',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'p'
+        ],
+        'b' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'B',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'b'
+        ],
+        'm' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'M',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'m'
+        ],
+        'w' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'W',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'w'
+        ],
+        'q' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'Q',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'q'
+        ],
+        'sc' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'SC',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'sc'
+        ],
+        'lc' => [
+            'column_name'=>'carton.product',
+            'display_name'=>'LC',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'lc'
+        ],
+//        'suwari_wf'=>[
+//            'column_name'=>'carton.qualitycheck',
+//            'display_name'=>'20%W',
+//            'type' => REPORT_RELATION_COLUMN,
+//            'relation_column' =>'suwari_work_force'
+//        ],
+//        'suwari_l'=> [
+//            'column_name'=>'carton.qualitycheck',
+//            'display_name'=>'20%L',
+//            'type' => REPORT_RELATION_COLUMN,
+//            'relation_column' =>'suwari_length'
+//        ],
+//        'suwari_gl'=>[
+//            'column_name'=>'carton.qualitycheck',
+//            'display_name'=>'20%JS',
+//            'type' => REPORT_RELATION_COLUMN,
+//            'relation_column' =>'gel_strength'
+//        ],
+        'moisture'=> [
             'column_name'=>'carton.qualitycheck',
-            'display_name'=>'20%JS',
+            'display_name'=>'Moisture',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'gel_strength'
+            'relation_column' =>'moisture'
+        ],
+        'grade'=>[
+            'column_name'=>'carton.qualitycheck.grades',
+            'display_name'=>'Grade',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'grade'
+        ],
+        'ic'=>[
+            'column_name'=>'carton.qualitycheck.ic',
+            'display_name'=>'IC',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'internal_code'
         ],
         'kamaboko_hw'=> [
             'column_name'=>'carton.qualitycheck',
@@ -151,18 +249,25 @@ class BuyerCodewiseShipmentReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name ;
-
-//        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
-//            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
-
-        $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
-            $q->where('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
-            $query->orderBy('po_no');
-        });
-
-
-
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
+        
+        $buyer = app(BuyercodeRepository::class)->find($this->buyer);
+        
+        if($this->container != null || $this->container != "")
+        {
+            $this->reportMaster->sub_title = 'Container No :'.$this->container;
+            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
+                $q->where('container_no', $this->container );
+            });
+        }
+        else{
+            $this->reportMaster->sub_title = 'Buyer Code :' . $buyer->buyer_code;
+            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
+                $q->where('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
+                $query->orderBy('po_no');
+            });    
+        }
+        
 
         $this->data = $queryBuilder->get();
 

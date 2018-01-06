@@ -12,13 +12,13 @@
     <table class="export-table">
         <thead>
         <tr>
-            <td colspan="16" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="20" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="16" align="left"> {{$report->reportMaster->sub_title = 'PO No:: ' .$report->po }}</td>
+            <td colspan="20" align="left"> {{$report->reportMaster->sub_title}}</td>
         </tr>
         <tr>
-            <td colspan="9" align="left"> </td>
+            <td colspan="12" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
             <td colspan="6"></td>
         </tr>
@@ -96,10 +96,12 @@
         @endforeach
         <tfoot>
         <tr>
-            <td colspan="14" align="center"></td>
+            <td colspan="17" align="center"></td>
             <td colspan="1"> Total</td>
-            <td>{{$report->reportMaster->subfooter}}</td>
-
+            @foreach($report->reportMaster->subfooter as $total)
+            <td>{{$total->total}}</td>
+            @endforeach
+            <td></td>
         </tr>
         </tfoot>
     </table>

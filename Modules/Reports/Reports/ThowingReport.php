@@ -19,7 +19,21 @@ class ThowingReport extends AbstractReport
         't_date'=>[
             'column_name'=>'carton_date',
             'format' => REPORT_DATE_FORMAT,
-            'display_name'=>'Thowing',
+            'display_name'=>'Thowing Date',
+        ],
+        'p_date'=>[
+            'column_name'=>'carton.product',
+            'format' => REPORT_DATE_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'display_name'=>'Production Date',
+            'relation_column' => 'product_date'
+        ],
+        'c_date'=>[
+            'column_name'=>'carton',
+            'format' => REPORT_DATE_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'display_name'=>'Carton Date',
+            'relation_column' => 'carton_date'
         ],
         'location' => [
             'column_name'=>'location',
@@ -32,6 +46,12 @@ class ThowingReport extends AbstractReport
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'fishtype'
+        ],
+        'cm'=>[
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' => 'cm'
         ],
         'thowing_start_time'=>[
             'column_name'=>'thowing_start_time',
@@ -63,9 +83,15 @@ class ThowingReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'grade'
         ],
+        'ic'=>[
+            'column_name'=>'carton.qualitycheck.ic',
+            'display_name'=>'IC',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' => 'internal_code'
+        ],
         'remark'=>[
             'column_name'=>'comment',
-            'display_name'=>'Remark',
+            'display_name'=>'Thowing Remark',
         ],
         'thowing_supervisor'=>[
             'column_name'=>'supervisor',
@@ -99,9 +125,9 @@ class ThowingReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-//        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name .' .  Verified by :_________________  ' .'Prepared by:_________________';
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 //
-        $queryBuilder = Throwing::with('carton','carton.qualitycheck','carton.qualitycheck.grades','location','carton.product.fishtype')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $queryBuilder = Throwing::with('carton','carton.product','carton.qualitycheck','carton.qualitycheck.grades','location','carton.product.fishtype')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

@@ -10,6 +10,7 @@ return [
         'create' => 'process::products.create resource',
         'edit' => 'process::products.edit resource',
         'destroy' => 'process::products.destroy resource',
+        'packing' => 'Packing',
     ],
     'process.cartons' => [
         'index' => 'process::cartons.list resource',

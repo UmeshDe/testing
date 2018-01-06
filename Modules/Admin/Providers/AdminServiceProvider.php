@@ -203,7 +203,20 @@ class AdminServiceProvider extends ServiceProvider
                 return new \Modules\Admin\Repositories\Cache\CacheInternalcodeDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Admin\Repositories\CheckmarkRepository',
+            function () {
+                $repository = new \Modules\Admin\Repositories\Eloquent\EloquentCheckmarkRepository(new \Modules\Admin\Entities\Checkmark());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Admin\Repositories\Cache\CacheCheckmarkDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 

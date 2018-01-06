@@ -314,6 +314,7 @@ use Carbon\Carbon;
                             <div class="col-sm-10">
                                 {!!
                                     Former::text('work_force')->data_bind("value: work_force,valueUpdate: 'afterkeydown'")->raw()
+                                    ->readonly()
                                  !!}
                             </div>
                         </div>
@@ -364,6 +365,7 @@ use Carbon\Carbon;
                             <div class="col-sm-10">
                                 {!!
                                     Former::text('length')->data_bind("value: length,valueUpdate: 'afterkeydown'")->raw()
+                                           ->readonly()
                                  !!}
                             </div>
                         </div>
@@ -374,6 +376,7 @@ use Carbon\Carbon;
                             <div class="col-sm-8">
                                 {!!
                                     Former::text('gel_strength')->data_bind("value: gel_strength,valueUpdate: 'afterkeydown'")->raw()
+                                             ->readonly()
                                  !!}
                             </div>
                         </div>
@@ -433,6 +436,7 @@ use Carbon\Carbon;
                             <div class="col-sm-10">
                                 {!!
                                     Former::text('suwari_work_force')->data_bind("value: suwari_work_force,valueUpdate: 'afterkeydown'")->raw()
+                                         ->readonly()
                                  !!}
                             </div>
                         </div>
@@ -483,6 +487,7 @@ use Carbon\Carbon;
                             <div class="col-sm-10">
                                 {!!
                                     Former::text('suwari_length')->data_bind("value: suwari_length,valueUpdate: 'afterkeydown'")->raw()
+                                            ->readonly()
                                  !!}
                             </div>
                         </div>
@@ -493,6 +498,7 @@ use Carbon\Carbon;
                             <div class="col-sm-8">
                                 {!!
                                     Former::text('suwari_gel_strength')->data_bind("value: suwari_gel_strength,valueUpdate: 'afterkeydown'")->raw()
+                                         ->readonly()
                                  !!}
                             </div>
                         </div>

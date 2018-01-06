@@ -17,7 +17,7 @@ class TransferReport extends AbstractReport
     public $columns = [
         'load_gp_no'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading Gate Pass No',
+            'display_name'=>'Load Gate Pass No',
             'type' => REPORT_RELATION_COLUMN,
              'relation_column' =>'loading_gate_pass_no'
         ],
@@ -25,13 +25,27 @@ class TransferReport extends AbstractReport
             'column_name'=>'carton',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' =>'carton_date'
+        ],
+        'loading_date'=>[
+            'column_name'=>'transfer',
+            'display_name'=>'Load Date',
+            'format' => REPORT_DATE_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'loading_date'
         ],
         'variety'=> [
             'column_name'=>'carton.product.fishtype',
             'display_name'=>'Varity',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'type'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' => 'cm'
         ],
         'vehicle_no' => [
             'column_name'=>'transfer',
@@ -41,7 +55,7 @@ class TransferReport extends AbstractReport
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Loading Lot No',
+            'display_name'=>'Load Lot No',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'lot_no'
         ],
@@ -53,7 +67,7 @@ class TransferReport extends AbstractReport
         ],
         'appr_no'=>[
             'column_name'=>'carton.product.approval',
-            'display_name'=>'Approval No',
+            'display_name'=>'EIA No',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'app_number'
         ],
@@ -65,7 +79,7 @@ class TransferReport extends AbstractReport
         ],
         'carton_type'=> [
             'column_name'=>'carton.cartontype',
-            'display_name'=>'PRINTED/PLAIN',
+            'display_name'=>'Carton Typr',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'type'
         ],
@@ -75,39 +89,46 @@ class TransferReport extends AbstractReport
         ],
         'loading_start_time'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading Start Time',
+            'display_name'=>'Load Start Time',
             'format' => REPORT_DATETIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loading_start_time'
         ],
         'loading_end_time'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading End Time',
+            'display_name'=>'Load End Time',
             'format' => REPORT_DATETIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loading_end_time'
         ],
         'loading_supervisor'=> [
             'column_name'=>'transfer.loadingsupervisor',
-            'display_name'=>'Loading Supervisor',
+            'display_name'=>'Load Supervisor',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'first_name'
         ],
         'loading_sub_loc'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading Sub Location',
+            'display_name'=>'Load Location',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loadinglocation'
         ],
         'unload_gp_no'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Unoading Gate Pass No',
+            'display_name'=>'Unoad Gate Pass No',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_gate_pass_no'
         ],
+        'unloading_date'=>[
+            'column_name'=>'transfer',
+            'display_name'=>'Unload Date',
+            'format' => REPORT_DATE_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'unloading_date'
+        ],
         'unloading_lot_no'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Unloading Lot No',
+            'display_name'=>'Unload Lot No',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'lot_no'
         ],
@@ -117,33 +138,33 @@ class TransferReport extends AbstractReport
         ],
         'unloading_start_time'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading Start Time',
+            'display_name'=>'Unload Start Time',
             'format' => REPORT_DATETIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_start_time'
         ],
         'unloading_end_time'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Loading End Time',
+            'display_name'=>'Unload End Time',
             'format' => REPORT_DATETIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_end_time'
         ],
         'unloading_supervisor'=> [
             'column_name'=>'transfer.unloadingsupervisor',
-            'display_name'=>'Unoading Supervisor',
+            'display_name'=>'Unoad Supervisor',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'first_name'
         ],
         'unloading_sub_loc'=> [
             'column_name'=>'transfer',
-            'display_name'=>'Unoading Sub Location',
+            'display_name'=>'Unolad Location',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloadinglocation'
         ],
         'remark'=>[
             'column_name'=>'transfer',
-            'display_name'=>'Remark',
+            'display_name'=>'Transfer Remark',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_remark'
         ],
@@ -155,23 +176,35 @@ class TransferReport extends AbstractReport
     
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->reportMaster->sub_title = 'Loading Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____From:' . '____Start Time' .'________Unloading Date' .'______To___________'.'___________Vehicle No:_____'.'____'  ;
-        }
-        else{
-            $this->reportMaster->sub_title = 'Loading From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Loading To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) . '____From:' . '____Start Time' .'________Unloading Date' .'______To___________';
-        }
-
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-//        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name .' .  Verified by :_________________  ' .'Prepared by:_________________';
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
-        $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
-            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
+        if($this->vehicle != null || $this->vehicle != "")
+        {
+                $this->reportMaster->sub_title = 'Vehicle No: ' . $this->vehicle;
+                $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+                $q->where('vehicle_no',$this->vehicle);});
+        }
+        else if($this->container != null || $this->container != "")
+        {
+            $this->reportMaster->sub_title = 'Container No: ' . $this->container;
+            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+                $q->where('container_no',$this->container);});
+        }
+        else{
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->reportMaster->sub_title = 'Loading Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT);
+            }
+            else{
+                $this->reportMaster->sub_title = 'Loading From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Loading To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT);
+            }
 
+            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+                $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
+        }
         $this->data = $queryBuilder->get();
-
         $this->setupDone = true;
 
     }

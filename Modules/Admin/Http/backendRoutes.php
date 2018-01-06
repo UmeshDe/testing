@@ -499,7 +499,46 @@ $router->group(['prefix' =>'/admin'], function (Router $router) {
         'uses' => 'InternalcodeController@destroy',
         'middleware' => 'can:admin.internalcodes.destroy'
     ]);
+    $router->bind('checkmark', function ($id) {
+        return app('Modules\Admin\Repositories\CheckmarkRepository')->find($id);
+    });
+    $router->get('checkmarks', [
+        'as' => 'admin.admin.checkmark.index',
+        'uses' => 'CheckmarkController@index',
+        'middleware' => 'can:admin.checkmarks.index'
+    ]);
+    $router->get('checkmarks/create', [
+        'as' => 'admin.admin.checkmark.create',
+        'uses' => 'CheckmarkController@create',
+        'middleware' => 'can:admin.checkmarks.create'
+    ]);
+    $router->post('checkmarks', [
+        'as' => 'admin.admin.checkmark.store',
+        'uses' => 'CheckmarkController@store',
+        'middleware' => 'can:admin.checkmarks.create'
+    ]);
+    $router->get('checkmarks/{checkmark}/edit', [
+        'as' => 'admin.admin.checkmark.edit',
+        'uses' => 'CheckmarkController@edit',
+        'middleware' => 'can:admin.checkmarks.edit'
+    ]);
+    $router->put('checkmarks/{checkmark}', [
+        'as' => 'admin.admin.checkmark.update',
+        'uses' => 'CheckmarkController@update',
+        'middleware' => 'can:admin.checkmarks.edit'
+    ]);
+    $router->post('checkmarks/update', [
+        'as' => 'admin.admin.checkmark.update',
+        'uses' => 'CheckmarkController@update',
+        'middleware' => 'can:admin.checkmarks.edit'
+    ]);
+    $router->delete('checkmarks/{checkmark}', [
+        'as' => 'admin.admin.checkmark.destroy',
+        'uses' => 'CheckmarkController@destroy',
+        'middleware' => 'can:admin.checkmarks.destroy'
+    ]);
 // append
+
 
 
 

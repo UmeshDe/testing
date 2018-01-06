@@ -28,11 +28,22 @@ class MandWReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'carton_date'
         ],
+        'inspection_date'=>[
+            'column_name'=>'inspection_date',
+            'display_name'=>'Inspection Date',
+            'format' => REPORT_DATE_FORMAT,
+        ],
         'kind'=> [
             'column_name'=>'carton.product',
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'fishtype'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' => 'cm'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -58,7 +69,7 @@ class MandWReport extends AbstractReport
         ],
         'remark'=> [
             'column_name'=>'carton.product',
-            'display_name'=>'Remark',
+            'display_name'=>'Quality Remark',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'remark'
         ],
@@ -69,18 +80,48 @@ class MandWReport extends AbstractReport
     
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->date = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer =  'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
-        $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereDate('inspection_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('inspection_date' ,'<=',$this->endDate->format('Y-m-d'));
+
+        if($this->reportDate == 0)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereHas('carton.product' ,function($q) {
+                $q->whereDate('product_date', '>=', $this->startDate)->whereDate('product_date', '<=', $this->endDate);
+            });
+        }
+        else if($this->reportDate == 1)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereHas('carton.product' ,function($q) {
+                $q->whereDate('carton_date', '>=', $this->startDate)->whereDate('carton_date', '<=', $this->endDate);
+            });
+        }
+        else
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereDate('inspection_date' , '>=' , $this->startDate)->whereDate('inspection_date' ,'<=',$this->endDate);
+        }
 
         $this->data = $queryBuilder->get();
 

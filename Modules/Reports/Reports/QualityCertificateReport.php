@@ -83,6 +83,8 @@ class QualityCertificateReport extends AbstractReport
 
         $queryBuilder = QualityParameter::with('carton','carton.product', 'user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
+        
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

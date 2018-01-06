@@ -10,6 +10,7 @@ namespace Modules\Reports\Reports;
 
 use Modules\Process\Entities\CartonLocation;
 use Carbon\Carbon;
+use Modules\Process\Entities\TransferCarton;
 use PDF;
 
 class UnderTransferReport extends AbstractReport
@@ -21,7 +22,7 @@ class UnderTransferReport extends AbstractReport
             'type'=> REPORT_ROWNO_COLUMN
         ],
         'location_id' => [
-            'column_name'=>'location',
+            'column_name'=>'transfer.loadinglocation',
             'display_name'=>'Loading Location',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'location'
@@ -30,12 +31,14 @@ class UnderTransferReport extends AbstractReport
             'column_name'=>'carton.product',
             'display_name'=>'Product Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' =>'carton_date'
         ],
         'lot_no'=>[
@@ -44,13 +47,14 @@ class UnderTransferReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'lot_no'
         ],
-        'available_quantity'=>[
-            'column_name'=>'available_quantity',
-            'display_name'=>'Available Quantity',
-        ],
+//        'available_quantity'=>[
+//            'column_name'=>'available_quantity',
+//            'display_name'=>'Available Quantity',
+//        ],
         'transit'=>[
-            'column_name'=>'transit',
+            'column_name'=>'quantity',
             'display_name'=>'No.Of.Cartons In Transit',
+
         ],
     ];
 
@@ -60,19 +64,23 @@ class UnderTransferReport extends AbstractReport
 
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->reportMaster->sub_title = 'Loading Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->reportMaster->sub_title = 'From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
-
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Printed by :'. auth()->user()->first_name." ".auth()->user()->last_name .' .  Verified by :_________________  ' .'Prepared by:_________________';
+        if($this->vehicle != null || $this->vehicle != "")
+        {
+            $this->reportMaster->sub_title = 'Vehicle No: ' . $this->vehicle ;
+            $queryBuilder = TransferCarton::with('transfer','transfer.loadinglocation','carton.product')->whereHas('transfer' ,function($q) {
+                $q->where('vehicle_no',$this->vehicle);
+            });
+        }
+        else{
+            $this->reportMaster->sub_title = 'Container No: ' . $this->container ;
+            $queryBuilder = TransferCarton::with('transfer','transfer.loadinglocation','carton.product')->whereHas('transfer' ,function($q) {
+                $q->where('container_no',$this->container);
+            });
+        }
 
-        $queryBuilder = CartonLocation::with('carton','location','carton.product','carton.cartontype','carton.product.fishtype')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
         $this->data = $queryBuilder->get();
 

@@ -55,16 +55,16 @@ class RegisterProcessSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item(trans('process::products.title.packing'), function (Item $item) {
                     $item->icon('fa fa-shopping-bag');
                     $item->weight(1);
-                    $item->append('admin.process.product.packing');
+//                    $item->append('admin.process.product.packing');
                     $item->route('admin.process.product.packingindex');
                     $item->authorize(
-                        $this->auth->hasAccess('process.products.index')
+                        $this->auth->hasAccess('process.products.edit')
                     );
                 });
                 $item->item(trans('process::qualityparameters.title.qualityparameters'), function (Item $item) {
                     $item->icon('fa fa-check-circle');
                     $item->weight(2);
-                    $item->append('admin.process.qualityparameter.create');
+//                    $item->append('admin.process.qualityparameter.create');
                     $item->route('admin.process.qualityparameter.index');
                     $item->authorize(
                         $this->auth->hasAccess('process.qualityparameters.index')

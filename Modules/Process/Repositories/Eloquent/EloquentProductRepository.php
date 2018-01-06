@@ -43,8 +43,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             'q_id' => $request->q_id,
             'sc_id' => $request->sc_id,
             'lc_id' => $request->lc_id,
+            'i_id' => $request->i_id,
+            'k_id' => $request->k_id,
+            'e_id' => $request->e_id,
+            't_id' => $request->t_id,
+            'sg_id' => $request->sg_id,
+            'kg_id' => $request->kg_id,
+            'g_id' => $request->g_id,
+            'h_id' => $request->h_id,
+            'rc_id' => $request->rc_id,
+            'mk_id' => $request->mk_id,
             'user_id' => $user->id,
-            'cm' => $request->cm
+            'cm_id' => $request->cm_id
         ]);
     }
 
@@ -66,12 +76,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 'lot_no' => $request->lot_no,
                 'product_slab' => $request->product_slab,
 //                'fish_type'=>$request->fish_type,
-                'remark' => $request->remark,
+                'packing_remark' => $request->packing_remark,
                 'human_error_slab' => $request->human_error_slab,
                 'diff_in_kg' => $request->diff_in_kg,
                 'packingdone' => true,
                 'packingdone_by' => $user->id,
-                'cm' => $request->cm
+                'cm_id' => $request->cm_id
             ]);
     }
 }

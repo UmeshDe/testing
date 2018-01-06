@@ -57,6 +57,7 @@ class QualityParameterController extends AdminBaseController
 
         $cartons = app(CartonRepository::class)->findByAttributes(['id' => $request->id]);
 
+
         $grades = app(GradeRepository::class)->allWithBuilder()
             ->orderBy('grade')
             ->pluck('grade','id');

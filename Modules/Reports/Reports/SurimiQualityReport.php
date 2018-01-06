@@ -2,6 +2,7 @@
 namespace Modules\Reports\Reports;
 
 
+use Modules\Admin\Repositories\InternalcodeRepository;
 use Modules\Process\Entities\QualityParameter;
 use Carbon\Carbon;
 use PDF;
@@ -18,17 +19,24 @@ class SurimiQualityReport extends AbstractReport
             'column_name'=>'carton.product',
             'display_name'=>'Product Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'carton_date'
+        ],
+        'inspection_date'=>[
+            'column_name'=>'inspection_date',
+            'format' => REPORT_DATE_FORMAT,
+            'display_name'=>'Inspection Date',
         ],
         'approval_no'=>[
             'column_name'=>'carton.product.approval',
-            'display_name'=>'Approval No',
+            'display_name'=>'EIA No',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'app_number'
         ],
@@ -38,6 +46,12 @@ class SurimiQualityReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'fishtype'
         ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
+        ],
         'lot_no'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Lot No',
@@ -46,11 +60,7 @@ class SurimiQualityReport extends AbstractReport
         ],
         'qcr_pagrno'=>[
             'column_name'=>'qcr_pageno',
-            'display_name'=>'QCR PAGE',
-        ],
-        'inspection_date'=>[
-            'column_name'=>'inspection_date',
-            'display_name'=>'Inspection Date',
+            'display_name'=>'QCR Page',
         ],
         'no_of_cartons'=>[
             'column_name'=>'carton.product',
@@ -121,21 +131,47 @@ class SurimiQualityReport extends AbstractReport
 
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
+        
 
-        $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name  ;
+        if($this->reportDate == 0)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
+                $q->whereDate('product_date' , '>=' , $this->startDate)->whereDate('product_date' ,'<=',$this->endDate);});
+        }
+        else if($this->reportDate == 1){
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
+                $q->whereDate('carton_date' , '>=' , $this->startDate)->whereDate('carton_date' ,'<=',$this->endDate);});
+        }
+        else if($this->reportDate == 2)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereDate('inspection_date' , '>=' , $this->startDate)->whereDate('inspection_date' ,'<=',$this->endDate);
+        }
 
-        $this->reportMaster->subfooter = $this->sum;
-
-        $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
+//        $this->reportMaster->subfooter = $this->sum;
 
         $this->data = $queryBuilder->get();
 

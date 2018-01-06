@@ -6,12 +6,12 @@ return [
     'edit resource' => 'Edit approvalnumbers',
     'destroy resource' => 'Destroy approvalnumbers',
     'title' => [
-        'approvalnumbers' => 'ApprovalNumber',
-        'create approvalnumber' => 'Create a approvalnumber',
-        'edit approvalnumber' => 'Edit a approvalnumber',
+        'approvalnumbers' => 'EIA Number',
+        'create approvalnumber' => 'Create a eianumber',
+        'edit approvalnumber' => 'Edit a eianumber',
     ],
     'button' => [
-        'create approvalnumber' => 'Create a approvalnumber',
+        'create approvalnumber' => 'Create a eianumber',
     ],
     'table' => [
     ],

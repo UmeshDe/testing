@@ -22,23 +22,29 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
         'product_date'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Production Date',
+            'display_name'=>'PD',
             'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Carton Date',
+            'display_name'=>'CD',
             'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'carton_date'
         ],
         'variety'=> [
-            'column_name'=>'kinds',
-            'display_name'=>'Variety',
+            'column_name'=>'carton.product',
+            'display_name'=>'SPP',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'kind'
+            'relation_column' =>'fishtype'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -48,7 +54,7 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
         'no_of_slab'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'no_of_slab',
+            'display_name'=>'Slab',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'product_slab'
         ],
@@ -144,16 +150,16 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
         'qcr_pagrno'=>[
             'column_name'=>'qcr_pageno',
-            'display_name'=>'QCR PAGE',
+            'display_name'=>'QCR Page',
         ],
         'inspection_date'=>[
             'column_name'=>'inspection_date',
             'format' => REPORT_DATE_FORMAT,
-            'display_name'=>'Inspection Date',
+            'display_name'=>'ID',
         ],
         'no_of_cartons'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Cartons',
+            'display_name'=>'Cart',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'no_of_cartons'
         ],
@@ -163,41 +169,35 @@ class SurimiProductionQualityStockReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'grade'
         ],
+        'ic'=> [
+            'column_name'=> 'ic',
+            'display_name'=>'IC',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'internal_code'
+        ],
         'moisture'=> [
             'column_name'=>'moisture',
-            'display_name'=>'Moisture',
+            'display_name'=>'Mois.',
         ],
         'standar_wf'=> [
             'column_name'=>'work_force',
-            'display_name'=>'Work Force',
+            'display_name'=>'W',
         ],
         'standard_l'=>[
             'column_name'=>'length',
-            'display_name'=>'Length',
+            'display_name'=>'L',
         ],
         'standard_gl'=> [
             'column_name'=>'gel_strength',
-            'display_name'=>'Gel Strength',
-        ],
-        'suwari_wf'=>[
-            'column_name'=>'suwari_work_force',
-            'display_name'=>'20% Work Force',
-        ],
-        'suwari_l'=> [
-            'column_name'=>'suwari_length',
-            'display_name'=>'20% Length',
-        ],
-        'suwari_gl'=>[
-            'column_name'=>'gel_strength',
-            'display_name'=>'20% Gel Strength',
+            'display_name'=>'JS',
         ],
         'kamaboko_hw'=> [
             'column_name'=>'kamaboko_hw',
-            'display_name'=>'Kamaboko HW',
+            'display_name'=>'HW',
         ],
         'contam'=> [
             'column_name'=>'contam',
-            'display_name'=>'Contam',
+            'display_name'=>'Cont',
         ],
         'ph'=> [
             'column_name'=>'ph',
@@ -205,13 +205,13 @@ class SurimiProductionQualityStockReport extends AbstractReport
         ],
         'balance_qty'=>[
             'column_name'=>'carton.cartonlocation',
-            'display_name'=>'Balance Qty',
+            'display_name'=>'Bal Qty',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'available_quantity'
         ],
         'warehouse' => [
             'column_name'=>'carton.product',
-            'display_name'=>'Warehouse',
+            'display_name'=>'Loc',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'location'
         ],
@@ -230,7 +230,7 @@ class SurimiProductionQualityStockReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer =  'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
         if($this->grade != null || $this->grade != "")
         {
@@ -266,15 +266,16 @@ class SurimiProductionQualityStockReport extends AbstractReport
         else
         {
             $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '_____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton', function ($q) {
+            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
                 $q->whereDate('carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('carton_date', '<=', $this->endDate->format('Y-m-d'));
             });
 
             $this->total = DB::table("process__qualityparameters")
                 ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
                 ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
                 ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
-                ->whereDate('process__cartons.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__cartons.carton_date', '<=', $this->endDate->format('Y-m-d'))
+                ->whereDate('process__products.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__products.carton_date', '<=', $this->endDate->format('Y-m-d'))
                 ->get();
 
         }

@@ -99,6 +99,7 @@
                     $('#product').html('');
                     $.each(response, function (i , item) {
                         var d =    item.carton_id;
+                        $('#product').append($("<option></option>"));
                         $('#product').append('<option value = '+item.id +' data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
                     });
 

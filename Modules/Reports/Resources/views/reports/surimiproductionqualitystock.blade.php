@@ -12,10 +12,10 @@
     <table class="export-table">
         <thead>
         <tr>
-            <td colspan="35" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="36" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="15" align="left"> {{$report->date}}</td>
+            <td colspan="16" align="left"> {{$report->date}}</td>
             <td colspan="20" align="center">
             @foreach($report->total as $total)
                 {{$total->total}}
@@ -23,10 +23,9 @@
             </td>
         </tr>
         <tr>
-            <td colspan="26" align="left"> </td>
+            <td colspan="28" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
-            <td colspan="3" align="center">SUWARI</td>
-            <td colspan="4"></td>
+            <td colspan="5"></td>
         </tr>
         <tr>
             @foreach($report->columns as $column)
@@ -102,12 +101,12 @@
         @endforeach
         <tfoot>
         <tr>
-            <td colspan="24" align="center"></td>
+            <td colspan="22" align="center"></td>
             <td colspan="2"> Total No. Of Cartons</td>
             @foreach($report->total as $total)
                 <td>{{$total->total}}</td>
             @endforeach
-            <td colspan="9"></td>
+            <td colspan="11"></td>
         </tr>
         </tfoot>
     </table>

@@ -51,7 +51,7 @@
                                         <a href="{{ route('admin.process.shipment.edit', [$shipment->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
                                         <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.shipment.destroy', [$shipment->id]) }}"><i class="fa fa-trash"></i></button>
                                         @if($shipment->shipment == 0)
-                                        <button class="btn btn-info btn-flat shipment" data-id="{{$shipment->id}}" data-toggle="modal" data-target="#shipment-modal" ><span style="color:white">Not Shipped</span></button>
+                                        <button class="btn btn-info btn-flat shipment" data-id="{{$shipment->id}}" data-toggle="modal" data-target="#shipment-modal" ><span style="color:white">Confirm Shipped</span></button>
                                         @else
                                         <button class="btn btn-success btn-flat shipment" data-id="{{$shipment->id}}" data-toggle="modal" data-target="#shipment-modal" ><span style="color:white">Shipped</span></button>
                                         @endif
@@ -63,8 +63,6 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </tfoot>
                         </table>

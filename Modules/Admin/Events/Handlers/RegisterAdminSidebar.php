@@ -147,7 +147,16 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('admin.internalcodes.index')
                     );
                 });
+                $item->item(trans('admin::checkmarks.title.checkmarks'), function (Item $item) {
+                    $item->icon('fa fa-check');
+                    $item->weight(0);
+                    $item->route('admin.admin.checkmark.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('admin.checkmarks.index')
+                    );
+                });
 // append
+
             });
         });
 

@@ -11,13 +11,13 @@
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="10" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="12" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="10" align="left"> {{$report->date }}</td>
+            <td colspan="12" align="left"> {{$report->date }}</td>
         </tr>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="7"></td>
             <td colspan="2" align="center">MOISTURE</td>
             <td colspan="2" align="center">WHITNESS</td>
             <td></td>

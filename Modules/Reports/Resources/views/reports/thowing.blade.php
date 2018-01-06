@@ -11,14 +11,10 @@
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="13" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="17" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="7" align="left"> {{$report->date}}</td>
-            <td colspan="2">Location</td>
-            <td colspan="1">Start Time</td>
-            <td colspan="1">End Time</td>
-            <td colspan="2">Supervisor Name</td>
+            <td colspan="17" align="left"> {{$report->date}}</td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

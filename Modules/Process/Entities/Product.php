@@ -10,6 +10,7 @@ use Modules\Admin\Entities\ApprovalNumber;
 use Modules\Admin\Entities\Bagcolor;
 use Modules\Admin\Entities\Buyercode;
 use Modules\Admin\Entities\CartonType;
+use Modules\Admin\Entities\Checkmark;
 use Modules\Admin\Entities\CodeMaster;
 use Modules\Admin\Entities\FishType;
 use Modules\Admin\Entities\Location;
@@ -194,6 +195,14 @@ class Product extends Model
     public function users()
     {
         return $this->belongsTo(User::class,'packingdone_by','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cm()
+    {
+        return $this->belongsTo(Checkmark::class,'cm_id','id');
     }
 }
     

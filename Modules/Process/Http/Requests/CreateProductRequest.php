@@ -9,7 +9,7 @@ class CreateProductRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'lot_no' => 'required|unique:process__products',
+            'lot_no' => 'required|unique_with:process__products,lot_no,fish_type',
             'product_slab' => 'required'
         ];
     }

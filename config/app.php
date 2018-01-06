@@ -194,7 +194,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Accunity\SMSSender\SMSSenderServiceProvider::class,
         Former\FormerServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
     ],
 
     /*

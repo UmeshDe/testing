@@ -9,6 +9,7 @@ use Modules\Admin\Repositories\ApprovalNumberRepository;
 use Modules\Admin\Repositories\BagcolorRepository;
 use Modules\Admin\Repositories\BuyercodeRepository;
 use Modules\Admin\Repositories\CartonTypeRepository;
+use Modules\Admin\Repositories\CheckmarkRepository;
 use Modules\Admin\Repositories\CodeMasterRepository;
 use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Admin\Repositories\LocationRepository;
@@ -76,6 +77,9 @@ class ProductController extends AdminBaseController
             ->orderBy('type')
             ->pluck('type','id');
 
+        $cm = app(CheckmarkRepository::class)->allWithBuilder()
+            ->orderBy('cm')
+            ->pluck('cm','id');
 
         $bagcolors = app(BagcolorRepository::class)->allWithBuilder()
             ->orderBy('color')
@@ -106,7 +110,8 @@ class ProductController extends AdminBaseController
             'cartontypes'=>$cartontypes,
             'locations'=>$locations,
             'codemasters'=>$codemasters,
-            'product'=>$product
+            'product'=>$product,
+            'cm' => $cm
         ];
 
         return view('process::admin.products.edit')->with($data);
@@ -131,6 +136,9 @@ class ProductController extends AdminBaseController
             ->orderBy('type')
             ->pluck('type','id');
 
+        $cm = app(CheckmarkRepository::class)->allWithBuilder()
+            ->orderBy('cm')
+            ->pluck('cm','id');
 
         $bagcolors = app(BagcolorRepository::class)->allWithBuilder()
             ->orderBy('color')
@@ -153,56 +161,124 @@ class ProductController extends AdminBaseController
 
         $fm = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent' ,'=',1)
-                ->get();
-        
+                ->orderBy('code')
+                ->pluck('code','id');
+
         $fr = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent' ,'=',2)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $d = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',3)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $s = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent' ,'=',4)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $a = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',5)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $c = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent' ,'=' ,6)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $p= $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',7)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $b= $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',8)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
         
         $m = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',9)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
 
         $w = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',10)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
 
         $q = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',11)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
 
         $sc = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',12)
-                ->get();
+                ->orderBy('code')
+                ->pluck('code','id');
 
         $lc = $codeMasterRepo->allWithBuilder()
                 ->where('is_parent','=',13)
-                ->get();
-            
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $i = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',245)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $k = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',268)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $e = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',277)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $t = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',278)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $sg = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',279)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $kg = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',280)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $g = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',281)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $h = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',282)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+//        $m = $codeMasterRepo->allWithBuilder()
+//                ->where('is_parent','=',283)
+//                ->orderBy('code')
+//                ->pluck('code','id');
+
+        $rc = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',284)
+                ->orderBy('code')
+                ->pluck('code','id');
+
+        $mk = $codeMasterRepo->allWithBuilder()
+                ->where('is_parent','=',285)
+                ->orderBy('code')
+                ->pluck('code','id');
+
         
         
         $codes = [
@@ -218,18 +294,22 @@ class ProductController extends AdminBaseController
             'w' => $w,
             'q' => $q,
             'sc' => $sc,
-            'lc' => $lc
+            'lc' => $lc,
+            'i' => $i,
+            'k' => $k,
+            'e' => $e,
+            't' => $t,
+            'sg' => $sg,
+            'kg' => $kg,
+            'g' => $g,
+            'h' => $h,
+            'rc' => $rc,
+            'mk' => $mk
         ];
-        
-        
-//        $codemasters = $codeMasterRepo->allWithBuilder()
-//            ->with('childCodes')
-//            ->where('is_parent','=',0)
-//            ->get();
 
         $product = new Product();
 
-        return view('process::admin.products.create', compact('codemasters', 'fishtypes', 'bagcolors', 'codemaster', 'multiplecodes', 'cartontypes', 'locations', 'approvalnumbers','product','buyercode','codes'))->with($codes);
+        return view('process::admin.products.create', compact('codemasters', 'fishtypes', 'bagcolors', 'codemaster', 'multiplecodes', 'cartontypes', 'locations', 'approvalnumbers','product','buyercode','codes','cm'))->with($codes);
     }
 
     /**
@@ -274,6 +354,10 @@ class ProductController extends AdminBaseController
             ->orderBy('type')
             ->pluck('type','id');
 
+        $cm = app(CheckmarkRepository::class)->allWithBuilder()
+            ->orderBy('cm')
+            ->pluck('cm','id');
+
         $bagcolors = app(BagcolorRepository::class)->allWithBuilder()
             ->orderBy('color')
             ->pluck('color','id');
@@ -307,7 +391,8 @@ class ProductController extends AdminBaseController
             'locations'=>$locations,
             'codemasters'=>$codemasters,
             'product'=>$product,
-            'buyercode'=>$buyercode
+            'buyercode'=>$buyercode,
+            'cm' => $cm
         ];
 
         return view('process::admin.products.edit')->with($data);
@@ -322,7 +407,7 @@ class ProductController extends AdminBaseController
      */
     public function update(Product $product, UpdateProductRequest $request)
     {
-
+        
         //Update New Product
         $production = $this->product->updateProduct($request,$product);
 

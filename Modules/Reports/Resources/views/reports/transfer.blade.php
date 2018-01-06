@@ -11,27 +11,27 @@
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="19" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="25" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="19" align="left"> {{$report->reportMaster->sub_title = 'Transfer From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Transfer To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="25" align="left"> {{$report->reportMaster->sub_title}}</td>
         </tr>
-        <tr>
-            <td colspan="14">Loading Date<br>
-                From<br>
-                Start Time<br>
-                End Time<br>
-                Vehicle No <br>
-                Loading Supervisor Name
-            </td>
-            <td colspan="5">Unloading Date<br>
-                To<br>
-                Start Time<br>
-                End Time <br>
-                Temp<br>
-                Unloading Supervisor Name
-            </td>
-        </tr>
+        {{--<tr>--}}
+            {{--<td colspan="14">Loading Date<br>--}}
+                {{--From<br>--}}
+                {{--Start Time<br>--}}
+                {{--End Time<br>--}}
+                {{--Vehicle No <br>--}}
+                {{--Loading Supervisor Name--}}
+            {{--</td>--}}
+            {{--<td colspan="5">Unloading Date<br>--}}
+                {{--To<br>--}}
+                {{--Start Time<br>--}}
+                {{--End Time <br>--}}
+                {{--Temp<br>--}}
+                {{--Unloading Supervisor Name--}}
+            {{--</td>--}}
+        {{--</tr>--}}
         <tr>
             @foreach($report->columns as $column)
                 <th style="{{isset($column['header_style'])?$column['header_style']:''}}">

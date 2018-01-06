@@ -107,28 +107,27 @@
 
 
             this.work_force = ko.computed(function () {
-                var value = Math.ceil(Math.ceil(self.w1()) + Math.ceil(self.w2()) + Math.ceil(self.w3()) + Math.ceil(self.w4()) + Math.ceil(self.w5()));
+                var value = Math.ceil(Math.ceil(self.w1()) + Math.ceil(self.w2()) + Math.ceil(self.w3()) + Math.ceil(self.w4()) + Math.ceil(self.w5()))/5;
                 return (value)?value:0;
             });
             this.length = ko.computed(function () {
-                var value = Math.ceil(Math.ceil(self.l1()) + Math.ceil(self.l2()) + Math.ceil(self.l3()) + Math.ceil(self.l4()) + Math.ceil(self.l5()));
+                var value = Math.ceil(Math.ceil(self.l1()) + Math.ceil(self.l2()) + Math.ceil(self.l3()) + Math.ceil(self.l4()) + Math.ceil(self.l5()))/5;
                 return (value)?value:0;
             });
             this.suwari_work_force = ko.computed(function () {
-                var value = Math.ceil(Math.ceil(self.sw1()) + Math.ceil(self.sw2()) + Math.ceil(self.sw3()) + Math.ceil(self.sw4()) + Math.ceil(self.sw5()));
+                var value = Math.ceil(Math.ceil(self.sw1()) + Math.ceil(self.sw2()) + Math.ceil(self.sw3()) + Math.ceil(self.sw4()) + Math.ceil(self.sw5()))/5;
                 return (value)?value:0;
             });
             this.suwari_length = ko.computed(function () {
-                var value = Math.ceil(Math.ceil(self.sl1()) + Math.ceil(self.sl2()) + Math.ceil(self.sl3()) + Math.ceil(self.sl4()) + Math.ceil(self.sl5()));
+                var value = Math.ceil(Math.ceil(self.sl1()) + Math.ceil(self.sl2()) + Math.ceil(self.sl3()) + Math.ceil(self.sl4()) + Math.ceil(self.sl5()))/5;
                 return (value)?value:0;
             });
             this.suwari_gel_strength = ko.computed(function () {
-                var value = self.suwari_work_force()/ parseFloat(5) * self.suwari_length()/ parseFloat(5);
+                var value = self.suwari_work_force() * self.suwari_length();
                 return (value)?value.toFixed(2):0;
             });
-
             this.gel_strength = ko.computed(function () {
-               var value = self.work_force()/ parseFloat(5) * self.length()/ parseFloat(5);
+               var value = self.work_force() * self.length();
                return (value)?value.toFixed(2):0;
             });
         };

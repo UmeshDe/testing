@@ -12,13 +12,13 @@
     <table class="export-table">
         <thead>
         <tr>
-            <td colspan="23" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="24" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="23" align="left"> {{$report->reportMaster->sub_title = 'Production From Date: ' . \Carbon\Carbon::parse($report->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .\Carbon\Carbon::parse($report->endDate)->format(PHP_DATE_FORMAT) }}</td>
+            <td colspan="24" align="left"> {{$report->reportMaster->sub_title }}</td>
         </tr>
         <tr>
-            <td colspan="11" align="left"> </td>
+            <td colspan="12" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
             <td colspan="3" align="center">SUWARI</td>
             <td colspan="6"></td>

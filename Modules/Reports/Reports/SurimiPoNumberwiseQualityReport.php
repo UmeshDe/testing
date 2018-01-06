@@ -18,25 +18,32 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
             'column_name'=>'carton.product',
             'display_name'=>'Product Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'carton_date'
         ],
-//        'approval_no'=>[
-//            'column_name'=>'carton.product',
-//            'display_name'=>'Approval No',
-//            'type'=>REPORT_RELATION_COLUMN,
-//            'relation_column' =>'app_number'
-//        ],
+        'inspection_date'=>[
+            'column_name'=>'inspection_date',
+            'format' => REPORT_DATE_FORMAT,
+            'display_name'=>'Inspection Date',
+        ],
         'variety'=> [
-            'column_name'=>'kinds',
+            'column_name'=>'carton.product',
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'kind'
+            'relation_column' =>'fishtype'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -48,21 +55,11 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
             'column_name'=>'qcr_pageno',
             'display_name'=>'QCR PAGE',
         ],
-        'inspection_date'=>[
-            'column_name'=>'inspection_date',
-            'display_name'=>'Inspection Date',
-        ],
         'no_of_cartons'=>[
             'column_name'=>'carton.product',
             'display_name'=>'No.Of.Cartons',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'no_of_cartons'
-        ],
-        'shipped'=>[
-            'column_name'=>'carton',
-            'display_name'=>'Shipped',
-            'type' => REPORT_RELATION_COLUMN,
-            'relation_column' => 'shipped'
         ],
         'grade'=>[
             'column_name'=>'grades',
@@ -70,12 +67,12 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'grade'
         ],
-//        'ic'=> [
-//            'column_name'=> 'ic',
-//            'display_name'=>'IC',
-//            'type' => REPORT_RELATION_COLUMN,
-//            'relation_column' =>'internal_code'
-//        ],
+        'ic'=>[
+            'column_name'=>'ic',
+            'display_name'=>'IC',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'internal_code'
+        ],
         'moisture'=> [
             'column_name'=>'moisture',
             'display_name'=>'Moisture',
@@ -124,7 +121,7 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
         ],
         'po_no' => [
             'column_name'=>'carton.product',
-            'display_name'=>'PO NO:',
+            'display_name'=>'PO No:',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'po_no'
         ],
@@ -138,20 +135,31 @@ class SurimiPoNumberwiseQualityReport extends AbstractReport
 
 
     public function setup(){
-
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+        
+        if($this->po != null || $this->po != "")
         {
-            $this->reportMaster->sub_title = 'Inspection Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            $this->reportMaster->sub_title = 'PO No: ' . $this->po;
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
+                $q->where('po_no',$this->po );});
         }
         else{
-            $this->reportMaster->sub_title = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->reportMaster->sub_title = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->reportMaster->sub_title = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            
+            
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
+                $q->whereDate('product_date' , '>=' , $this->startDate)->whereDate('product_date' ,'<=',$this->endDate);});
         }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Prepared by:_________________'.'Varified by :_________________  '. 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name  ;
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
-        $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.buyer','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
 
         $this->data = $queryBuilder->get();
 

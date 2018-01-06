@@ -11,22 +11,18 @@
     <?php
             $buyer = app(\Modules\Admin\Repositories\BuyercodeRepository::class)->find($report->buyer);
     ?>
-
-
-
     <table class="export-table">
         <thead>
         <tr>
-            <td colspan="22" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="35" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="22" align="left"> {{$report->reportMaster->sub_title = 'Buyer Code :' . $buyer->buyer_code}}</td>
+            <td colspan="35" align="left"> {{$report->reportMaster->sub_title }}</td>
         </tr>
         <tr>
             <td colspan="10" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
-            <td colspan="3" align="center">SUWARI</td>
-            <td colspan="6"></td>
+            <td colspan="22"></td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

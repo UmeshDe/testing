@@ -1,11 +1,12 @@
-    @extends('layouts.master')
+@extends('layouts.master')
 
 @section('content-header')
     <h1>
         {{ trans('reports::reportlogs.title.reportlogs') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
+        <li><a href="{{ route('dashboard.index') }}"><i
+                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
         <li class="active">{{ trans('reports::reportlogs.title.reportlogs') }}</li>
     </ol>
 @stop
@@ -23,77 +24,54 @@
                      ->id('reportform')
                      ->route('admin.report.generate')
                      ->method('POST') !!}
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="report_Type" class="control-label col-lg-4 col-sm-4">
-                                Report Type
-                            </label>
-                            <div class="col-lg-8 col-sm-8">
-                                {!!
-                                    Former::select('report_Type')
-                                        ->fromQuery($reports,'name','id')
-                                        ->select('1')
-                                        ->raw()
-                                !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    Report Type
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    {!!
+                                        Former::select('report_Type')
+                                            ->fromQuery($reports,'name','id')
+                                            ->select('1')
+                                            ->raw()
+                                    !!}
+                                </div>
                             </div>
                         </div>
                     </div>
-                 </div>
-                 <div class="row">
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="reportrange" class="control-label col-lg-4 col-sm-4">
-                                Date
-                            </label>
-                            <div class="col-lg-8 col-sm-8">
-                                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                    <span></span> <b class="caret"></b>
-                                </div>
-
-                                <div style="display:none">
-                                    {!! Former::text('start_date') !!}
-                                    {!! Former::text('end_date') !!}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {!!
+                             Former::radios('report_date')->label('Date')
+                             ->radios(['0' => 'Production Date' ,'1' => 'Carton Date','2' => 'Inspection Date','3' => 'Transfer Date','4' => 'Repacking Date','5' => 'Thowing Date' ])
+                             ->inline()
+                             !!}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="date" class="form-group" hidden>
+                                <label for="reportrange" class="control-label col-lg-4 col-sm-4">
+                                    Date
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    <div id="reportrange" class="reportrange pull-right"
+                                         style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                        <span></span> <b class="caret"></b>
+                                    </div>
+                                    <div style="display:none">
+                                        {!! Former::text('start_date')!!}
+                                        {!! Former::text('end_date') !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                     </div>
-                     <div class="col-md-3">
-                         <div class="form-group">
-                             <label for="report_Type" class="control-label col-lg-4 col-sm-4">
-                                 Grade
-                             </label>
-                             <div class="col-lg-8 col-sm-8">
-                                 {!!
-                                     Former::select('grade')
-                                          ->addOption(null)
-                                         ->fromQuery($grade,'grade','id')
-                                         ->select('1')
-                                         ->raw()
-                                 !!}
-                             </div>
-                         </div>
-                     </div>
-                     <div class="col-md-3">
-                         <div class="form-group">
-                             <label for="report_Type" class="control-label col-lg-4 col-sm-4">
-                                Variety
-                             </label>
-                             <div class="col-lg-8 col-sm-8">
-                                 {!!
-                                     Former::select('variety')
-                                         ->addOption(null)
-                                         ->fromQuery($variety,'type','id')
-                                         ->select('1')
-                                         ->raw()
-                                 !!}
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                    </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="report_Type" class="control-label col-lg-4 col-sm-4">
                                     BuyerCode
@@ -103,43 +81,136 @@
                                         Former::select('buyer')
                                             ->addOption(null)
                                             ->fromQuery($buyercode,'buyer_code','id')
+                                            ->raw()
+                                    !!}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    Vehicle No.
+                                </label>
+                                <div class=" form-group has-feedback {{ $errors->has('vehicle_no') ? ' has-error has-feedback' : '' }}">
+                                    {!! $errors->first('vehicle_no', '<span class="help-block">:message</span>') !!}
+                                    <select class="itemName dropdown" id="vehicle-no" name="vehicle_no">
+                                        <option></option>
+                                        @foreach($vehicle as $data)
+                                            <option value="{{$data->vehicle_no}}">
+                                                {{$data->vehicle_no}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    Container No.
+                                </label>
+                                <div class=" form-group has-feedback {{ $errors->has('container_no') ? ' has-error has-feedback' : '' }}">
+                                    {!! $errors->first('container_no', '<span class="help-block">:message</span>') !!}
+                                    <select class="itemName dropdown" id="container-no" name="container_no">
+                                        <option></option>
+                                        @foreach($container as $data)
+                                            <option value="{{$data->container_no}}">
+                                                {{$data->container_no}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    Place
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    {!!
+                                        Former::select('place')
+                                            ->addOption(null)
+                                            ->fromQuery($place,'location','id')
                                             ->select('1')
                                             ->raw()
                                     !!}
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                Grade
+                            </label>
+                            <div class="col-lg-8 col-sm-8">
+                                {!!
+                                    Former::select('grade')
+                                         ->addOption(null)
+                                        ->fromQuery($grade,'grade','id')
+                                        ->select('1')
+                                        ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                Variety
+                            </label>
+                            <div class="col-lg-8 col-sm-8">
+                                {!!
+                                    Former::select('variety')
+                                        ->addOption(null)
+                                        ->fromQuery($variety,'type','id')
+                                        ->select('1')
+                                        ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="report_Type" class="control-label col-lg-2 col-sm-2">
+                                <label for="report_Type" class="control-label col-lg-4 col-sm-4">
+                                    IC
+                                </label>
+                                <div class="col-lg-8 col-sm-8">
+                                    {!!
+                                        Former::select('ic')
+                                            ->addOption(null)
+                                            ->fromQuery($ic,'internal_code','id')
+                                            ->select('1')
+                                            ->raw()
+                                    !!}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="report_Type" class="control-label col-lg-2 col-sm-4">
                                     PO
                                 </label>
-                                {{--<div class="col-lg-8 col-sm-8">--}}
-                                    {{--{!!--}}
-                                        {{--Former::select('po')--}}
-                                            {{--->fromQuery($po,'po_no','id')--}}
-                                            {{--->select('1')--}}
-                                            {{--->raw()--}}
-                                    {{--!!}--}}
-                                {{--</div>--}}
-                                <div class="form-group has-feedback {{ $errors->has('po') ? ' has-error has-feedback' : '' }}">
+                                <div class=" form-group has-feedback {{ $errors->has('po') ? ' has-error has-feedback' : '' }}">
                                     {!! $errors->first('po', '<span class="help-block">:message</span>') !!}
                                     <select class="itemName dropdown" id="po" name="po">
                                         <option></option>
-                                            @foreach($po as $p)
-                                                <option value="{{$p->po_no}}">
-                                                    {{$p->po_no}}
-                                                </option>
-                                                @endforeach
-
+                                        @foreach($po as $p)
+                                            <option value="{{$p->po_no}}">
+                                                {{$p->po_no}}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
-
-
-
                             </div>
                         </div>
-
+                    </div>
+                    {{--<div class="row">--}}
+                    {{----}}
+                    {{--</div>--}}
+                    <div>
                         {!! Former::actions()
                             ->large_primary_submit('Generate')
                             ->large_inverse_reset('Reset')
@@ -181,8 +252,12 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.reports.reportlog.edit', [$reportlog->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.reports.reportlog.destroy', [$reportlog->id]) }}"><i class="fa fa-trash"></i></button>
+                                        <a href="{{ route('admin.reports.reportlog.edit', [$reportlog->id]) }}"
+                                           class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
+                                        <button class="btn btn-danger btn-flat" data-toggle="modal"
+                                                data-target="#modal-delete-confirmation"
+                                                data-action-target="{{ route('admin.reports.reportlog.destroy', [$reportlog->id]) }}">
+                                            <i class="fa fa-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -218,59 +293,69 @@
 @stop
 
 @push('js-stack')
-    <script type="text/javascript">
-        $( document ).ready(function() {
-            $(document).keypressAction({
-                actions: [
-                    { key: 'c', route: "<?= route('admin.reports.reportlog.create') ?>" }
-                ]
-            });
-            $('#po').select2({
-                width: '50%'
-            });
-        });
-    </script>
-    <?php $locale = locale(); ?>
-    <script type="text/javascript">
-        $(function () {
-            $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).keypressAction({
+            actions: [
+                {key: 'c', route: "<?= route('admin.reports.reportlog.create') ?>"}
+            ]
         });
 
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
-            $('#start_date').val(start.format('YYYY-MM-DD'));
-            $('#end_date').val(end.format('YYYY-MM-DD'));
-        }
-
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        $("input[name$='report_date']").click(function () {
+            $("#date").show();
+        });
+        $('#po').select2({
+            width: '50%'
+        });
+        $('#vehicle-no').select2({
+            width: '50%'
+        });
+        $('#container-no').select2({
+            width: '50%'
+        });
+    });
+</script>
+<?php $locale = locale(); ?>
+<script type="text/javascript">
+    $(function () {
+        $('.data-table').dataTable({
+            "paginate": true,
+            "lengthChange": true,
+            "filter": true,
+            "sort": true,
+            "info": true,
+            "autoWidth": true,
+            "order": [[0, "desc"]],
+            "language": {
+                "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
             }
-        }, cb);
+        });
+    });
 
-        cb(start, end);
+
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
+        $('#start_date').val(start.format('YYYY-MM-DD'));
+        $('#end_date').val(end.format('YYYY-MM-DD'));
+    }
+    $('#reportrange').daterangepicker({
+
+        startDate: start,
+        endDate: end,
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+    cb(start, end);
 
 
-    </script>
+</script>
 @endpush

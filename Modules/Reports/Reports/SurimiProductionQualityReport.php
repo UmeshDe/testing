@@ -2,6 +2,8 @@
 namespace Modules\Reports\Reports;
 
 
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\InternalcodeRepository;
 use Modules\Process\Entities\QualityParameter;
 use Carbon\Carbon;
 use Modules\Process\Repositories\ProductRepository;
@@ -19,19 +21,32 @@ class SurimiProductionQualityReport extends AbstractReport
             'column_name'=>'carton.product',
             'display_name'=>'Production Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'product_date'
         ],
         'carton_date'=>[
             'column_name'=>'carton.product',
             'display_name'=>'Carton Date',
             'type' => REPORT_RELATION_COLUMN,
+            'format' => REPORT_DATE_FORMAT,
             'relation_column' => 'carton_date'
         ],
+        'inspection_date'=>[
+            'column_name'=>'inspection_date',
+            'format' => REPORT_DATE_FORMAT,
+            'display_name'=>'Inspection Date',
+        ],
         'variety'=> [
-            'column_name'=>'kinds',
+            'column_name'=>'carton.product',
             'display_name'=>'Variety',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'kind'
+            'relation_column' =>'variety'
+        ],
+        'cm'=> [
+            'column_name'=>'carton.product.cm',
+            'display_name'=>'CM',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
@@ -41,7 +56,7 @@ class SurimiProductionQualityReport extends AbstractReport
         ],
         'no_of_slab'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'no_of_slab',
+            'display_name'=>'No. Slab',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'no_of_cartons'
         ],
@@ -137,11 +152,7 @@ class SurimiProductionQualityReport extends AbstractReport
         ],
         'qcr_pagrno'=>[
             'column_name'=>'qcr_pageno',
-            'display_name'=>'QCR PAGE',
-        ],
-        'inspection_date'=>[
-            'column_name'=>'inspection_date',
-            'display_name'=>'Inspection Date',
+            'display_name'=>'QCR Page',
         ],
         'no_of_cartons'=>[
             'column_name'=>'carton.product',
@@ -154,6 +165,12 @@ class SurimiProductionQualityReport extends AbstractReport
             'display_name'=>'Grade',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'grade'
+        ],
+        'ic'=>[
+            'column_name'=>'ic',
+            'display_name'=>'IC',
+            'type' => REPORT_RELATION_COLUMN,
+            'relation_column' =>'internal_code'
         ],
         'moisture'=> [
             'column_name'=>'moisture',
@@ -173,15 +190,15 @@ class SurimiProductionQualityReport extends AbstractReport
         ],
         'suwari_wf'=>[
             'column_name'=>'suwari_work_force',
-            'display_name'=>'20%W',
+            'display_name'=>'20% W',
         ],
         'suwari_l'=> [
             'column_name'=>'suwari_length',
-            'display_name'=>'20%L',
+            'display_name'=>'20% L',
         ],
         'suwari_gl'=>[
             'column_name'=>'gel_strength',
-            'display_name'=>'20%JS',
+            'display_name'=>'20% JS',
         ],
         'kamaboko_hw'=> [
             'column_name'=>'kamaboko_hw',
@@ -207,27 +224,78 @@ class SurimiProductionQualityReport extends AbstractReport
     
     public function setup(){
 
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
-
         $this->reportMaster->sub_title_style = 'text-align:left';
 
         $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name ;
 
-
-        $this->sum = app(ProductRepository::class)->allWithBuilder()
-            ->whereDate('created_at' , '>=' ,  $this->startDate->format('Y-md-d'))
-            ->whereDate('created_at' , '<=' ,  $this->endDate->format('Y-m-d'))
-            ->sum('no_of_cartons');
         
         $this->reportMaster->subfooter = $this->sum;
 
-        $queryBuilder = QualityParameter::with('carton','carton.product','carton.product.codes','user')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+        if($this->reportDate == 0)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $this->sum =   $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__products.product_date' , '>=' , $this->startDate)->whereDate('process__products.product_date' ,'<=',$this->endDate)
+                ->get();
+
+            $this->reportMaster->subfooter = $this->sum;
+
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.codes','user')->whereHas('carton.product' ,function($q){
+                $q->whereDate('product_date' , '>=' , $this->startDate)->whereDate('product_date' ,'<=',$this->endDate);});
+        }
+        else if($this->reportDate == 1){
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $this->sum =   $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__products.carton_date' , '>=' , $this->startDate)->whereDate('process__products.carton_date' ,'<=',$this->endDate)
+                ->get();
+            $this->reportMaster->subfooter = $this->sum;
+
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.codes','user')->whereHas('carton.product' ,function($q){
+                $q->whereDate('carton_date' , '>=' , $this->startDate)->whereDate('carton_date' ,'<=',$this->endDate);});
+        }
+        else if($this->reportDate == 2){
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Inspection  Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+            $this->sum =   $this->total = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__qualityparameters.inspection_date' , '>=' , $this->startDate)->whereDate('process__qualityparameters.inspection_date' ,'<=',$this->endDate)
+                ->get();
+            $this->reportMaster->subfooter = $this->sum;
+
+
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.codes','user')->whereDate('inspection_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('inspection_date' ,'<=',$this->endDate->format('Y-m-d'));
+        }
+        else
+        {
+            $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.codes','user')->whereDate('inspection_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('inspection_date' ,'<=',$this->endDate->format('Y-m-d'));
+        }
+
+        $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
         $this->data = $queryBuilder->get();
 

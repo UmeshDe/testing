@@ -72,14 +72,37 @@ class ThrowingController extends AdminBaseController
      */
     public function store(CreateThrowingRequest $request)
     {
-        $user = auth()->user();
-        $cartonRepo = app(CartonRepository::class)->find($request->cartId);
-        $cartonRepo->no_of_cartons = $cartonRepo->no_of_cartons - $request->throwing_input;
-        $cartonRepo->save();
+        if($request->cartId != null)
+        {
+            $user = auth()->user();
+            $cartonRepo = app(CartonRepository::class)->find($request->cartId);
+            $cartonRepo->no_of_cartons = $cartonRepo->no_of_cartons - $request->throwing_input;
+            $cartonRepo->save();
 
-        $updateCartonLocation = app(CartonLocationRepository::class)->findByAttributes(['carton_id' => $request->cartId ,  'location_id' => $request->location_id ]);
-        $updateCartonLocation->available_quantity = $updateCartonLocation->available_quantity - $request->throwing_input;
-        $updateCartonLocation->save();
+            $updateCartonLocation = app(CartonLocationRepository::class)->findByAttributes(['carton_id' => $request->cartId ,  'location_id' => $request->location_id ]);
+            $updateCartonLocation->available_quantity = $updateCartonLocation->available_quantity - $request->throwing_input;
+            $updateCartonLocation->save();
+
+            $thowdata = [
+                'carton_date' => $request->carton_date,
+                'location_id' => $request->location_id,
+                'thowing_start_time' =>Carbon::parse($request->thowing_start_time),
+                'thowing_end_time' =>Carbon::parse($request->thowing_end_time),
+                'thowing_supervisor' => $request->thowing_supervisor,
+                'comment' => $request->comment,
+                'throwing_input' => $request->throwing_input,
+                'carton_id' => $request->cartId,
+                'user_id' => $user->id,
+                'thowingdone_by' => $user->id
+            ];
+
+            $this->throwing->create($thowdata);
+            return redirect()->route('admin.process.throwing.index')
+                ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::throwings.title.throwings')]));
+        }
+        else {
+            return "Select Carton";
+        }
 
 //        $data = [
 //            'product_id' => $cartonRepo->product_id,
@@ -90,26 +113,9 @@ class ThrowingController extends AdminBaseController
 //        ];
 //        $newCarton  =  $cartonRepo->create($data);
 
-        $thowdata = [
-            'carton_date' => $request->carton_date,
-            'location_id' => $request->location_id,
-            'thowing_start_time' =>Carbon::parse($request->thowing_start_time),
-            'thowing_end_time' =>Carbon::parse($request->thowing_end_time),
-            'thowing_supervisor' => $request->thowing_supervisor,
-            'comment' => $request->comment,
-            'throwing_input' => $request->throwing_input,
-            'carton_id' => $request->cartId,
-            'user_id' => $user->id,
-            'thowingdone_by' => $user->id
-        ];
-
-        $this->throwing->create($thowdata);
 
 //        $productLocation = app(CartonLocationRepository::class)->addCarton($request->location_id,$newCarton);
-
-
-        return redirect()->route('admin.process.throwing.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('process::throwings.title.throwings')]));
+        
     }
 
     /**

@@ -42,8 +42,10 @@ class AuthController extends BasePublicController
             return redirect()->back()->withInput()->withError($error);
         }
 
-        return redirect()->intended(route(config('asgard.user.config.redirect_route_after_login')))
-                ->withSuccess(trans('user::messages.successfully logged in'));
+
+        return redirect('/backend');
+//        return redirect()->rere(route(config('asgard.user.config.redirect_route_after_login')))
+//                ->withSuccess(trans('user::messages.successfully logged in'));
     }
 
     public function getRegister()

@@ -5,6 +5,7 @@ namespace Modules\Reports\Reports;
 
 use Carbon\Carbon;
 use Modules\Process\Entities\Product;
+use Modules\Process\Repositories\ProductRepository;
 use PDF;
 
 class DatewiseReport extends AbstractReport
@@ -39,6 +40,12 @@ class DatewiseReport extends AbstractReport
             'column_name'=>'variety',
             'display_name'=>'Varity',
         ],
+        'cm'=> [
+            'column_name'=>'cm',
+            'display_name'=>'CM',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'cm'
+        ],
         'first_lot_no'=>[
             'column_name'=>'lot_no',
             'display_name'=>'1ST Lot No',
@@ -59,7 +66,7 @@ class DatewiseReport extends AbstractReport
         ],
         'Remark'=>[
             'column_name'=>'remark',
-            'display_name'=>'Remark',
+            'display_name'=>'Production Remark',
         ],
     ];
     
@@ -70,25 +77,51 @@ class DatewiseReport extends AbstractReport
     }
 
     public function setup(){
-        
-        if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-        {
-            $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
-        }
-        else{
-            $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-        }
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
-        $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name;
+        if($this->reportDate == 0)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Production Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Production From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Production To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
 
-        $this->reportMaster->subfooter = $this->sum;
+            $queryBuilder = Product::with('codes','lastlot','variety','bagColor','cartonType')->whereDate('product_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('product_date' ,'<=',$this->endDate->format('Y-m-d'));
+            $this->sum = app(ProductRepository::class)->allWithBuilder()
+                ->whereDate('product_date' , '>=' ,  $this->startDate)
+                ->whereDate('product_date' , '<=' ,  $this->endDate)
+                ->sum('no_of_cartons');
+
+            $this->reportMaster->subfooter = $this->sum;
+
+        }
+        elseif ($this->reportDate == 1)
+        {
+            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+            {
+                $this->date = 'Carton Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) ;
+            }
+            else{
+                $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+            }
+
+            $queryBuilder = Product::with('codes','lastlot','variety','bagColor','cartonType')->whereDate('carton_date' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('carton_date' ,'<=',$this->endDate->format('Y-m-d'));
+            $this->sum = app(ProductRepository::class)->allWithBuilder()
+                ->whereDate('carton_date' , '>=' ,  $this->startDate)
+                ->whereDate('carton_date' , '<=' ,  $this->endDate)
+                ->sum('no_of_cartons');
+
+            $this->reportMaster->subfooter = $this->sum;
+        }
+
+        $this->reportMaster->footer = 'Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name . ' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
+
 
         $last = $this->lastlot;
-
-        $queryBuilder = Product::with('codes','lastlot','variety','bagColor','cartonType')->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
-
         $this->data = $queryBuilder->get();
 
         $this->setupDone = true;

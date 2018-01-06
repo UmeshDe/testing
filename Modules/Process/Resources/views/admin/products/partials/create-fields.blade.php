@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group has-feedback {{ $errors->has('approval_no') ? ' has-error has-feedback' : '' }}">
-                    <label for="type-name" class="control-label col-sm-5">ApprovalNo:</label>
+                    <label for="type-name" class="control-label col-sm-5">EIA No:</label>
                     <div class="col-sm-7">
                         {!!
                             Former::select('approval_no')
@@ -120,10 +120,16 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group has-feedback {{ $errors->has('cm') ? 'has-erro has-feedback' : '' }}">
+                <div class="form-group has-feedback {{ $errors->has('cm_id') ? ' has-error has-feedback' : '' }}">
                     <label for="cm" class="control-label col-sm-5">CM:</label>
                     <div class="col-sm-7">
-                        {!! Former::text('cm')->raw() !!}
+                        {!!
+                             Former::select('cm_id')
+                             ->addOption(null)
+                            ->fromQuery($cm,'cm','id')
+                            ->addClass('select')
+                            ->raw()
+                         !!}
                     </div>
                 </div>
             </div>
@@ -147,20 +153,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group has-feedback {{ $errors->has('fr_id') ? ' has-error has-feedback' : '' }}">
-                        <label for="fr_id" class="control-label col-sm-2 codes">FR:</label>
-                        <div class="col-sm-10">
-                            {!!
-                                 Former::select('fr_id')
-                                 ->fromQuery($fr,'code','id')
-                                 ->addOption(null)
-                                ->addClass('select')
-                                ->raw()
-                             !!}
-                        </div>
-                    </div>
-                </div>
+                {{--<div class="col-md-3">--}}
+                    {{--<div class="form-group has-feedback {{ $errors->has('fr_id') ? ' has-error has-feedback' : '' }}">--}}
+                        {{--<label for="fr_id" class="control-label col-sm-2 codes">FR:</label>--}}
+                        {{--<div class="col-sm-10">--}}
+                            {{--{!!--}}
+                                 {{--Former::select('fr_id')--}}
+                                 {{--->fromQuery($fr,'code','id')--}}
+                                 {{--->addOption(null)--}}
+                                {{--->addClass('select')--}}
+                                {{--->raw()--}}
+                             {{--!!}--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="col-md-3">
                     <div class="form-group has-feedback {{ $errors->has('d_id') ? ' has-error has-feedback' : '' }}">
                         <label for="d_id" class="control-label col-sm-2 codes">D:</label>
@@ -251,7 +257,7 @@
                         <div class="col-sm-10">
                             {!!
                                  Former::select('m_id')
-                                  ->fromQuery($m,'code','id')
+                                 ->fromQuery($m,'code','id')
                                  ->addOption(null)
                                 ->addClass('select')
                                 ->raw()
@@ -308,6 +314,146 @@
                             {!!
                                  Former::select('lc_id')
                                  ->fromQuery($lc,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('i_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="i_id" class="control-label col-sm-2 codes">I:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('i_id')
+                                 ->fromQuery($i,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('k_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="k_id" class="control-label col-sm-2 codes">K:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('k_id')
+                                 ->fromQuery($k,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('e_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="e_id" class="control-label col-sm-2 codes">E:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('e_id')
+                                 ->fromQuery($e,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('t_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="t_id" class="control-label col-sm-2 codes">T:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('t_id')
+                                 ->fromQuery($t,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('sg_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="sg_id" class="control-label col-sm-2 codes">SG:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('sg_id')
+                                 ->fromQuery($sg,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('kg_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="kg_id" class="control-label col-sm-2 codes">KG:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('kg_id')
+                                 ->fromQuery($kg,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('g_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="g_id" class="control-label col-sm-2 codes">G:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('g_id')
+                                 ->fromQuery($g,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('h_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="h_id" class="control-label col-sm-2 codes">H:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('h_id')
+                                 ->fromQuery($h,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('rc_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="rc_id" class="control-label col-sm-2 codes">RC:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('rc_id')
+                                 ->fromQuery($rc,'code','id')
+                                 ->addOption(null)
+                                ->addClass('select')
+                                ->raw()
+                             !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group has-feedback {{ $errors->has('mk_id') ? ' has-error has-feedback' : '' }}">
+                        <label for="mk_id" class="control-label col-sm-2 codes">MK:</label>
+                        <div class="col-sm-10">
+                            {!!
+                                 Former::select('mk_id')
+                                 ->fromQuery($mk,'code','id')
                                  ->addOption(null)
                                 ->addClass('select')
                                 ->raw()

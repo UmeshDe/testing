@@ -115,6 +115,7 @@ class RepackController extends AdminBaseController
                 'bagcolor_id' => $request->bagcolor_id,
                 'cartontype_id' => $request->cartontype_id,
                 'lot_no' => $request->lot_no,
+                'grade_id' => $request->grade_id,
                 'repacked_cartons' => $request->repacked_cartons,
                 'remark' => $request->remark,
                 'repackingdone_by' => $user->id,

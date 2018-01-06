@@ -84,7 +84,14 @@ return [
         'edit' => 'admin::internalcodes.edit resource',
         'destroy' => 'admin::internalcodes.destroy resource',
     ],
+    'admin.checkmarks' => [
+        'index' => 'admin::checkmarks.list resource',
+        'create' => 'admin::checkmarks.create resource',
+        'edit' => 'admin::checkmarks.edit resource',
+        'destroy' => 'admin::checkmarks.destroy resource',
+    ],
 // append
+
 
 
 

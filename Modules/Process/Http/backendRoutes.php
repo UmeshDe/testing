@@ -3,14 +3,17 @@
 use Illuminate\Routing\Router;
 /** @var Router $router */
 
-$router->group(['prefix' =>'/process'], function (Router $router) {
+$router->group(/**
+ * @param Router $router
+ */
+    ['prefix' =>'/process'], function (Router $router) {
     $router->bind('product', function ($id) {
         return app('Modules\Process\Repositories\ProductRepository')->find($id);
     });
     $router->get('products', [
         'as' => 'admin.process.product.index',
         'uses' => 'ProductController@index',
-        'middleware' => 'can:process.products.index'
+//        'middleware' => 'can:process.products.index'
     ]);
     $router->get('products/create', [
         'as' => 'admin.process.product.create',
@@ -75,15 +78,30 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'CartonController@update',
         'middleware' => 'can:process.cartons.edit'
     ]);
+    $router->get('cartons/cartonDate', [
+        'as' => 'admin.process.carton.cartonDate',
+        'uses' => 'CartonController@cartonDate',
+//        'middleware' => 'can:process.cartons.edit'
+    ]);
+    $router->get('cartons/lotNumber', [
+        'as' => 'admin.process.carton.lotNumber',
+        'uses' => 'CartonController@lotNumber'
+//        'middleware' => 'can:process.cartons.edit'
+    ]);
+    $router->get('cartons/availableQty', [
+        'as' => 'admin.process.carton.availableQty',
+        'uses' => 'CartonController@availableQty'
+//        'middleware' => 'can:process.cartons.edit'
+    ]);
     $router->get('cartons', [
         'as' => 'admin.process.carton.cartonLots',
-        'uses' => 'CartonController@cartonLots',
-        'middleware' => 'can:process.cartons.edit'
+        'uses' => 'CartonController@cartonLots'
+//        'middleware' => 'can:process.cartons.edit'
     ]);
     $router->get('cartons\getCartonsfromRelation', [
         'as' => 'admin.process.carton.getCartonsfromRelation',
-        'uses' => 'CartonController@getCartonsfromRelation',
-        'middleware' => 'can:process.cartons.edit'
+        'uses' => 'CartonController@getCartonsfromRelation'
+//        'middleware' => 'can:process.cartons.edit'
     ]);
     $router->delete('cartons/{carton}', [
         'as' => 'admin.process.carton.destroy',
@@ -463,7 +481,41 @@ $router->group(['prefix' =>'/process'], function (Router $router) {
         'uses' => 'PackingController@destroy',
         'middleware' => 'can:process.packings.destroy'
     ]);
+    $router->bind('shipmentfile', function ($id) {
+        return app('Modules\Process\Repositories\ShipmentFileRepository')->find($id);
+    });
+    $router->get('shipmentfiles', [
+        'as' => 'admin.process.shipmentfile.index',
+        'uses' => 'ShipmentFileController@index',
+        'middleware' => 'can:process.shipmentfiles.index'
+    ]);
+    $router->get('shipmentfiles/create', [
+        'as' => 'admin.process.shipmentfile.create',
+        'uses' => 'ShipmentFileController@create',
+        'middleware' => 'can:process.shipmentfiles.create'
+    ]);
+    $router->post('shipmentfiles', [
+        'as' => 'admin.process.shipmentfile.store',
+        'uses' => 'ShipmentFileController@store',
+        'middleware' => 'can:process.shipmentfiles.create'
+    ]);
+    $router->get('shipmentfiles/{shipmentfile}/edit', [
+        'as' => 'admin.process.shipmentfile.edit',
+        'uses' => 'ShipmentFileController@edit',
+        'middleware' => 'can:process.shipmentfiles.edit'
+    ]);
+    $router->put('shipmentfiles/{shipmentfile}', [
+        'as' => 'admin.process.shipmentfile.update',
+        'uses' => 'ShipmentFileController@update',
+        'middleware' => 'can:process.shipmentfiles.edit'
+    ]);
+    $router->delete('shipmentfiles/{shipmentfile}', [
+        'as' => 'admin.process.shipmentfile.destroy',
+        'uses' => 'ShipmentFileController@destroy',
+        'middleware' => 'can:process.shipmentfiles.destroy'
+    ]);
 // append
+
 
 
 

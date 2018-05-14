@@ -18,6 +18,7 @@ use Modules\Process\Entities\Transfer;
 use Modules\Process\Repositories\ProductRepository;
 use Modules\Process\Repositories\TransferRepository;
 use Modules\Reports\Entities\ReportLog;
+use Modules\Reports\Entities\ReportMaster;
 use Modules\Reports\Http\Requests\CreateReportLogRequest;
 use Modules\Reports\Http\Requests\UpdateReportLogRequest;
 use Modules\Reports\Repositories\ReportLogRepository;
@@ -58,6 +59,8 @@ class ReportLogController extends AdminBaseController
         $reports = $this->reportMaster->allWithBuilder()
             ->where('module_id','=',$module)
             ->pluck('name','id');
+
+        $reportMasters = app(ReportMasterRepository::class)->all();
 
         $grade = app(GradeRepository::class)->allWithBuilder()
             ->orderBy('grade')
@@ -107,7 +110,7 @@ class ReportLogController extends AdminBaseController
             ->orderBy('internal_code')
             ->pluck('internal_code','id');
         
-        return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po','ic','transferData','vehicle','container','place'));
+        return view('reports::admin.reportlogs.index', compact('reports','grade','variety','buyercode','po','ic','transferData','vehicle','container','place','reportMasters'));
 
     }
 
@@ -141,7 +144,7 @@ class ReportLogController extends AdminBaseController
      * @param  ReportLog $reportlog
      * @return Response
      */
-    public function edit(ReportLog $reportlog)
+    public function edit(ReportMaster $reportlog)
     {
         return view('reports::admin.reportlogs.edit', compact('reportlog'));
     }
@@ -183,6 +186,9 @@ class ReportLogController extends AdminBaseController
      */
     public function generate(Request $request)
     {
+
+//        dd($request->all());
+
         $reportType = app(ReportMasterRepository::class)->find($request->input('report_Type'));
         $reportClass = 'Modules\\Reports\\Reports\\'.Str::studly($reportType->class).'Report';
         $startDate = Carbon::parse($request->input('start_date'));
@@ -193,10 +199,34 @@ class ReportLogController extends AdminBaseController
         $variety = $request->variety;
         $po = $request->po;
         $ic = $request->ic;
-        $vehicle = $request->vehicle_no;
-        $container = $request->container_no;
+        $vehicle = $request->vehicle;
+        $container = $request->container;
         $place = $request->place;
-        
+        $bagcolor = $request->bagcolor;
+        $eia = $request->eia;
+        $cm = $request->cm;
+        $fm = $request->fm;
+        $d = $request->d;
+        $s = $request->s;
+        $a = $request->a;
+        $c = $request->c;
+        $p = $request->p;
+        $b = $request->b;
+        $m = $request->m;
+        $w = $request->w;
+        $q = $request->q;
+        $sc = $request->sc;
+        $lc = $request->lc;
+        $i = $request->i;
+        $k = $request->k;
+        $e = $request->e;
+        $t = $request->t;
+        $sg = $request->sg;
+        $kg = $request->kg;
+        $g = $request->g;
+        $h = $request->h;
+        $rc = $request->rc;
+        $mk = $request->mk;
 
         $lastlot = app(ProductRepository::class)->allWithBuilder()
             ->whereDate('created_at' , '>=' , $startDate->format('Y-m-d'))
@@ -205,9 +235,15 @@ class ReportLogController extends AdminBaseController
             ->pluck('lot_no','id')
             ->first();
         
-        $report = new $reportClass($reportType,$startDate,$endDate,$reportDate,$lastlot,$buyercode,$grade,$variety,$po,$ic,$vehicle,$container,$place,true);
+        $report = new $reportClass($reportType,$startDate,$endDate,$reportDate,$lastlot,$buyercode,$grade,$variety,$po,$ic,$vehicle,$container,$place,$bagcolor,$fm,$d,$s,$a,$c,$p,$b,$m,$w,$q,$sc,$lc,$i,$k,$e,$t,$sg,$kg,$g,$h,$rc,$mk,$eia,$cm,true);
         
         return  $report->viewPDF();
 //        return view('reports::reports.dailyproduction' ,compact('report'));
     }
+
+
+//    public function filter(ReportLog $reportlog)
+//    {
+//        return view('reports::admin.reportlogs.filters');
+//    }
 }

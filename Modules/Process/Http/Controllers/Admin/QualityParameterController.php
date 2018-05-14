@@ -18,6 +18,7 @@ use Modules\Process\Repositories\CartonRepository;
 use Modules\Process\Repositories\QualityParameterRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\User\Repositories\UserRepository;
+use Yajra\DataTables\DataTables;
 
 class QualityParameterController extends AdminBaseController
 {
@@ -42,6 +43,50 @@ class QualityParameterController extends AdminBaseController
     {
         $qualityparameters = $this->qualityparameter->all();
         $cartons = app(CartonRepository::class)->allWithBuilder()->all();
+
+        $query = Carton::with('product','bagcolor','product.fishtype')->get()->where('qualitycheckdone',false);
+
+        if(request()->ajax() == true ) {
+
+            return DataTables::of($query)
+//                ->addColumn('chkbox',function ($order){
+//                    return '<input type="checkbox" name="ids[]" value="'. $order->workflow->id .'">';
+//                })
+                ->addColumn('product_date', function ($carton) {
+                    return isset($carton->product) ? $carton->product->product_date : "NULL";
+                })
+                ->addColumn('lot_no', function ($carton) {
+                    return isset($carton->product) ? $carton->product->lot_no : "NULL";
+                })
+                ->addColumn('carton_date', function ($carton) {
+                    return isset($carton->carton_date) ? $carton->carton_date : "NULL";
+                })
+                ->addColumn('no_of_cartons', function ($carton) {
+                    return $carton->no_of_cartons;
+                })
+                ->addColumn('fishtype', function ($carton) {
+                    return isset($carton->product->fishtype) ? $carton->product->fishtype->type : "NULL";
+                })
+                ->addColumn('bagcolor', function ($carton) {
+                    return isset($carton->bagcolor) ? $carton->bagcolor->color : "NULL";
+                })
+                ->addColumn('action',function ($carton){
+
+                    if(!isset($carton->qualitycheck))
+                    {
+                        $links = link_to_route('admin.process.qualityparameter.create', 'Pending' , $carton->id ,['class'=>'btn btn-danger btn-flat']);
+                    }
+                    else{
+                        $links = link_to_route('admin.process.qualityparameter.edit','Completed',$carton->id,['class'=>'btn btn-success btn-flat']);
+                    }
+                    return $links;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+
+
         return view('process::admin.qualityparameters.index', compact('qualityparameters','cartons'));
     }
 
@@ -53,11 +98,18 @@ class QualityParameterController extends AdminBaseController
     public function create(Request $request)
     {
         
-        $qualityparameter = app(QualityParameterRepository::class)->findByAttributes(['carton_id' => $request->id]);
+        foreach ($request->all() as $key => $value) {
+                   $qualityparameter = app(QualityParameterRepository::class)->findByAttributes(['carton_id' => $request->id]);                # code...
+            }    
 
-        $cartons = app(CartonRepository::class)->findByAttributes(['id' => $request->id]);
+
+               foreach ($request->all() as $key => $value) {
+                   $cartons = app(CartonRepository::class)->findByAttributes(['id' => $key]);
+                # code...
+            }    
 
 
+     
         $grades = app(GradeRepository::class)->allWithBuilder()
             ->orderBy('grade')
             ->pluck('grade','id');

@@ -84,7 +84,14 @@ return [
         'edit' => 'process::packings.edit resource',
         'destroy' => 'process::packings.destroy resource',
     ],
+    'process.shipmentfiles' => [
+        'index' => 'process::shipmentfiles.list resource',
+        'create' => 'process::shipmentfiles.create resource',
+        'edit' => 'process::shipmentfiles.edit resource',
+        'destroy' => 'process::shipmentfiles.destroy resource',
+    ],
 // append
+
 
 
 

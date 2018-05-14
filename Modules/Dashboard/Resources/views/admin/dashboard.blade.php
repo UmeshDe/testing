@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content-header')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <h1 class="pull-left">
         {{ trans('dashboard::dashboard.name') }}
     </h1>
@@ -14,147 +15,245 @@
 
 @push('css-stack')
     <style>
-        .grid-stack-item {
-            padding-right: 20px !important;
+        .panel-title {
+            color: white;
         }
     </style>
 @endpush
 
 @section('content')
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="grid-stack">
+    {{--<div class="row">--}}
+        {{--<div class="col-md-12">--}}
+            {{--<div class="grid-stack">--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="clearfix"></div>--}}
+
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>{{$productCount}}</h3>
+
+                        <p>Total Production</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bookmark"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>{{$transferCount}}<sup style="font-size: 20px"></sup></h3>
+
+                        <p>Total Transfer</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>{{$shipmentCount}}</h3>
+
+                        <p>Total Shipment</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>{{$thowingCount}}</h3>
+
+                        <p>Total Thowing</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header with-border" style="background-color: dodgerblue">
+                        <h3 class="panel-title in-bold-white">New Production</h3>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">{{ trans('dashboard::dashboard.add widget to dashboard') }}</h4>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times" style="color:white"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Lot No</th>
+                                    <th>Fish Type</th>
+                                    <th>Production Slab</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($productionData as $data)
+                                    <tr>
+                                    <td>{{isset($data->product_date)?\Carbon\Carbon::parse($data->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>
+                                    <td>{{$data->lot_no}}</td>
+                                    <td><span class="label label-success">{{$data->fishtype['type']}}</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20">{{$data->product_slab }}</div>
+                                    </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
+                <div class="box box-info">
+                    <div class="box-header with-border" style="background-color:dodgerblue">
+                        <h3 class="panel-title in-bold-white">Recent Shipment</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times" style="color:white"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>Invoice No</th>
+                                    <th>Vehicle No</th>
+                                    <th>Container No</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($shipmentData as $data)
+                                    <tr>
+                                        <td>{{$data->invoice_no}}</td>
+                                        <td>{{$data->vehicle_no}}</td>
+                                        <td>{{$data->container_no}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header with-border" style="background-color:dodgerblue">
+                        <h3 class="panel-title in-bold-white">Recent Transfer</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times" style="color:white"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>Loading</th>
+                                    <th>Quantity</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Vehicle</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total = 0; ?>
+                                @foreach($transferData as $data)
+                                    <tr>
+                                    <th>{{isset($data->loading_date)?\App\Libraries\Utils::parseDate($data->loading_date) : '' }}</th>
+                                    {{--<th>--}}
+                                        {{--@foreach($data->transfercarton as $cartons)--}}
+                                            {{--<ul>--}}
+                                                {{--<li>{{$cartons->quantity}}</li>--}}
+                                            {{--</ul>--}}
+                                        {{--@endforeach--}}
+                                    {{--</th>--}}
+                                        <th>
+                                            @foreach($data->transfercarton as $cartons)
+                                                <?php $total += $cartons->quantity ?>
+                                            @endforeach
+                                            {{$total}}
+                                        </th>
+                                    <td>{{$data->loadinglocation['location']}}</td>
+                                    <td>{{$data->unloadinglocation['location']}}</td>
+                                    <td>{{$data->vehicle_no}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-info">
+                    <div class="box-header with-border" style="background-color:dodgerblue">
+                        <h3 class="panel-title in-bold-white">Recent Thowing</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times" style="color:white"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>Thowing Date</th>
+                                    <th>Throwing Input</th>
+                                    <th>Remark</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($thowingData as $data)
+                                    <tr>
+                                    <td>{{isset($data->carton_date)?\Carbon\Carbon::parse($data->carton_date)->format(PHP_DATE_FORMAT) : '' }}</td>
+                                    <td>{{$data->throwing_input}}</td>
+                                    <td>{{$data->comment}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @stop
-
-@push('js-stack')
-    @parent
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var options = {
-                vertical_margin: 10,
-                float: true,
-                animate: true
-            };
-            $('.grid-stack').gridstack(options);
-
-            /** savey crap */
-            new function () {
-                this.defaultWidgets = {!! json_encode($widgets) !!};
-                this.serialized_data = {!! $customWidgets !== 'null' ? $customWidgets : json_encode($widgets) !!};
-                //console.log(this.defaultWidgets.PostsWidget);
-                this.grid = jQuery('.grid-stack').data('gridstack');
-                this.load_grid = function () {
-                    this.grid.remove_all();
-                    var items = GridStackUI.Utils.sort(this.serialized_data);
-                    _.each(items, function (node) {
-                        this.spawn_widget(node);
-                        jQuery(jQuery.find('option[value="'+node.id+'"]')[0]).hide();
-                    }, this);
-                }.bind(this);
-                this.save_grid = function () {
-                    this.serialized_data = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
-                        el = jQuery(el);
-                        var node = el.data('_gridstack_node');
-                        return {
-                            id: el.attr('id'),
-                            x: node.x,
-                            y: node.y,
-                            width: node.width,
-                            height: node.height
-                        };
-                    }, this);
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('dashboard.grid.save') }}',
-                        data: {
-                            _token: '<?= csrf_token() ?>',
-                            grid: JSON.stringify(this.serialized_data)
-                        },
-                        success: function(data) {
-                            console.log(data);
-                        }
-                    });
-                }.bind(this);
-                this.clear_grid = function () {
-                    this.grid.remove_all();
-                    jQuery(jQuery.find('option:hidden')).show();
-                }.bind(this);
-                this.edit_grid = function () {
-                    mode = jQuery('#edit-grid').data('mode');
-                    if (mode == 0) {
-                        // enable all the grid editing
-                        _.map(jQuery('.grid-stack > .grid-stack-item:visible'), function (el) {
-                            this.grid.movable(el, true);
-                            jQuery(el).on('dblclick', function (e) {
-                                this.grid.resizable(el, true);
-                            }.bind(this));
-                        }, this);
-                        jQuery('#edit-grid').data('mode', 1).text('{{ trans('dashboard::dashboard.save grid') }}');
-                    } else {
-                        // disable all the grid editing
-                        _.map(jQuery('.grid-stack > .grid-stack-item:visible'), function (el) {
-                            this.grid.movable(el, false);
-                            this.grid.resizable(el, false);
-                            jQuery(el).off('dblclick');
-                        }, this);
-                        jQuery('#edit-grid').data('mode', 0).text('{{ trans('dashboard::dashboard.edit grid') }}');
-                        // run the save mech
-                        this.save_grid();
-                    }
-                }.bind(this);
-                this.spawn_widget = function (node) {
-                    var html = node.html === undefined ? this.defaultWidgets[node.id].html : node.html,
-                        element = jQuery('<div><div class="grid-stack-item-content" />' + html + '<div/>'),
-                        x = node.options === undefined ? node.x : node.options.x,
-                        y = node.options === undefined ? node.y : node.options.y,
-                        width = node.options === undefined ? node.width : node.options.width,
-                        height = node.options === undefined ? node.height : node.options.height;
-
-                    this.grid.add_widget(element, x, y, width, height);
-
-                    element.attr({id: node.id});
-                    this.grid.resizable(element, false);
-                    this.grid.movable(element, false);
-                    return element;
-                }.bind(this);
-                jQuery('#edit-grid').on('click', this.edit_grid);
-                jQuery('#myModal').on('hidden.bs.modal', function (e) {
-                    value = jQuery('select[name=widget]').val();
-                    if (value == 'x') {
-                        return;
-                    }
-                    element = this.spawn_widget({
-                        auto_position: true,
-                        width: 2,
-                        height: 2,
-                        id: value
-                    });
-                    this.grid.resizable(element, true);
-                    this.grid.movable(element, true);
-                }.bind(this));
-                this.load_grid();
-            };
-
-        });
-    </script>
-@endpush

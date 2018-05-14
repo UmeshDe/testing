@@ -40,6 +40,10 @@ class BagcolorController extends AdminBaseController
     {
         $bagcolors = $this->bagcolor->all();
 
+//        dd($bagcolor);
+//        $bagcolors = collect($bagcolor)->sortByDesc('created_at');
+
+
         return view('admin::admin.bagcolors.index', compact('bagcolors'));
     }
 

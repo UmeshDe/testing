@@ -11,14 +11,14 @@
     <table style="margin-top: 5%">
         <thead>
         <tr>
-            <td colspan="19" align="center"> {{$report->reportMaster->title}}</td>
+            <td colspan="20" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="19" align="left"> {{ $report->date}}</td>
+            <td colspan="20" align="left"> {{ $report->date}}</td>
         </tr>
         <tr>
             @foreach($report->columns as $column)
-                <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
+                <th style="text-align: center">
                     {{isset($column['display_name'])?$column['display_name']:''}}
                 </th>
             @endforeach
@@ -32,7 +32,7 @@
             ?>
             <tr>
                 @foreach($report->columns as $column)
-                    <td style="{{isset($column['row_style'])?$column['row_style']:''}}">
+                    <td style="text-align: center">
 
                         <?php $value;
 

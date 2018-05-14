@@ -15,6 +15,13 @@ class ShipmentReport extends AbstractReport
             'display_name'=>'Sr No',
             'type'=> REPORT_ROWNO_COLUMN
         ],
+        'shipment_date'=>[
+            'column_name'=>'shipment',
+            'display_name'=>'Shipment Date',
+            'format' => REPORT_DATE_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,REPORT_DATE_FORMAT,
+            'relation_column' =>'created_at'
+        ],
         'vehicle_no'=>[
             'column_name'=>'shipment',
             'display_name'=>'Vehicle No:',
@@ -36,13 +43,15 @@ class ShipmentReport extends AbstractReport
         'start_time'=>[
             'column_name'=>'shipment',
             'display_name'=>'Start Time',
-            'type' => REPORT_RELATION_COLUMN,REPORT_DATE_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'start_time'
         ],
         'end_time'=> [
             'column_name'=>'shipment',
             'display_name'=>'End Time',
-            'type' => REPORT_RELATION_COLUMN,REPORT_DATE_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
+            'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'end_time'
         ],
         'invoice_no'=> [
@@ -64,10 +73,10 @@ class ShipmentReport extends AbstractReport
             'relation_column' =>'type'
         ],
         'grade'=> [
-            'column_name'=>'grade',
+            'column_name'=>'shipment',
             'display_name'=>'Grade',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' =>'Grade'
+            'relation_column' =>'grade'
         ],
         'total_cartons'=> [
             'column_name'=>'carton',

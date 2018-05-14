@@ -149,17 +149,17 @@
                         </div>
                         <div class="form-group {{ $errors->has('sub_title') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_title">Sub Title</label>
-                            <textarea rows="2" cols="40" name="sub_title"></textarea>
+                            <textarea rows="2" name="sub_title"></textarea>
                             {!! $errors->first('sub_title', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('title') ? ' has-error has-feedback' : '' }}">
                             <label for="title">Title</label>
-                            <textarea rows="2" cols="40" name="title"></textarea>
+                            <textarea rows="2" name="title"></textarea>
                             {!! $errors->first('class', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('sub_footer_style') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_footer_style">Sub Footer Style</label>
-                            <textarea rows="2" cols="40" name="sub_footer_style"></textarea>
+                            <textarea rows="2" name="sub_footer_style"></textarea>
                             {!! $errors->first('sub_footer_style', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
@@ -190,17 +190,17 @@
                         </div>
                         <div class="form-group {{ $errors->has('sub_footer') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_footer">Sub Footer</label>
-                            <textarea rows="2" cols="40" name="sub_footer"></textarea>
+                            <textarea rows="2" name="sub_footer"></textarea>
                             {!! $errors->first('sub_footer', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('sub_title_style') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_title_style">Sub Title Style</label>
-                            <textarea rows="2" cols="40" name="sub_title_style"></textarea>
+                            <textarea rows="2" name="sub_title_style"></textarea>
                             {!! $errors->first('sub_title_style', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('footer_style') ? ' has-error has-feedback' : '' }}">
                             <label for="footer_style">Footer Style</label>
-                            <textarea rows="2" cols="40" name="footer_style"></textarea>
+                            <textarea rows="2" name="footer_style"></textarea>
                             {!! $errors->first('footer_style', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
@@ -298,17 +298,17 @@
                         </div>
                         <div class="form-group {{ $errors->has('sub_title') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_title">Sub Title</label>
-                            <textarea rows="2" cols="40" name="sub_title"></textarea>
+                            <textarea rows="2" cols="30" name="sub_title"></textarea>
                             {!! $errors->first('sub_title', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('title') ? ' has-error has-feedback' : '' }}">
                             <label for="title">Title</label>
-                            <textarea rows="2" cols="40" name="title"></textarea>
+                            <textarea rows="2" cols="35" name="title"></textarea>
                             {!! $errors->first('class', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('sub_footer_style') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_footer_style">Sub Footer Style</label>
-                            <textarea rows="2" cols="40" name="sub_footer_style"></textarea>
+                            <textarea rows="2" cols="30" name="sub_footer_style"></textarea>
                             {!! $errors->first('sub_footer_style', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
@@ -339,17 +339,17 @@
                         </div>
                         <div class="form-group {{ $errors->has('sub_footer') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_footer">Sub Footer</label>
-                            <textarea rows="2" cols="40" name="sub_footer"></textarea>
+                            <textarea rows="2" cols="30" name="sub_footer"></textarea>
                             {!! $errors->first('sub_footer', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('sub_title_style') ? ' has-error has-feedback' : '' }}">
                             <label for="sub_title_style">Sub Title Style</label>
-                            <textarea rows="2" cols="40" name="sub_title_style"></textarea>
+                            <textarea rows="2" cols="30" name="sub_title_style"></textarea>
                             {!! $errors->first('sub_title_style', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('footer_style') ? ' has-error has-feedback' : '' }}">
                             <label for="footer_style">Footer Style</label>
-                            <textarea rows="2" cols="40" name="footer_style"></textarea>
+                            <textarea rows="2" cols="30" name="footer_style"></textarea>
                             {!! $errors->first('footer_style', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
@@ -383,12 +383,12 @@
                         </div>
                         <div class="form-group {{ $errors->has('footer') ? ' has-error has-feedback' : '' }}">
                             <label for="footer">Footer</label>
-                            <textarea rows="2" cols="40" name="footer"></textarea>
+                            <textarea rows="2" cols="30" name="footer"></textarea>
                             {!! $errors->first('footer', '<span class="help-block">:message</span>') !!}
                         </div>
                         <div class="form-group {{ $errors->has('title_style') ? ' has-error has-feedback' : '' }}">
                             <label for="title_style">Title Style</label>
-                            <textarea rows="2" cols="40" name="title_style"></textarea>
+                            <textarea rows="2" cols="30" name="title_style"></textarea>
                             {!! $errors->first('title_style', '<span class="help-block">:message</span>') !!}
                         </div>
                      </div>

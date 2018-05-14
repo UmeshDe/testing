@@ -29,11 +29,11 @@
                         </div>
                     </div>
                     <div class="body">
-                @include('process::admin.throwings.partials.create-fields')
+                @include('process::admin.throwings.partials.edit-fields')
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 35%">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger btn-flat" href="{{ route('admin.process.throwing.index')}}" style="margin-left: 10%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        <a class="btn btn-danger btn-flat" href="{{ route('admin.process.throwing.index')}}" style="margin-left: 35%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        <button type="submit" class="btn btn-primary btn-flat" style="margin-left: 10%"><i class="fa fa-floppy-o" aria-hidden="true"></i>{{ trans('core::core.button.update') }}</button>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
@@ -73,20 +73,22 @@
 
     <script>
         $('#product').select2();
+        $('#location_id').select2();
+        $('#thowing_supervisor,#available_quantity').select2();
 
         $('#carton_date').datetimepicker({
             timepicker:false,
             format:'{{PHP_DATE_FORMAT}}',
-            value : new moment()
+            value: '{{\Carbon\Carbon::parse($throwing->carton_date)->format(PHP_DATE_TIME_FORMAT)}}'
         });
 
         $('#thowing_start_time').datetimepicker({
             format :'{{PHP_DATE_TIME_FORMAT}}',
-            value : new moment()
+            value: '{{\Carbon\Carbon::parse($throwing->thowing_start_time)->format(PHP_DATE_TIME_FORMAT)}}'
         });
         $('#thowing_end_time').datetimepicker({
             format :'{{PHP_DATE_TIME_FORMAT}}',
-            value : new moment()
+            value: '{{\Carbon\Carbon::parse($throwing->thowing_end_time)->format(PHP_DATE_TIME_FORMAT)}}'
         });
 
     </script>

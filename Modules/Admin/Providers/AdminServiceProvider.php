@@ -144,18 +144,6 @@ class AdminServiceProvider extends ServiceProvider
             }
         );
         $this->app->bind(
-            'Modules\Admin\Repositories\KindRepository',
-            function () {
-                $repository = new \Modules\Admin\Repositories\Eloquent\EloquentKindRepository(new \Modules\Admin\Entities\Kind());
-
-                if (! config('app.cache')) {
-                    return $repository;
-                }
-
-                return new \Modules\Admin\Repositories\Cache\CacheKindDecorator($repository);
-            }
-        );
-        $this->app->bind(
             'Modules\Admin\Repositories\LocationRepository',
             function () {
                 $repository = new \Modules\Admin\Repositories\Eloquent\EloquentLocationRepository(new \Modules\Admin\Entities\Location());

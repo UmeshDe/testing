@@ -43,6 +43,7 @@
 <div class="wrapper" id="app">
     <header class="main-header">
         <a href="{{ route('dashboard.index') }}" class="logo">
+            <span class="logo-lg"><b style="font-size:23px;">ULKA SEAFOODS</b></span>
             <span class="logo-mini">
                 @setting('core::site-name-mini')
             </span>

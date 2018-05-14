@@ -27,7 +27,7 @@ class DailyPackingReport extends AbstractReport
         ],
         'date'=> [
             'column_name'=>'product',
-            'display_name'=>'Production Date',
+            'display_name'=>'ProductionDate',
             'type'=>REPORT_RELATION_COLUMN,
             'format'=> REPORT_DATE_FORMAT,
             'relation_column' =>'product_date'
@@ -35,7 +35,7 @@ class DailyPackingReport extends AbstractReport
         'carton_date'=> [
             'column_name'=>'carton_date',
             'format'=> REPORT_DATE_FORMAT,
-            'display_name'=>'Carton Date',
+            'display_name'=>'CartonDate',
         ],
         'variety'=> [
             'column_name'=>'product',
@@ -51,19 +51,19 @@ class DailyPackingReport extends AbstractReport
         ],
         'lot_no'=>[
             'column_name'=>'product',
-            'display_name'=>'Lot No',
+            'display_name'=>'Lot',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'lot_no'
         ],
         'bag_color'=> [
             'column_name'=>'product',
-            'display_name'=>'Bag Color',
+            'display_name'=>'BagColor',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'bagColor'
         ],
         'production_slab'=>[
             'column_name'=>'product',
-            'display_name'=>'Production slab',
+            'display_name'=>'Slab',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'product_slab'
         ],
@@ -75,20 +75,26 @@ class DailyPackingReport extends AbstractReport
         ],
         'rejection_slab'=> [
             'column_name'=>'product',
-            'display_name'=>'Rejected Slab',
+            'display_name'=>'Rejected',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'rejected',
             'default_value' => '0'
         ],
         'human_error' => [
             'column_name' => 'product',
-            'display_name' => 'Human Error',
+            'display_name' => 'Human error-',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'human_error_slab',
         ],
+        'human_error_plus' => [
+            'column_name' => 'product',
+            'display_name' => 'Human error+',
+            'type'=>REPORT_RELATION_COLUMN,
+            'relation_column' =>'human_error_plus',
+        ],
         'no_of_cartons'=>[
             'column_name'=>'product',
-            'display_name'=>'No of Cartons',
+            'display_name'=>'Cartons',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'no_of_cartons',
         ],
@@ -100,13 +106,13 @@ class DailyPackingReport extends AbstractReport
         ],
         'carton_type'=> [
             'column_name'=>'product',
-            'display_name'=>'Carton Type',
+            'display_name'=>'CartonType',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'cartonType',
         ],
         'po_no'=>[
             'column_name'=>'product',
-            'display_name'=>'PO No.',
+            'display_name'=>'PO',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'po_no',
         ],
@@ -124,13 +130,13 @@ class DailyPackingReport extends AbstractReport
         ],
         'Remark'=>[
             'column_name'=>'product',
-            'display_name'=>'Packing Remark',
+            'display_name'=>'Remark',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'packing_remark'
         ],
         'packing_done'=>[
             'column_name'=>'product.users',
-            'display_name'=>'Packing Done By',
+            'display_name'=>'Done By',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' => 'first_name'
         ],

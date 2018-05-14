@@ -19,6 +19,21 @@ class AbstractReport
     public $variety;
     public $po;
     public $ic;
+    public $bagcolor;
+    public $fm;
+    public $d;
+    public $s;
+    public $a;
+    public $c;
+    public $p;
+    public $b;
+    public $m;
+    public $w;
+    public $q;
+    public $sc;
+    public $lc;
+    public $eia;
+    public $cm;
     public $vehicle;
     public $container;
     public $place;
@@ -47,7 +62,7 @@ class AbstractReport
 
     public $reportMaster;
 
-    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$reportDate,$lastlot,$buyer,$grade,$variety,$po,$ic,$vehicle,$container,$place,$gradesum,$pageSize = null, $pageOrientation =null,$options = false)
+    public function __construct(ReportMaster $reportMaster,$startDate, $endDate,$reportDate,$lastlot,$buyer,$grade,$variety,$po,$ic,$vehicle,$container,$place,$bagcolor,$fm,$d,$s,$a,$c,$p,$b,$m,$w,$q,$sc,$lc,$i,$k,$e,$t,$sg,$kg,$g,$h,$rc,$mk,$eia,$cm,$gradesum,$pageSize = null, $pageOrientation =null,$options = false)
     {
         $this->reportMaster = $reportMaster;
         $this->startDate = $startDate;
@@ -63,6 +78,33 @@ class AbstractReport
         $this->vehicle = $vehicle;
         $this->container = $container;
         $this->place = $place;
+        $this->bagcolor = $bagcolor;
+        $this->fm = $fm;
+        $this->d = $d;
+        $this->s = $s;
+        $this->a = $a;
+        $this->c = $c;
+        $this->p = $p;
+        $this->b = $b;
+        $this->m = $m;
+        $this->w = $w;
+        $this->q = $q;
+        $this->sc = $sc;
+        $this->lc = $lc;
+        $this->i = $i;
+        $this->k = $k;
+        $this->e = $e;
+        $this->t = $t;
+        $this->sg = $sg;
+        $this->kg = $kg;
+        $this->g = $g;
+        $this->h = $h;
+        $this->rc = $rc;
+        $this->mk = $mk;
+        $this->eia = $eia;
+        $this->cm = $cm;
+
+
         $this->gradesum = $gradesum;
      
         if($pageSize != null )
@@ -99,6 +141,8 @@ class AbstractReport
 
         $this->generatePDF();
 //        return "hfd";
+
+//        return $this->downloadPDF();
         return $this->pdf->stream();
     }
 

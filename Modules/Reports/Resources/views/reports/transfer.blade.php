@@ -9,13 +9,32 @@
 
 @section('content')
     <table style="margin-top: 5%">
-        <thead>
         <tr>
-            <td colspan="25" align="center"> {{$report->reportMaster->title}}</td>
+            <th colspan="25" align="center"> {{$report->reportMaster->title}}</th>
         </tr>
         <tr>
             <td colspan="25" align="left"> {{$report->reportMaster->sub_title}}</td>
         </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>Vehicle </strong>
+            </td>
+            <td style="text-align: left" colspan="24">
+                @foreach($report->vehicleno as $vehicle)
+                    {{$vehicle}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"> <strong>Container </strong>
+            </td>
+            <td colspan="24" align="left">
+                @foreach($report->containerno as $container)
+                    {{$container}} ,
+                @endforeach
+            </td>
+        </tr>
+        <thead>
         {{--<tr>--}}
             {{--<td colspan="14">Loading Date<br>--}}
                 {{--From<br>--}}
@@ -34,7 +53,7 @@
         {{--</tr>--}}
         <tr>
             @foreach($report->columns as $column)
-                <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
+                <th style="text-align: center">
                     {{isset($column['display_name'])?$column['display_name']:''}}
                 </th>
             @endforeach
@@ -48,7 +67,7 @@
             ?>
             <tr>
                 @foreach($report->columns as $column)
-                    <td style="{{isset($column['row_style'])?$column['row_style']:''}}">
+                    <td style="text-align: center">
 
                         <?php $value;
 

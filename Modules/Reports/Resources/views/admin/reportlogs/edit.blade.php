@@ -12,29 +12,32 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.reports.reportlog.update', $reportlog->id], 'method' => 'put']) !!}
+    {!!  Former::vertical_open()
+                     ->id('reportform')
+                     ->route('admin.report.generate')
+                     ->method('POST') !!}
+
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
-                @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('reports::admin.reportlogs.partials.edit-fields', ['lang' => $locale])
-                        </div>
-                    @endforeach
-
+                <div class="box box-primary">
+                    <div class="body">
+                        @include('reports::admin.reportlogs.partials.edit-fields')
+                    </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.reports.reportlog.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        {!! Former::actions()
+                        ->large_primary_submit('Generate')
+                        ->large_inverse_reset('Reset')
+                        ->addClass('col-lg-offset-4 col-sm-offset-4 col-lg-10 col-sm-8')
+                        ->raw()
+                        !!}
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
         </div>
     </div>
-    {!! Form::close() !!}
+
+    {!! Former::close() !!}
 @stop
 
 @section('footer')
@@ -64,5 +67,37 @@
                 radioClass: 'iradio_flat-blue'
             });
         });
+
+        $("input[name$='report_date']").click(function () {
+            $("#date").show();
+        })
+
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
+            $('#start_date').val(start.format('YYYY-MM-DD'));
+            $('#end_date').val(end.format('YYYY-MM-DD'));
+        }
+        $('#reportrange').daterangepicker({
+
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+        cb(start, end);
+
+        $('.select').select2({
+            width : '100%'
+        });
+
     </script>
 @endpush

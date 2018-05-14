@@ -17,7 +17,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Date</th>
+                                <th>Production Date</th>
                                 <th>Lot No</th>
                                 <th>Production Slab</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
@@ -25,29 +25,29 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if (isset($products))
-                                @foreach ($products as $product)
-                                    <tr>
-                                        <td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>
-                                        <td>{{$product->lot_no}}</td>
-                                        <td>{{$product->product_slab}}</td>
-                                        <td>
-                                            <a href="{{ route('admin.process.product.edit', [$product->id]) }}">
-                                                {{ $product->created_at }}
-                                            </a>
-                                        </td>
-                                        <td>
-                                            @if($product->packingdone == 0)
-                                                <a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Packing Pending</span></a>
-                                            @elseif($product->packingdone )
-                                                <a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-success"><span style="color:white">Packing Completed</span></a>
-                                            @else
-                                                <a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-info"><span style="color:white">Packing Completed</span></a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                            {{--@if (isset($products))--}}
+                                {{--@foreach ($products as $product)--}}
+                                    {{--<tr>--}}
+                                        {{--<td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>--}}
+                                        {{--<td>{{$product->lot_no}}</td>--}}
+                                        {{--<td>{{$product->product_slab}}</td>--}}
+                                        {{--<td>--}}
+                                            {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}">--}}
+                                                {{--{{ $product->created_at }}--}}
+                                            {{--</a>--}}
+                                        {{--</td>--}}
+                                        {{--<td>--}}
+                                            {{--@if($product->packingdone == 0)--}}
+                                                {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Packing Pending</span></a>--}}
+                                            {{--@elseif($product->packingdone )--}}
+                                                {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-success"><span style="color:white">Packing Completed</span></a>--}}
+                                            {{--@else--}}
+                                                {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-info"><span style="color:white">Packing Completed</span></a>--}}
+                                            {{--@endif--}}
+                                        {{--</td>--}}
+                                    {{--</tr>--}}
+                                {{--@endforeach--}}
+                            {{--@endif--}}
                             </tbody>
                             <tfoot>
                             </tfoot>
@@ -84,18 +84,23 @@
 </script>
 <?php $locale = locale(); ?>
 <script type="text/javascript">
-    $(function () {
+    $( document ).ready(function() {
         $('.data-table').dataTable({
-            "paginate": true,
-            "lengthChange": true,
-            "filter": true,
-            "sort": true,
-            "info": true,
-            "autoWidth": true,
-            "order": [[ 0, "desc" ]],
-            "language": {
-                "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-            }
+            "processing": true,
+            "serverSide": true,
+            "pageLength": 10,
+            "bAutoWidth": false,
+            "ajax": "{{route('admin.process.product.packingindex')}}",
+            "columns": [
+                {data: 'product_date'},
+                {data: 'lot_no'},
+//                    {data:'order_no'},
+//                 {data: 'fishtype'},
+//                 {data: 'bagcolor'},
+                {data: 'product_slab'},
+                {data: 'created_at'},
+                {data: 'action'}
+            ]
         });
     });
 </script>

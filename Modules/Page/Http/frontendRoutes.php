@@ -5,13 +5,16 @@ use Illuminate\Routing\Router;
 /** @var Router $router */
 if (! App::runningInConsole()) {
     $router->get('/', [
-        'uses' => 'PublicController@homepage',
-        'as' => 'homepage',
+        'as' => 'login',
+        'uses' => 'PublicController@Login',
         'middleware' => config('asgard.page.config.middleware'),
     ]);
+
+}
+
+
 //    $router->any('{uri}', [
 //        'uses' => 'PublicController@uri',
 //        'as' => 'page',
 //        'middleware' => config('asgard.page.config.middleware'),
 //    ])->where('uri', '.*');
-}

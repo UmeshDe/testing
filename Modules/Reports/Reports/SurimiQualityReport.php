@@ -2,6 +2,7 @@
 namespace Modules\Reports\Reports;
 
 
+use Illuminate\Support\Facades\DB;
 use Modules\Admin\Repositories\InternalcodeRepository;
 use Modules\Process\Entities\QualityParameter;
 use Carbon\Carbon;
@@ -36,7 +37,7 @@ class SurimiQualityReport extends AbstractReport
         ],
         'approval_no'=>[
             'column_name'=>'carton.product.approval',
-            'display_name'=>'EIA No',
+            'display_name'=>'EIA',
             'type'=>REPORT_RELATION_COLUMN,
             'relation_column' =>'app_number'
         ],
@@ -54,7 +55,7 @@ class SurimiQualityReport extends AbstractReport
         ],
         'lot_no'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'Lot No',
+            'display_name'=>'Lot',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'lot_no'
         ],
@@ -64,7 +65,7 @@ class SurimiQualityReport extends AbstractReport
         ],
         'no_of_cartons'=>[
             'column_name'=>'carton.product',
-            'display_name'=>'No.Of.Cartons',
+            'display_name'=>'Cartons',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' => 'no_of_cartons'
         ],
@@ -128,6 +129,7 @@ class SurimiQualityReport extends AbstractReport
         ],
     ];
     public $date;
+    public $final;
 
     public function setup(){
 
@@ -146,6 +148,13 @@ class SurimiQualityReport extends AbstractReport
             }
             $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
                 $q->whereDate('product_date' , '>=' , $this->startDate)->whereDate('product_date' ,'<=',$this->endDate);});
+
+            $this->final = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__products.product_date' , '>=' , $this->startDate)->whereDate('process__products.product_date' ,'<=',$this->endDate)
+                ->get();
         }
         else if($this->reportDate == 1){
             if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
@@ -157,6 +166,14 @@ class SurimiQualityReport extends AbstractReport
             }
             $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereHas('carton.product' ,function($q){
                 $q->whereDate('carton_date' , '>=' , $this->startDate)->whereDate('carton_date' ,'<=',$this->endDate);});
+
+            $this->final = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__products.carton_date' , '>=' , $this->startDate)->whereDate('process__products.carton_date' ,'<=',$this->endDate)
+                ->get();
+
         }
         else if($this->reportDate == 2)
         {
@@ -168,10 +185,18 @@ class SurimiQualityReport extends AbstractReport
                 $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
             }
             $queryBuilder = QualityParameter::with('carton','ic','carton.product','carton.product.approval','carton.product.fishtype','carton.product.buyer','user')->whereDate('inspection_date' , '>=' , $this->startDate)->whereDate('inspection_date' ,'<=',$this->endDate);
+
+            $this->final = DB::table("process__qualityparameters")
+                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+                ->join('process__products','process__cartons.product_id','=','process__products.id')
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereDate('process__qualityparameters.inspection_date' , '>=' , $this->startDate)->whereDate('process__qualityparameters.inspection_date' ,'<=',$this->endDate)
+                ->get();
+
         }
 
         $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
-//        $this->reportMaster->subfooter = $this->sum;
+        $this->reportMaster->subfooter = $this->final;
 
         $this->data = $queryBuilder->get();
 

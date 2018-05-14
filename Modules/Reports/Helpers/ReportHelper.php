@@ -7,6 +7,7 @@ if (!defined('REPORT_MODULE')) {
     //Column Formats
     define('REPORT_DATE_FORMAT', 'DATE');
     define('REPORT_DATETIME_FORMAT', 'DATE_TIME');
+    define('REPORT_TIME_FORMAT','TIME');
     define('REPORT_CURRENCY_FORMAT', 'CURRENCY');
 
     //Column Types
@@ -45,6 +46,9 @@ function formatValue($value, $format){
             break;
         case "DATE_TIME":
             return \Carbon\Carbon::parse($value)->format(PHP_DATE_TIME_FORMAT);
+            break;
+        case "TIME":
+            return \Carbon\Carbon::parse($value)->format('h:i a');
             break;
         case "CURRENCY":
             return "Rs " . $value;

@@ -28,9 +28,11 @@
                             <thead>
                             <tr>
                                 <th>Invoice No</th>
+                                <th>Shipment Date</th>
                                 <th>Vehicle No</th>
                                 <th>Container No</th>
-                                <th>{{ trans('core::core.table.created at') }}</th>
+                                <th>Photo</th>
+{{--                                <th>{{ trans('core::core.table.created at') }}</th>--}}
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
@@ -39,13 +41,26 @@
                             <?php foreach ($shipments as $shipment): ?>
                             <tr>
                                 <td>{{$shipment->invoice_no}}</td>
+                                <td>{{isset($shipment->created_at)?\App\Libraries\Utils::parseDate($shipment->created_at) : '' }}</td>
                                 <td>{{$shipment->vehicle_no}}</td>
                                 <td>{{$shipment->container_no}}</td>
                                 <td>
-                                    <a href="{{ route('admin.process.shipment.edit', [$shipment->id]) }}">
-                                        {{ $shipment->created_at }}
-                                    </a>
+                                   <?php
+                                    $shipmentFiles  = app(\Modules\Process\Repositories\ShipmentFileRepository::class)->getByAttributes(['shipment_id' => $shipment->id]);
+                                    $fileRepo = app(\Modules\Filemanager\Repositories\FileRepository::class);
+                                    foreach ($shipmentFiles as $shipmentFile)
+                                        {
+                                            $files = $fileRepo->find($shipmentFile->file_id);
+                                            echo "<li>". link_to_route('admin.filemanager.file.getFile',$files->filename , [$files->id]) ."</li>";
+                                        }
+
+                                    ?>
                                 </td>
+                                {{--<td>--}}
+                                    {{--<a href="{{ route('admin.process.shipment.edit', [$shipment->id]) }}">--}}
+                                        {{--{{ $shipment->created_at }}--}}
+                                    {{--</a>--}}
+                                {{--</td>--}}
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.process.shipment.edit', [$shipment->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
@@ -104,10 +119,10 @@
                 "paginate": true,
                 "lengthChange": true,
                 "filter": true,
-                "sort": true,
+                "sort": false,
                 "info": true,
                 "autoWidth": true,
-                "order": [[ 0, "desc" ]],
+                "order": false,
                 "language": {
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }

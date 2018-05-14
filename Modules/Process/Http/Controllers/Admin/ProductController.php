@@ -2,6 +2,7 @@
 
 namespace Modules\Process\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,7 @@ use Modules\Process\Repositories\ProductRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use DB;
 use Modules\User\Contracts\Authentication;
+use Yajra\DataTables\DataTables;
 
 class ProductController extends AdminBaseController
 {
@@ -50,8 +52,77 @@ class ProductController extends AdminBaseController
      */
     public function index()
     {
-        $products = $this->product->all();
-        return view('process::admin.products.index', compact('products'));
+//        $products = $this->product->all();
+
+
+//        $query = $this->product->allWithBuilder();
+
+
+        $query = Product::with('fishtype','bagcolor')->get()->take(200);
+
+        if(request()->ajax() == true ) {
+
+            return DataTables::of($query)
+//                ->addColumn('chkbox',function ($order){
+//                    return '<input type="checkbox" name="ids[]" value="'. $order->workflow->id .'">';
+//                })
+                ->addColumn('product_date', function ($product) {
+                    return $product->product_date;
+                })
+                ->addColumn('lot_no', function ($product) {
+                    return $product->lot_no;
+                })
+                ->addColumn('fishtype', function ($product) {
+                    return $product->variety->type;
+                })
+                ->addColumn('bagcolor', function ($product) {
+                    return isset($product->bagColor) ? $product->bagColor->color : 'NULL';
+                })
+                ->addColumn('product_slab', function ($product) {
+                    return $product->product_slab;
+                })
+                ->addColumn('action',function ($product){
+
+                    $links = link_to_route('admin.process.product.edit','Edit',$product->id,['class'=>'btn btn-default btn-flat']);
+                    $links .= link_to_route('admin.process.product.destroy','Delete',$product->id,['class'=>'btn btn-danger btn-flat']);
+
+                    return $links;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+         else {
+             DataTables::of($query)
+//                ->addColumn('chkbox',function ($order){
+//                    return '<input type="checkbox" name="ids[]" value="'. $order->workflow->id .'">';
+//                })
+                 ->addColumn('product_date', function ($product) {
+                     return $product->product_date;
+                 })
+                 ->addColumn('lot_no', function ($product) {
+                     return $product->lot_no;
+                 })
+                 ->addColumn('fishtype', function ($product) {
+                     return $product->variety->type;
+                 })
+                 ->addColumn('bagcolor', function ($product) {
+                     return isset($product->bagColor) ? $product->bagColor->color : 'NULL';
+                 })
+                 ->addColumn('product_slab', function ($product) {
+                     return $product->product_slab;
+                 })
+                 ->addColumn('action',function ($product){
+
+                     $links = link_to_route('admin.process.product.edit','Edit',$product->id,['class'=>'btn btn-default btn-flat']);
+                     $links .= link_to_route('admin.process.product.destroy','Delete',$product->id,['class'=>'btn btn-default btn-flat']);
+
+                     return $links;
+                 })
+                 ->rawColumns(['action'])
+                 ->make(true);
+         }
+
+        return view('process::admin.products.index', compact('products','query'));
     }
 
     /**
@@ -59,8 +130,35 @@ class ProductController extends AdminBaseController
      */
     public function packingindex()
     {
-        $products = $this->product->all();
-        return view('process::admin.products.packingindex', compact('products'));
+        $query = Product::with('fishtype','bagcolor')->get()->where('packingdone',false);
+
+        if(request()->ajax() == true ) {
+
+            return DataTables::of($query)
+//                ->addColumn('chkbox',function ($order){
+//                    return '<input type="checkbox" name="ids[]" value="'. $order->workflow->id .'">';
+//                })
+                ->addColumn('product_date', function ($product) {
+                    return $product->product_date;
+                })
+                ->addColumn('lot_no', function ($product) {
+                    return $product->lot_no;
+                })
+                ->addColumn('product_slab', function ($product) {
+                    return $product->product_slab;
+                })
+                ->addColumn('created_at', function ($product) {
+                    return $product->created_at;
+                })
+                ->addColumn('action',function ($product){
+
+                    $links = link_to_route('admin.process.product.edit','Packing Pending',$product->id,['class'=>'btn btn-danger btn-flat']);
+                    return $links;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('process::admin.products.packingindex', compact('query'));
     }
 
     /**
@@ -249,8 +347,9 @@ class ProductController extends AdminBaseController
                 ->orderBy('code')
                 ->pluck('code','id');
 
+        //where is_parent == 280
         $kg = $codeMasterRepo->allWithBuilder()
-                ->where('is_parent','=',280)
+                ->where('is_parent','=',488)
                 ->orderBy('code')
                 ->pluck('code','id');
 
@@ -320,6 +419,7 @@ class ProductController extends AdminBaseController
      */
     public function store(CreateProductRequest $request)
     {
+
         //Create new product
         $production = $this->product->createProduct($request);
         
@@ -457,4 +557,27 @@ class ProductController extends AdminBaseController
         return redirect()->route('admin.process.product.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('process::products.title.products')]));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cartonDate(Request $request)
+    {
+        $products = $this->product->getByAttributes(['fish_type' => $request->id]);
+
+        foreach ($products as $product)
+        {
+            $cartonDate[] = $product->carton_date;
+        }
+        return response()->json($cartonDate);
+    }
+
+    public function lotNumber(Request $request)
+    {
+        $products = $this->product->getByAttributes(['carton_date' => Carbon::parse($request->date)->format('Y-m-d')]);
+
+        return response()->json($products);
+    }
+
 }

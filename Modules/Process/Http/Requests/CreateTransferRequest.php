@@ -8,12 +8,12 @@ class CreateTransferRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
-    }
-
-    public function translationRules()
-    {
-        return [];
+        return [
+            'container_no' => 'required',
+            'vehicle_no' => 'required',
+            'loading_location_id' => 'required',
+            'unloading_location_id' => 'required'
+        ];
     }
 
     public function authorize()
@@ -23,11 +23,11 @@ class CreateTransferRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
-    }
-
-    public function translationMessages()
-    {
-        return [];
+        return [
+            'container_no.required' => 'Enter Container Number',
+            'vehicle_no.required' => 'Enter Vehicle',
+            'loading_location_id.required' => 'Enter Loading Location',
+            'unloading_location_id.required' => 'Enter Unloading Location',
+        ];
     }
 }

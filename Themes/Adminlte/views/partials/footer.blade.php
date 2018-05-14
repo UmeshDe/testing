@@ -15,10 +15,10 @@
 </div>
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> {{ $version }}
+        <b>Version</b> {{ 0.2 }}
     </div>
 
     @yield('footer')
-    <strong>Copyright © {{ date('Y')}} <a href="http://accunityservices.com" target="_blank">Accunity Services</a></strong>
+    <strong>Copyright © {{ date('Y')}} <a>Ulka Seafoods Pvt. Ltd. </a></strong>
 </footer>
 

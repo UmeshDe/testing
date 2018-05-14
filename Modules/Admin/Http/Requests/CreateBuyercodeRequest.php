@@ -8,12 +8,9 @@ class CreateBuyercodeRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
-    }
-
-    public function translationRules()
-    {
-        return [];
+        return [
+            'buyer_code' => 'required|unique:admin__buyercodes,buyer_code|max:255',
+        ];
     }
 
     public function authorize()
@@ -23,11 +20,9 @@ class CreateBuyercodeRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
-    }
-
-    public function translationMessages()
-    {
-        return [];
+        return [
+            'buyer_code.required' => 'Please Enter Buyer Code',
+            'buyer_code.unique' => 'Buyer Code Already Exist',
+        ];
     }
 }

@@ -17,8 +17,29 @@
             <td colspan="35" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="35" align="left"> {{$report->reportMaster->sub_title }}</td>
+            <td colspan="1"
+                align="left"><strong> BuyerCode </strong>
+            </td>
+            <td colspan="34"
+                align="left">
+                @foreach($report->buyercode as $buyer)
+                    {{$buyer->buyer_code}} ,
+                @endforeach
+            </td>
         </tr>
+        <tr>
+            <td colspan="1"
+                align="left"> <strong>Container </strong>
+            </td>
+            <td colspan="34" align="left">
+                @foreach($report->containerno as $container)
+                    {{$container}} ,
+                @endforeach
+            </td>
+        </tr>
+        {{--<tr>--}}
+            {{--<td colspan="35" align="left"> {{$report->reportMaster->sub_title }}</td>--}}
+        {{--</tr>--}}
         <tr>
             <td colspan="10" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>

@@ -10,6 +10,7 @@ use Modules\Admin\Http\Requests\UpdateEmployeeRequest;
 use Modules\Admin\Repositories\EmployeeRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\User\Contracts\Authentication;
+use Modules\User\Repositories\Sentinel\SentinelUserRepository;
 use Modules\User\Repositories\UserRepository;
 
 class EmployeeController extends AdminBaseController
@@ -72,6 +73,7 @@ class EmployeeController extends AdminBaseController
             'email' => $request->email,
             'password'=> 'ULKA'
         ];
+
         $user = app(UserRepository::class)->createWithRoles($data, 1 , true);
 
         $this->employee->create($request->all() + ['user_id' => $user->id]);

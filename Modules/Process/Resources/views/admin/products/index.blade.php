@@ -14,13 +14,6 @@
             </h4>
          </div>
     </div>
-    {{--<ol class="breadcrumb">--}}
-        {{--<li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>--}}
-        {{--<li class="active">{{ trans('process::products.title.products') }}</li>--}}
-    {{--</ol>--}}
-    {{--<div class="btn-group pull-right" style="margin: 0 15px 15px 0;">--}}
-
-    {{--</div>--}}
 @stop
 
 @section('content')
@@ -35,38 +28,38 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Date</th>
+                                <th>Production Date</th>
                                 <th>Lot No</th>
                                 <th>Fish Type</th>
                                 <th>Bag Color</th>
                                 <th>Production Slab</th>
-                                <th>{{ trans('core::core.table.created at') }}</th>
+                                {{--<th>{{ trans('core::core.table.created at') }}</th>--}}
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if (isset($products))
-                            @foreach ($products as $product)
-                            <tr>
-                                <td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>
-                                <td>{{$product->lot_no}}</td>
-                                <td>{{$product->fishtype['type']}}</td>
-                                <td>{{$product->bagcolor['color']}}</td>
-                                <td>{{$product->product_slab}}</td>
-                                <td>
-                                    <a href="{{ route('admin.process.product.edit', [$product->id]) }}">
-                                        {{ $product->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.product.destroy', [$product->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
+                            {{--@if (isset($products))--}}
+                            {{--@foreach ($products as $product)--}}
+                            {{--<tr>--}}
+                                {{--<td>{{isset($product->product_date)?\Carbon\Carbon::parse($product->product_date)->format(PHP_DATE_FORMAT) : '' }}</td>--}}
+                                {{--<td>{{$product->lot_no}}</td>--}}
+                                {{--<td>{{$product->fishtype['type']}}</td>--}}
+                                {{--<td>{{$product->bagcolor['color']}}</td>--}}
+                                {{--<td>{{$product->product_slab}}</td>--}}
+                                {{--<td>--}}
+                                    {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}">--}}
+                                        {{--{{ $product->created_at }}--}}
+                                    {{--</a>--}}
+                                {{--</td>--}}
+                                {{--<td>--}}
+                                    {{--<div class="btn-group">--}}
+                                        {{--<a href="{{ route('admin.process.product.edit', [$product->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>--}}
+                                        {{--<button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.process.product.destroy', [$product->id]) }}"><i class="fa fa-trash"></i></button>--}}
+                                    {{--</div>--}}
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--@endforeach--}}
+                            {{--@endif--}}
                             </tbody>
                             <tfoot>
                             </tfoot>
@@ -99,23 +92,23 @@
                     { key: 'c', route: "<?= route('admin.process.product.create') ?>" }
                 ]
             });
-        });
-    </script>
-    <?php $locale = locale(); ?>
-    <script type="text/javascript">
-        $(function () {
             $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
+                "processing": true,
+                "serverSide": true,
+                "pageLength" : 10,
+                "bAutoWidth": false,
+                "ajax": "{{route('admin.process.product.index')}}",
+                "columns": [
+                    {data: 'product_date'},
+                    {data: 'lot_no'},
+//                    {data:'order_no'},
+                    {data: 'fishtype'},
+                    {data: 'bagcolor'},
+                    {data: 'product_slab'},
+                    {data:'action'}
+                ]
             });
         });
     </script>
+    <?php $locale = locale(); ?>
 @endpush

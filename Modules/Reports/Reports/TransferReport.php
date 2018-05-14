@@ -23,14 +23,14 @@ class TransferReport extends AbstractReport
         ],
         'carton_date'=>[
             'column_name'=>'carton',
-            'display_name'=>'Carton Date',
+            'display_name'=>'CartonDate',
             'type' => REPORT_RELATION_COLUMN,
             'format' => REPORT_DATE_FORMAT,
             'relation_column' =>'carton_date'
         ],
         'loading_date'=>[
             'column_name'=>'transfer',
-            'display_name'=>'Load Date',
+            'display_name'=>'LoadDate',
             'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loading_date'
@@ -49,7 +49,7 @@ class TransferReport extends AbstractReport
         ],
         'vehicle_no' => [
             'column_name'=>'transfer',
-            'display_name'=>'Vehicle No',
+            'display_name'=>'Vehicle',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'vehicle_no'
         ],
@@ -72,14 +72,14 @@ class TransferReport extends AbstractReport
             'relation_column' => 'app_number'
         ],
         'bag_color'=> [
-            'column_name'=>'carton.product',
+            'column_name'=>'carton.product.bagColor',
             'display_name'=>'Bag Color',
             'type' => REPORT_RELATION_COLUMN,
-            'relation_column' => 'bag_color'
+            'relation_column' => 'color'
         ],
         'carton_type'=> [
             'column_name'=>'carton.cartontype',
-            'display_name'=>'Carton Typr',
+            'display_name'=>'Carton Type',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'type'
         ],
@@ -90,14 +90,14 @@ class TransferReport extends AbstractReport
         'loading_start_time'=> [
             'column_name'=>'transfer',
             'display_name'=>'Load Start Time',
-            'format' => REPORT_DATETIME_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loading_start_time'
         ],
         'loading_end_time'=> [
             'column_name'=>'transfer',
             'display_name'=>'Load End Time',
-            'format' => REPORT_DATETIME_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'loading_end_time'
         ],
@@ -121,7 +121,7 @@ class TransferReport extends AbstractReport
         ],
         'unloading_date'=>[
             'column_name'=>'transfer',
-            'display_name'=>'Unload Date',
+            'display_name'=>'UnloadDate',
             'format' => REPORT_DATE_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_date'
@@ -139,14 +139,14 @@ class TransferReport extends AbstractReport
         'unloading_start_time'=> [
             'column_name'=>'transfer',
             'display_name'=>'Unload Start Time',
-            'format' => REPORT_DATETIME_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_start_time'
         ],
         'unloading_end_time'=> [
             'column_name'=>'transfer',
             'display_name'=>'Unload End Time',
-            'format' => REPORT_DATETIME_FORMAT,
+            'format' => REPORT_TIME_FORMAT,
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_end_time'
         ],
@@ -164,11 +164,14 @@ class TransferReport extends AbstractReport
         ],
         'remark'=>[
             'column_name'=>'transfer',
-            'display_name'=>'Transfer Remark',
+            'display_name'=>'Remark',
             'type' => REPORT_RELATION_COLUMN,
             'relation_column' =>'unloading_remark'
         ],
     ];
+
+    public $vehicleno;
+    public $containerno;
 
     public function formatCode($product){
         return count($product['product_date']);
@@ -178,32 +181,39 @@ class TransferReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
+        $this->vehicleno = $this->vehicle;
+        $this->containerno = $this->container;
+
         $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
         if($this->vehicle != null || $this->vehicle != "")
         {
-                $this->reportMaster->sub_title = 'Vehicle No: ' . $this->vehicle;
+            $this->reportMaster->sub_title = 'Loading From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Loading To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT);
+//                $this->reportMaster->sub_title = 'Vehicle No: ' . $this->vehicle;
                 $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
-                $q->where('vehicle_no',$this->vehicle);});
+                $q->whereIn('vehicle_no',$this->vehicle);
+                $q->whereIn('container_no',$this->container);
+                $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));
+                });
         }
-        else if($this->container != null || $this->container != "")
-        {
-            $this->reportMaster->sub_title = 'Container No: ' . $this->container;
-            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
-                $q->where('container_no',$this->container);});
-        }
-        else{
-            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
-            {
-                $this->reportMaster->sub_title = 'Loading Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT);
-            }
-            else{
-                $this->reportMaster->sub_title = 'Loading From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Loading To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT);
-            }
-
-            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
-                $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
-        }
+//        else if($this->container != null || $this->container != "")
+//        {
+//            $this->reportMaster->sub_title = 'Container No: ' . $this->container;
+//            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+//
+//        }
+//        else{
+//            if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
+//            {
+//                $this->reportMaster->sub_title = 'Loading Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT);
+//            }
+//            else{
+//                $this->reportMaster->sub_title = 'Loading From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Loading To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT);
+//            }
+//
+//            $queryBuilder = TransferCarton::with('transfer','carton','carton.product','carton.product.buyer','carton.cartontype','transfer.loadinglocation','transfer.loadingsupervisor','transfer.unloadinglocation','transfer.unloadingsupervisor','carton.product.fishtype')->whereHas('transfer' ,function($q){
+//
+//        }
         $this->data = $queryBuilder->get();
         $this->setupDone = true;
 

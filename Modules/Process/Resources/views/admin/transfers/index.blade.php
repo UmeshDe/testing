@@ -32,9 +32,9 @@
                             <thead>
                             <tr>
                                 <th>Loading Date</th>
-                                <th>Quantity In Transit</th>
-                                <th>From Location</th>
-                                <th>To Location</th>
+                                <th>Total Quantity</th>
+                                {{--<th>From Location</th>--}}
+                                {{--<th>To Location</th>--}}
                                 <th>Vehicle No.</th>
                                 <th>Container No.</th>
                                 <th>Loading From</th>
@@ -43,23 +43,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($transfers)): ?>
+                            <?php if (isset($transfers)):
+                            $total = 0;
+                            ?>
                             <?php foreach ($transfers as $transfer): ?>
                             <tr>
-                                <th>{{isset($transfer->loading_date)?\App\Libraries\Utils::parseDate($transfer->loading_date) : '' }}</th>
+                                <td>{{isset($transfer->loading_date)?\App\Libraries\Utils::parseDate($transfer->loading_date) : '' }}</td>
                                 <th>
                                     @foreach($transfer->transfercarton as $cartons)
-                                        <ul>
-                                        <li>{{$cartons->quantity}}</li>
-                                        </ul>
+                                        <?php $total += $cartons->quantity ?>
                                     @endforeach
+                                    {{$total}}
                                 </th>
-                                <td>{{$transfer->loadinglocation}}</td>
-                                <td>{{$transfer->unloadinglocation}}</td>
+                                {{--<td>{{$transfer->loadinglocation}}</td>--}}
+                                {{--<td>{{$transfer->unloadinglocation}}</td>--}}
                                 <td>{{$transfer->vehicle_no}}</td>
                                 <td>{{$transfer->container_no}}</td>
-                                <td>{{$transfer->loadinglocation['name'].'-'.$transfer->loadinglocation['location'].'-'.$transfer->loadinglocation['sublocation']}}</td>
-                                <td>{{$transfer->unloadinglocation['name'].'-'.$transfer->unloadinglocation['location'].'-'.$transfer->unloadinglocation['sublocation']}}</td>
+                                <td>{{$transfer->loadinglocation['location']}}</td>
+                                <td>{{$transfer->unloadinglocation['location']}}</td>
                                 <td>
                                     @if($transfer->status == 0)
                                      <a href="{{ route('admin.process.transfer.edit', ['id' => $transfer->id]) }}" id="btn1" class="btn btn-default btn-info"><span style="color:white">Loaded</span></a>

@@ -137,6 +137,7 @@ use Carbon\Carbon;
                     ->addClass('select')
                     ->raw()
                  !!}
+                <span style="color: red">{{$errors->first('supervisor_id')}}</span>
             </div>
         </div>
     </div>
@@ -188,6 +189,7 @@ use Carbon\Carbon;
                 {!!
                     Former::text('ph')->raw()
                  !!}
+                <span style="color: red">{{$errors->first('ph')}}</span>
             </div>
         </div>
         <div class="form-group has-feedback {{ $errors->has('grade') ? ' has-error has-feedback' : '' }}">
@@ -218,7 +220,7 @@ use Carbon\Carbon;
                             {!!
                                 Former::text('machine_moisture')->raw()
                              !!}
-
+                            <span style="color: red">{{$errors->first('machine_moisture')}}</span>
                         </div>
                     </div>
                     <div class="form-group has-feedback {{ $errors->has('machine_kamaboko_hw') ? ' has-error has-feedback' : '' }}">
@@ -227,7 +229,7 @@ use Carbon\Carbon;
                             {!!
                                 Former::text('machine_kamaboko_hw')->raw()
                              !!}
-
+                            <span style="color: red">{{$errors->first('machine_kamaboko_hw')}}</span>
                         </div>
                     </div>
                 </div>
@@ -245,7 +247,7 @@ use Carbon\Carbon;
                             {!!
                                 Former::text('moisture')->raw()
                              !!}
-
+                            <span style="color: red">{{$errors->first('moisture')}}</span>
                         </div>
                     </div>
                     <div class="form-group has-feedback {{ $errors->has('kamaboko_hw') ? ' has-error has-feedback' : '' }}">
@@ -254,7 +256,7 @@ use Carbon\Carbon;
                             {!!
                                 Former::text('kamaboko_hw')->raw()
                              !!}
-
+                            <span style="color: red">{{$errors->first('kamaboko_hw')}}</span>
                         </div>
                     </div>
                 </div>

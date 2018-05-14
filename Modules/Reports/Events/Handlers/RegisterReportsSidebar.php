@@ -7,6 +7,7 @@ use Maatwebsite\Sidebar\Item;
 use Maatwebsite\Sidebar\Menu;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\Reports\Entities\ReportModule;
+use Modules\Reports\Repositories\ReportModuleRepository;
 use Modules\User\Contracts\Authentication;
 
 class RegisterReportsSidebar implements \Maatwebsite\Sidebar\SidebarExtender
@@ -38,26 +39,28 @@ class RegisterReportsSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     public function extendWith(Menu $menu)
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
-            $group->item(trans('reports::reports.title.report list'), function (Item $item) {
-                $item->icon('fa fa-bar-chart');
-                $item->weight(10);
-                $item->authorize(
-                     'reports.module.admin'
-                );
-                $reportModules = app(ReportModule::class)->orderBy('order','asc')->get();
+//            $group->item(trans('reports::reports.title.report list'), function (Item $item) {
+//                $item->icon('fa fa-bar-chart');
+//                $item->weight(10);
+//                $item->authorize(
+//                     'reports.module.admin'
+//                );
+////                }
+//            });
 
-                foreach ($reportModules as $reportModule) {
-                    $item->item(trans($reportModule->name),function (Item $item) use($reportModule) {
-                        $item->icon($reportModule->icon_class);
-                        $item->weight($reportModule->order);
-                        $item->append('admin.reports.reportlog.create');
-                        $item->route('admin.reports.reportlog.index',$reportModule->id);
-                        $item->authorize(
-                            $this->auth->hasAccess('reports.reportlogs.index')
-                        );
-                    });
-                }
-            });
+//            $group->item(trans('reports::reports.title.report list'), function (Item $item) {
+                $reportModule = app(ReportModuleRepository::class)->findByAttributes(['name' => 'Reports']);
+
+//                foreach ($reportModules as $reportModule) {
+                $group->item(trans($reportModule->name), function (Item $item) use ($reportModule) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(10);
+//                        $item->append('admin.reports.reportlog.create');
+                    $item->route('admin.reports.reportlog.index', $reportModule->id);
+                    $item->authorize(
+                        $this->auth->hasAccess('reports.reportlogs.index')
+                    );
+                });
 
             $group->item(trans('reports::reports.title.name'), function (Item $item) {
                 $item->icon('fa fa-copy');

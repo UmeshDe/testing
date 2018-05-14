@@ -9,7 +9,7 @@ class UpdateLocationRequest extends BaseFormRequest
     public function rules()
     {
          return [
-            'name' => 'required|unique:admin__locations,name,'.$this->old_name.',name|max:255',
+            'name' => 'required',
             'location' => 'required|max:255',
         ];
     }
@@ -28,7 +28,6 @@ class UpdateLocationRequest extends BaseFormRequest
     {
         return [
             'name.required' => 'Please Enter Name',
-            'name.unique' => 'Name Already Exist',
             'location.required' => 'Please Enter Location',
         ];
     }

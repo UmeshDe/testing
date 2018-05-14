@@ -8,12 +8,9 @@ class CreateCheckmarkRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
-    }
-
-    public function translationRules()
-    {
-        return [];
+        return [
+            'cm' => 'required|unique:admin__checkmarks,cm|max:255',
+        ];
     }
 
     public function authorize()
@@ -23,11 +20,9 @@ class CreateCheckmarkRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
-    }
-
-    public function translationMessages()
-    {
-        return [];
+        return [
+            'cm.required' => 'Please Enter CM',
+            'cm.unique' => 'CM Already Exist',
+        ];
     }
 }

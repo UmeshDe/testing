@@ -9,7 +9,9 @@ class CreateProductRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'lot_no' => 'required|unique_with:process__products,lot_no,fish_type',
+            'lot_no' => 'required|unique_with:process__products,fish_type,carton_date',
+//            'carton_date' => 'date_format:Y-m-d|unique_with:process__products,fish_type,lot_no',
+            'fish_type' => 'required',
             'product_slab' => 'required'
         ];
     }
@@ -23,8 +25,9 @@ class CreateProductRequest extends BaseFormRequest
     {
         return [
             'lot_no.required' => 'Enter Lot Number',
-            'lot_no.unique' => 'Lot Number Already Exist',
-            'product_slab.required' => 'Enter Product Slab',
+            'lot_no.unique' => 'Lot Number  Already Exist',
+            'fish_type.required' => 'Please Select Fish Type',
+            'product_slab.required' => 'Please Enter Product Slab',
         ];
     }
 }

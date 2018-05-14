@@ -77,12 +77,12 @@
         $('#fishtype_id').select2();
         $('#bagcolor_id').select2();
         $('#cartontype_id').select2();
-        $('#grade_id').select2();
+        $('#grade_id,#available_quantity').select2();
 
-        $('#product').select2().on('change', function () {
-            var cartonId = $('#product').children('option:selected').data('cartonid');
-            $('#ctId').val(cartonId);
-        });
+        // $('#product').select2().on('change', function () {
+        //     var cartonId = $('#product').children('option:selected').data('cartonid');
+        //     $('#ctId').val(cartonId);
+        // });
 
 
         $('#repack_date').datetimepicker({
@@ -92,27 +92,143 @@
         });
 
         $('#location_id').select2().on('change' , function () {
-            var location = $(this).val();
+
+            var loadingFrom = $(this).val();
+
             $.ajax({
                 type: 'GET',
                 url: '{{URL::route('admin.process.carton.cartonLots')}}',
                 data: {
-                    id : location,
+                    id : loadingFrom,
                     _token: $('meta[name="token"]').attr('value'),
                 },
                 success : function (response) {
-                    $('#product').html('');
+                    $('#variety').html('<option/>');
                     $.each(response, function (i , item) {
-                        var d =    item.carton_id;
-                        $('#product').append($("<option></option>"));
-                        $('#product').append('<option value = '+item.id +' data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                        $('#variety').append('<option  data-id ='+item.carton.product.fishtype.id+'  >'+ item.carton.product.fishtype.type + '</option>');
                     });
 
                 },
                 error: function (xhr, ajaxOption, thrownError) {
                 }
-
             });
+        });
+
+        $('#variety').select2().on('change' , function () {
+
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.cartonDate')}}',
+                data: {
+                    type : type,
+                    id : loadingFrom,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#carton_date1').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#carton_date1').append('<option data-date ='+item.carton_date+'>'+ moment(item.carton_date).format("DD-MMM-YY")  + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        $('#carton_date1').select2().on('change' , function () {
+
+            var cartonDate = $('#carton_date1').children('option:selected').data('date');
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.lotNumber')}}',
+                data: {
+                    id : loadingFrom,
+                    type : type,
+                    cartonDate : cartonDate,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#lot_no').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#lot_no').append('<option data-lot_no ='+item.lot_no+' >'+ item.lot_no  + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        $('#lot_no').select2().on('change' , function () {
+
+            var lotNo = $('#lot_no').children('option:selected').data('lot_no');
+            var cartonDate = $('#carton_date1').children('option:selected').data('date');
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.availableQty')}}',
+                data: {
+                    id : loadingFrom,
+                    type : type,
+                    cartonDate : cartonDate,
+                    lot : lotNo,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+
+                    $('#available_quantity').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#available_quantity').append('<option data-cartonid ='+item.carton_id+' >'+ item.available_quantity  + '</option>');
+                        $('#ctId').val(item.carton_id);
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        {{--$('#location_id').select2().on('change' , function () {--}}
+            {{--var location = $(this).val();--}}
+            {{--$.ajax({--}}
+                {{--type: 'GET',--}}
+                {{--url: '{{URL::route('admin.process.carton.cartonLots')}}',--}}
+                {{--data: {--}}
+                    {{--id : location,--}}
+                    {{--_token: $('meta[name="token"]').attr('value'),--}}
+                {{--},--}}
+                {{--success : function (response) {--}}
+                    {{--$('#product').html('');--}}
+                    {{--$.each(response, function (i , item) {--}}
+                        {{--var d =    item.carton_id;--}}
+                        {{--$('#product').append($("<option></option>"));--}}
+                        {{--$('#product').append('<option value = '+item.id +' data-quantity ='+item.available_quantity+' data-carton_date ='+item.carton.carton_date + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');--}}
+                    {{--});--}}
+
+                {{--},--}}
+                {{--error: function (xhr, ajaxOption, thrownError) {--}}
+                {{--}--}}
+
+            {{--});--}}
+        {{--});--}}
+
+        $('#repacked_cartons').focusout(function(){
+            var number = parseInt($('#available_quantity').val());
+
+            var repackedCartons = parseInt($(this).val());
+            if (repackedCartons > number){
+                alert("You cannot repack more than available quantity "+number);
+                $(this).val(number);
+            }
         });
 
 

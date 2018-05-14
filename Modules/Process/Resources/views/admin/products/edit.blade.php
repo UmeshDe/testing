@@ -81,34 +81,49 @@
         $('.select').select2();
 
 
-        selectcodes = $("#code").selectize({
-            options: [
-                    @foreach($codemasters as $codemaster)
-                        @foreach($codemaster->childCodes as $childCode)
-                        {
-                            id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'
-                        },
-                        @endforeach
-                    @endforeach
-            ],
-            optgroups: [
-                    @foreach($codemasters as $codemaster)
-                    {
-                        id: '{{$codemaster->id}}', name: '{{$codemaster->code}}'
-                    },
-                    @endforeach
-            ],
-            labelField: 'model',
-            valueField: 'id',
-            optgroupField: 'make',
-            optgroupLabelField: 'name',
-            optgroupValueField: 'id',
-            searchField: ['model'],
-            plugins: ['optgroup_columns']
-        });
+        // var slab = $('#product_slab').val();
+        //
+        // outputCMVal = Math.round(slab)/20;
+        //
+        // var arrDecimal = outputCMVal.toString().split('.');
+        //
+        // $('#no_of_cartons').val(arrDecimal[0]);
+        // if(arrDecimal[1] == 5)
+        // {
+        //     var loose = 1;
+        // }
+        // $('#loose').text(loose);
+        // $('#loose').val(loose);
 
 
-        selectcodes[0].selectize.addItems(@json(collect($product->codes->toArray())->pluck('id')->all()));
+        {{--selectcodes = $("#code").selectize({--}}
+            {{--options: [--}}
+                    {{--@foreach($codemasters as $codemaster)--}}
+                        {{--@foreach($codemaster->childCodes as $childCode)--}}
+                        {{--{--}}
+                            {{--id: '{{$childCode->id}}', make: '{{$codemaster->id}}', model: '{{$childCode->code}}'--}}
+                        {{--},--}}
+                        {{--@endforeach--}}
+                    {{--@endforeach--}}
+            {{--],--}}
+            {{--optgroups: [--}}
+                    {{--@foreach($codemasters as $codemaster)--}}
+                    {{--{--}}
+                        {{--id: '{{$codemaster->id}}', name: '{{$codemaster->code}}'--}}
+                    {{--},--}}
+                    {{--@endforeach--}}
+            {{--],--}}
+            {{--labelField: 'model',--}}
+            {{--valueField: 'id',--}}
+            {{--optgroupField: 'make',--}}
+            {{--optgroupLabelField: 'name',--}}
+            {{--optgroupValueField: 'id',--}}
+            {{--searchField: ['model'],--}}
+            {{--plugins: ['optgroup_columns']--}}
+        {{--});--}}
+
+
+        {{--selectcodes[0].selectize.addItems(@json(collect($product->codes->toArray())->pluck('id')->all()));--}}
     });
 
 
@@ -118,17 +133,40 @@
         this.product_slab = ko.observable(model.product_slab);
         this.rejected = ko.observable(model.rejected);
         this.human_error_slab = ko.observable(model.human_error_slab);
+        this.human_error_plus = ko.observable(model.human_error_plus);
+        this.loose = ko.observable(model.loose);
         this.no_of_cartons = ko.observable(model.no_of_cartons);
 
         this.no_of_cartons = ko.computed(function () {
-            var value = self.product_slab() / 20 - Math.ceil((self.rejected() / parseFloat(2))) - Math.ceil((self.human_error_slab() / parseFloat(2)));
+            var value = self.product_slab() / 20 - (Math.ceil((self.rejected())) / 2) - (Math.ceil((self.loose())) / 2) - (Math.ceil((self.human_error_slab())) / 2) + (Math.ceil((self.human_error_plus())) / 2) ;
+
+            if(self.rejected() * 10 > self.product_slab() || self.loose() * 10 > self.product_slab() || self.human_error_slab() * 10 > self.product_slab())
+            {
+               alert('Enter bag is more than production bag');
+            }
+
             return (value) ? value : 0;
         });
 
-        this.loose = ko.computed(function () {
-            var value = (self.rejected() % 2);
-            return (value) ? value : 0;
-        });
+        // this.loose = ko.computed(function () {
+
+            // var value = (self.rejected() % 2);
+            //
+            // return (value) ? value : 0;
+            // var value = self.product_slab() / 20 ;
+            // return (value) ? value : 0;
+            // if(value % 2 !== 0)
+            // {
+            //     var arrDecimal = value.toString().split('.');
+            //     var loose = 1;
+            //     var rejected = self.rejected() % 2;
+            //     var total = parseInt(loose) + parseInt(rejected);
+            // }
+            // else {
+            //     var total = 0;
+            // }
+
+        // });
 
         this.diff_in_kg = ko.computed(function () {
            var value = self.product_slab() - (self.no_of_cartons() * 20);
@@ -137,6 +175,39 @@
     };
 
     ko.applyBindings(new ViewModel(@json($product)));
+
+
+    // $('#rejected').keyup(function () {
+    //
+    //     var rejected = $(this).val();
+    //
+    //     outputCMVal = Math.round(rejected)/2;
+    //
+    //     var arrDecimal = outputCMVal.toString().split('.');
+    //
+    //     // alert(arrDecimal[0]);
+    //     // alert(arrDecimal[1]);
+    //     var cartons = $('#no_of_cartons').val();
+    //     var loosebags = $('#loose').val();
+    //
+    //     $('#no_of_cartons').val(cartons - arrDecimal[0]);
+    //     if(arrDecimal[1] == 5)
+    //     {
+    //         var totalbags = parseInt(loosebags) + 1;
+    //         $('#loose').text(totalbags);
+    //         $('#loose').val(totalbags);
+    //     }
+    //
+    //     if($('#loose').val() == 2)
+    //     {
+    //         var cartons = $('#no_of_cartons').val();
+    //         $('#no_of_cartons').val(parseInt(cartons) + 1);
+    //         $('#loose').val(0);
+    //         $('#loose').text(0);
+    //     }
+    //
+    // })
+
 </script>
 
 @endpush

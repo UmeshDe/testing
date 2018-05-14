@@ -9,7 +9,9 @@ class UpdateProductRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'lot_no' => 'required'
+            'lot_no' => 'required',
+            'location_id' => 'required',
+            'no_of_cartons' => 'integer'
         ];
     }
 
@@ -22,6 +24,7 @@ class UpdateProductRequest extends BaseFormRequest
     {
         return [
             'lot_no.required' => 'Enter Lot Number',
+            'location_id.required' => 'Please Select Location'
         ];
     }
 }

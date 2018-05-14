@@ -2,8 +2,10 @@
 
 namespace Modules\Process\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Modules\Process\Entities\Carton;
 use Modules\Process\Http\Requests\CreateCartonRequest;
 use Modules\Process\Http\Requests\UpdateCartonRequest;
@@ -105,11 +107,67 @@ class CartonController extends AdminBaseController
      */
     public function cartonLots(Request $request)
     {
-        //Find Carton Information
+        //Find Fishtypes In Selected Location
         $cartonlocation = app(CartonLocationRepository::class)->allWithBuilder()->where('location_id', '=' , $request->id)
-            ->with(['carton','location','carton.product'])->get();
+            ->with(['carton.product.fishtype'])
+            ->get()
+            ->unique('carton.product.fishtype.type');
         
         return response()->json($cartonlocation);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cartonDate(Request $request)
+    {
+        //To Find Carton Date Of Selected Fishtype and Loading Location
+        $cartonDate = DB::table("process__cartonlocations")
+            ->join('process__cartons','process__cartons.id','=','process__cartonlocations.carton_id')
+            ->join('process__products','process__products.id','=','process__cartons.product_id')
+            ->select('process__products.carton_date')
+            ->where('process__cartonlocations.location_id',$request->id)
+            ->where('process__products.fish_type',$request->type)
+            ->groupBy('process__products.carton_date')
+            ->get();
+
+        return response()->json($cartonDate);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lotNumber(Request $request)
+    {
+        //To find lot number of selected fishtype and loading location
+        $lotNumber = DB::table("process__cartonlocations")
+            ->join('process__cartons','process__cartons.id','=','process__cartonlocations.carton_id')
+            ->join('process__products','process__products.id','=','process__cartons.product_id')
+            ->select('process__products.lot_no')
+            ->where('process__cartonlocations.location_id',$request->id)
+            ->where('process__products.fish_type',$request->type)
+            ->where('process__products.carton_date',Carbon::parse($request->cartonDate)->format('Y-m-d'))
+            ->get();
+
+        return response()->json($lotNumber);
+    }
+
+
+    public function availableQty(Request $request)
+    {
+        $availableQty = DB::table("process__cartonlocations")
+            ->join('process__cartons','process__cartons.id','=','process__cartonlocations.carton_id')
+            ->join('process__products','process__products.id','=','process__cartons.product_id')
+            ->select('available_quantity','carton_id')
+            ->where('process__cartonlocations.location_id',$request->id)
+            ->where('process__products.fish_type',$request->type)
+            ->where('process__products.carton_date',Carbon::parse($request->cartonDate)->format('Y-m-d'))
+            ->where('process__products.lot_no',$request->lot)
+            ->get();
+
+        return response()->json($availableQty);
     }
     
     
@@ -122,5 +180,7 @@ class CartonController extends AdminBaseController
 
         return response()->json($cartonlocation);
     }
+
+
 
 }

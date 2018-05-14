@@ -19,6 +19,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         
         return $this->create([
             'product_date' => Carbon::parse($request->product_date),
+            'carton_date' => Carbon::parse($request->carton_date),
             'no_of_cartons' => $request->no_of_cartons,
             'rejected' => $request->rejected,
             'loose' => $request->loose,
@@ -78,6 +79,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 //                'fish_type'=>$request->fish_type,
                 'packing_remark' => $request->packing_remark,
                 'human_error_slab' => $request->human_error_slab,
+                'human_error_plus' => $request->human_error_plus,
                 'diff_in_kg' => $request->diff_in_kg,
                 'packingdone' => true,
                 'packingdone_by' => $user->id,

@@ -148,6 +148,11 @@ $router->group(['prefix' =>'/reports'], function (Router $router) {
         'uses' => 'ReportLogController@destroy',
         'middleware' => 'can:reports.reportlogs.destroy'
     ]);
+//    $router->get('reportlogs/{reportlog}/filter', [
+//        'as' => 'admin.reports.reportlog.filter',
+//        'uses' => 'ReportLogController@filter',
+//        'middleware' => 'can:reports.reportlogs.edit'
+//    ]);
     $router->post('/generate', [
         'as' => 'admin.report.generate',
         'uses' => 'ReportLogController@generate',

@@ -93,4 +93,9 @@ class PublicController extends BasePublicController
             $this->app->abort('404');
         }
     }
+
+    public function Login()
+    {
+        return view('user::public.login');
+    }
 }

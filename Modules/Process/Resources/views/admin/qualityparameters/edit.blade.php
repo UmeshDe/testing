@@ -106,19 +106,19 @@
 
 
                 this.work_force = ko.computed(function () {
-                    var value = Math.ceil(Math.ceil(self.w1()) + Math.ceil(self.w2()) + Math.ceil(self.w3()) + Math.ceil(self.w4()) + Math.ceil(self.w5()))/5;
+                    var value = (parseFloat(parseFloat(self.w1()) + parseFloat(self.w2()) + parseFloat(self.w3()) + parseFloat(self.w4()) + parseFloat(self.w5())).toPrecision(4)/5).toPrecision(3);
                     return (value)?value:0;
                 });
                 this.length = ko.computed(function () {
-                    var value = Math.ceil(Math.ceil(self.l1()) + Math.ceil(self.l2()) + Math.ceil(self.l3()) + Math.ceil(self.l4()) + Math.ceil(self.l5()))/5;
+                    var value = (parseFloat(parseFloat(self.l1()) + parseFloat(self.l2()) + parseFloat(self.l3()) + parseFloat(self.l4()) + parseFloat(self.l5())).toPrecision(4)/5).toPrecision(3);
                     return (value)?value:0;
                 });
                 this.suwari_work_force = ko.computed(function () {
-                    var value = Math.ceil(Math.ceil(self.sw1()) + Math.ceil(self.sw2()) + Math.ceil(self.sw3()) + Math.ceil(self.sw4()) + Math.ceil(self.sw5()))/5;
+                    var value = (parseFloat(parseFloat(self.sw1()) + parseFloat(self.sw2()) + parseFloat(self.sw3()) + parseFloat(self.sw4()) + parseFloat(self.sw5())).toPrecision(4)/5).toPrecision(3);
                     return (value)?value:0;
                 });
                 this.suwari_length = ko.computed(function () {
-                    var value = Math.ceil(Math.ceil(self.sl1()) + Math.ceil(self.sl2()) + Math.ceil(self.sl3()) + Math.ceil(self.sl4()) + Math.ceil(self.sl5()))/5;
+                    var value = (parseFloat(parseFloat(self.sl1()) + parseFloat(self.sl2()) + parseFloat(self.sl3()) + parseFloat(self.sl4()) + parseFloat(self.sl5())).toPrecision(4)/5).toPrecision(3);
                     return (value)?value:0;
                 });
                 this.suwari_gel_strength = ko.computed(function () {

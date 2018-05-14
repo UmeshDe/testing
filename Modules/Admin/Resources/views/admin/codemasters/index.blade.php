@@ -158,10 +158,10 @@
                 "paginate": true,
                 "lengthChange": true,
                 "filter": true,
-                "sort": true,
+                "sort": false,
                 "info": true,
                 "autoWidth": true,
-                "order": [[ 0, "desc" ]],
+                "order": false,
                 "language": {
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }

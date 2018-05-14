@@ -175,6 +175,86 @@ class Product extends Model
     {
         return $this->belongsTo(CodeMaster::class,'lc_id','id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function i()
+    {
+        return $this->belongsTo(CodeMaster::class,'i_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function k()
+    {
+        return $this->belongsTo(CodeMaster::class,'k_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function e()
+    {
+        return $this->belongsTo(CodeMaster::class,'e_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function t()
+    {
+        return $this->belongsTo(CodeMaster::class,'t_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sg()
+    {
+        return $this->belongsTo(CodeMaster::class,'sg_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kg()
+    {
+        return $this->belongsTo(CodeMaster::class,'kg_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function g()
+    {
+        return $this->belongsTo(CodeMaster::class,'g_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function h()
+    {
+        return $this->belongsTo(CodeMaster::class,'h_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rc()
+    {
+        return $this->belongsTo(CodeMaster::class,'rc_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function mk()
+    {
+        return $this->belongsTo(CodeMaster::class,'mk_id','id');
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

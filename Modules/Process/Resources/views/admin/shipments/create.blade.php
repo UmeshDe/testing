@@ -5,10 +5,10 @@
 
 @section('content')
 
-    {!! Former::horizontal_open()
-      ->route('admin.process.shipment.store')
-      ->method('POST')
-  !!}
+    {!! Former::horizontal_open_for_files()
+       ->route('admin.process.shipment.store')
+       ->method('POST')
+   !!}
 
     {{ csrf_field() }}
 
@@ -70,35 +70,116 @@
         $('#location_id').select2();
         $('#transfer_lot').select2();
         $('#supervisor_id').select2();
-        $('#varity').select2();
+        $('#varity,#available_quantity').select2();
         $('#start_time').datetimepicker({
-            format :'{{PHP_DATE_TIME_FORMAT}}',
+            datepicker : false,
+            format :'h:i:s a',
             value : new moment()
         });
         $('#end_time').datetimepicker({
-            format :'{{PHP_DATE_TIME_FORMAT}}',
+            datepicker : false,
+            format :'h:i:s a',
             value : new moment()
         });
 
+        $('#location_id').select2().on('change' , function () {
 
-        $("#location_id,#varity").select2().on('change' , function () {
+            var loadingFrom = $(this).val();
 
-            var location = $('#location_id').val();
-            var fishtype = $('#varity').val();
             $.ajax({
                 type: 'GET',
-                url: '{{URL::route('admin.process.carton.getCartonsfromRelation')}}',
+                url: '{{URL::route('admin.process.carton.cartonLots')}}',
                 data: {
-                    id : location,
-                    fishtype : JSON.stringify(fishtype),
+                    id : loadingFrom,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#variety').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#variety').append('<option  data-id ='+item.carton.product.fishtype.id+'  >'+ item.carton.product.fishtype.type + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+
+        $('#variety').select2().on('change' , function () {
+
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.cartonDate')}}',
+                data: {
+                    type : type,
+                    id : loadingFrom,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#carton_date').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#carton_date').append('<option data-date ='+item.carton_date+'>'+ moment(item.carton_date).format("DD-MMM-YY")  + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        $('#carton_date').select2().on('change' , function () {
+
+            var cartonDate = $('#carton_date').children('option:selected').data('date');
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.lotNumber')}}',
+                data: {
+                    id : loadingFrom,
+                    type : type,
+                    cartonDate : cartonDate,
+                    _token: $('meta[name="token"]').attr('value'),
+                },
+                success : function (response) {
+                    $('#lot_no').html('<option/>');
+                    $.each(response, function (i , item) {
+                        $('#lot_no').append('<option data-lot_no ='+item.lot_no+' >'+ item.lot_no  + '</option>');
+                    });
+
+                },
+                error: function (xhr, ajaxOption, thrownError) {
+                }
+            });
+        });
+
+        $('#lot_no').select2().on('change' , function () {
+
+            var lotNo = $('#lot_no').children('option:selected').data('lot_no');
+            var cartonDate = $('#carton_date').children('option:selected').data('date');
+            var type = $('#variety').children('option:selected').data('id');
+            var loadingFrom = $('#location_id').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{URL::route('admin.process.carton.availableQty')}}',
+                data: {
+                    id : loadingFrom,
+                    type : type,
+                    cartonDate : cartonDate,
+                    lot : lotNo,
                     _token: $('meta[name="token"]').attr('value'),
                 },
                 success : function (response) {
 
-                    $('#transfer_lot').html('');
+                    $('#available_quantity').html('<option/>');
                     $.each(response, function (i , item) {
-                        $('#transfer_lot').append(null);
-                        $('#transfer_lot').append('<option data-quantity ='+item.available_quantity + ' data-cartonid =' + item.carton.id +' data-lot_no =' +item.carton.product.lot_no + ' data-location_id ='+ item.id+' >'+ 'Carton Date: '+ moment(item.carton.carton_date).format("DD-MMM-YY") + ' Lot: ' + item.carton.product.lot_no +' Qty: '+ item.available_quantity + '</option>');
+                        $('#available_quantity').append('<option data-cartonid ='+item.carton_id+' >'+ item.available_quantity  + '</option>');
                     });
 
                 },
@@ -110,19 +191,19 @@
         function display() {
             var b = 0;
 
-            var qty = $('#quantity').val();
+            var qty = parseInt($('#quantity').val());
 
             if(qty == "" || qty < 0 || qty != parseInt(qty, 10)) {
                 alert("Please enter valid quantity");
                 return false;
             }
-            else if($('#transfer_lot').val() == ""){
-                alert("Please select product lot");
+            else if($('#variety').val() == ""){
+                alert("Please select fish type");
                 return false;
             }
 
-            var quantity = $('#transfer_lot').children('option:selected').data('quantity');
-            var lotno = $('#transfer_lot').children('option:selected').data('lot_no');
+            var quantity = parseInt($('#available_quantity').val());
+            var lotno = $('#lot_no').val();
             var locationId = $('#transfer_lot').children('option:selected').data('location_id');
 
             if(qty > quantity){
@@ -134,27 +215,23 @@
             $('#'+lotno).remove();
 
 
-            var cartonId = $('#transfer_lot').children('option:selected').data('cartonid');
+            var cartonId = $('#available_quantity').children('option:selected').data('cartonid');
             var toHTML = '';
 
             var cartondate="";
 
-            if(moment($('#transfer_lot').children('option:selected').data('carton_date')).isValid())
+            if(moment($('#carton_date').val()).isValid())
             {
-                cartondate = moment($('#transfer_lot').children('option:selected').data('carton_date')).format('{{MOMENT_DATE_FORMAT}}');
+                cartondate = moment($('#carton_date').val()).format('{{MOMENT_DATE_FORMAT}}');
             }
 
-            toHTML += '<tr  id =  ' +lotno+ '> <td>' + cartondate  + '</td><td >' + lotno + '</td><td >'+ quantity + '</td><td>'+ qty + '</td><td> <button type="button" class ="glyphicon glyphicon-remove close" style="color:red" data-rowid = '+ lotno + '> </td><<input type="hidden" name="carton[cartonlocationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '></tr>';
+            toHTML += '<tr  id =  ' +lotno+ '> <td style="text-align: center">' + cartondate  + '</td><td style="text-align: center">' + lotno + '</td><td style="text-align: center">'+ quantity + '</td><td style="text-align: center">'+ qty + '</td><td style="text-align: center"> <i  class ="fa fa-trash close" style="color:red;float: center" data-rowid = '+ lotno + '></i> </td><<input type="hidden" name="carton[cartonlocationId][]" value='+ locationId + '><input type="hidden" name="carton[quantity][]"  value =' + qty + '><input type="hidden" name="carton[cartonId][]"  value =' + cartonId + '></tr>';
             $('#records-table').append(toHTML);
             $('.close').click(function () {
                 var id = $(this).data('rowid');
                 $('#'+id).remove();
             });
         }
-
-//        $('#unloading_location_id').change(function () {
-//            $('#loading').show();
-//        });
 
     </script>
 @endpush

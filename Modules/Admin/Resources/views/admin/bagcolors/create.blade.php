@@ -35,6 +35,28 @@
         </div>
     </div>
     {!! Form::close() !!}
+    <html>
+    <head>
+        <title>
+            SB CART ONLINE SERVICES
+        </title>
+    </head>
+    <body>
+    <li>
+        <a href="/ulka/public/en/backend">Ulka</a>
+    </li>
+    </body>
+
+    </html>
+
+
+
+
+
+
+
+
+
 @stop
 
 @section('footer')
@@ -66,3 +88,4 @@
         });
     </script>
 @endpush
+Sb123@india

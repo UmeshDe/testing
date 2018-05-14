@@ -31,28 +31,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @if(isset($cartons))
-                                @foreach($cartons as $carton)
+                                {{--@if(isset($cartons))--}}
+                                {{--@foreach($cartons as $carton)--}}
 
-                            <tr>
-                                <td>{{isset($carton->product)?\Carbon\Carbon::parse($carton->product->product_date)->format(PHP_DATE_FORMAT) : ''}}</td>
-                                <td>{{isset($carton->product)?$carton->product->lot_no : ''}}</td>
-                                <td>{{isset($carton->carton_date)?\Carbon\Carbon::parse($carton->carton_date)->format(PHP_DATE_FORMAT) : ''}}</td>
-                                <td>{{$carton->no_of_cartons}}</td>
-                                <td>{{isset($carton->product->fishtype)?$carton->product->fishtype->type : '' }}</td>
-                                <td>{{isset($carton->bagcolor)?$carton->bagcolor->color : ''}}</td>
-                                <td>
-                                    @if(!isset($carton->qualitycheck))
-                                        <a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Pending</span></a>
-                                    @elseif($carton->qualitycheckdone )
-                                        <a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>
-                                    @else
-                                        <a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-info"><span style="color:white">In Progress</span></a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
+                            {{--<tr>--}}
+                                {{--<td>{{isset($carton->product)?\Carbon\Carbon::parse($carton->product->product_date)->format(PHP_DATE_FORMAT) : ''}}</td>--}}
+                                {{--<td>{{isset($carton->product)?$carton->product->lot_no : ''}}</td>--}}
+                                {{--<td>{{isset($carton->carton_date)?\Carbon\Carbon::parse($carton->carton_date)->format(PHP_DATE_FORMAT) : ''}}</td>--}}
+                                {{--<td>{{$carton->no_of_cartons}}</td>--}}
+                                {{--<td>{{isset($carton->product->fishtype)?$carton->product->fishtype->type : '' }}</td>--}}
+                                {{--<td>{{isset($carton->bagcolor)?$carton->bagcolor->color : ''}}</td>--}}
+                                {{--<td>--}}
+                                    {{--@if(!isset($carton->qualitycheck))--}}
+                                        {{--<a href="{{ route('admin.process.qualityparameter.create', ['id' => $carton->id]) }}" class="btn btn-default btn-danger"><span style="color:white">Pending</span></a>--}}
+                                    {{--@elseif($carton->qualitycheckdone )--}}
+                                        {{--<a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-success"><span style="color:white">Completed</span></a>--}}
+                                    {{--@else--}}
+                                        {{--<a href="{{ route('admin.process.qualityparameter.edit', ['id' => $carton->qualitycheck->id]) }}" class="btn btn-default btn-info"><span style="color:white">In Progress</span></a>--}}
+                                    {{--@endif--}}
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--@endforeach--}}
+                            {{--@endif--}}
                             </tbody>
                             <tfoot>
                             <tr>
@@ -91,18 +91,23 @@
     </script>
     <?php $locale = locale(); ?>
     <script type="text/javascript">
-        $(function () {
+        $( document ).ready(function() {
             $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
+                "processing": true,
+                "serverSide": true,
+                "pageLength": 10,
+                "bAutoWidth": false,
+                "ajax": "{{route('admin.process.qualityparameter.index')}}",
+                "columns": [
+                    {data: 'product_date'},
+                    {data: 'lot_no'},
+                    {data: 'carton_date'},
+                    {data: 'no_of_cartons'},
+//                    {data:'order_no'},
+                    {data: 'fishtype'},
+                    {data: 'bagcolor'},
+                    {data: 'action'}
+                ]
             });
         });
     </script>

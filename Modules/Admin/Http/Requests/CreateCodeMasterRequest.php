@@ -9,12 +9,8 @@ class CreateCodeMasterRequest extends BaseFormRequest
     public function rules()
     {
         return [
+            'code' => 'required|unique_with:admin__codemasters,is_parent,',
         ];
-    }
-
-    public function translationRules()
-    {
-        return [];
     }
 
     public function authorize()
@@ -25,12 +21,7 @@ class CreateCodeMasterRequest extends BaseFormRequest
     public function messages()
     {
         return [
-         
+            'code.required' => 'Please Enter Code',
         ];
-    }
-
-    public function translationMessages()
-    {
-        return [];
     }
 }

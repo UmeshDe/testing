@@ -58,6 +58,9 @@ class UnderTransferReport extends AbstractReport
         ],
     ];
 
+    public $vehicleno;
+    public $containerno;
+
     public function formatCode($product){
         return count($product['product_date']);
     }
@@ -66,19 +69,22 @@ class UnderTransferReport extends AbstractReport
 
         $this->reportMaster->sub_title_style = 'text-align:left';
 
+        $this->vehicleno = $this->vehicle;
+        $this->containerno = $this->container;
+
         if($this->vehicle != null || $this->vehicle != "")
         {
-            $this->reportMaster->sub_title = 'Vehicle No: ' . $this->vehicle ;
             $queryBuilder = TransferCarton::with('transfer','transfer.loadinglocation','carton.product')->whereHas('transfer' ,function($q) {
-                $q->where('vehicle_no',$this->vehicle);
-            });
+                $q->whereIn('vehicle_no',$this->vehicle);
+                $q->whereIn('container_no',$this->container);
+            })->where('received_quantity',0);
         }
-        else{
-            $this->reportMaster->sub_title = 'Container No: ' . $this->container ;
-            $queryBuilder = TransferCarton::with('transfer','transfer.loadinglocation','carton.product')->whereHas('transfer' ,function($q) {
-                $q->where('container_no',$this->container);
-            });
-        }
+//        else{
+//            $this->reportMaster->sub_title = 'Container No: ' . $this->container ;
+//            $queryBuilder = TransferCarton::with('transfer','transfer.loadinglocation','carton.product')->whereHas('transfer' ,function($q) {
+//
+//            });
+//        }
 
         $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 

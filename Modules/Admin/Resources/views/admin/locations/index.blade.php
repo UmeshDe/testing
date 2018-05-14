@@ -27,7 +27,6 @@
                                 <th>Chember/Zone/Floar</th>
                                 <th>Location</th>
                                 <th>Pallet No.</th>
-                                <th>Details</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -41,7 +40,6 @@
                                 <td>{{$location->sublocation}}</td>
                                 <td>{{$location->landmark}}</td>
                                 <td>{{$location->street}}</td>
-                                <td>{{$location->details}}</td>
                                 <td>
                                     <a href="{{ route('admin.admin.location.edit', [$location->id]) }}">
                                         {{ $location->created_at }}
@@ -204,10 +202,10 @@
                 "paginate": true,
                 "lengthChange": true,
                 "filter": true,
-                "sort": true,
+                "sort": false,
                 "info": true,
                 "autoWidth": true,
-                "order": [[ 0, "desc" ]],
+                "order": false,
                 "language": {
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }

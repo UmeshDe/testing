@@ -173,6 +173,7 @@ class RepackController extends AdminBaseController
      */
     public function update(Repack $repack, UpdateRepackRequest $request)
     {
+        dd($request->all());
         $this->repack->update($repack, $request->all());
 
         return redirect()->route('admin.process.repack.index')

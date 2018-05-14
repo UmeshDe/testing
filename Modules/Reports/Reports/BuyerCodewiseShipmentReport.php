@@ -242,6 +242,8 @@ class BuyerCodewiseShipmentReport extends AbstractReport
     ];
 
     public $code;
+    public $containerno;
+    public $buyercode;
 
 
     public function setup(){
@@ -255,18 +257,27 @@ class BuyerCodewiseShipmentReport extends AbstractReport
         
         if($this->container != null || $this->container != "")
         {
-            $this->reportMaster->sub_title = 'Container No :'.$this->container;
+            $this->containerno = $this->container;
+            foreach ($this->buyer as $buyer)
+            {
+                $this->buyercode [] = app(BuyercodeRepository::class)->find($buyer);
+            }
+
+//            $this->reportMaster->sub_title = 'Container No :'.$this->container;
             $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
-                $q->where('container_no', $this->container );
+                $q->whereIn('container_no', $this->container );
+            })->whereHas('carton.product' ,function($q){
+                $q->whereIn('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
+                $query->orderBy('po_no');
             });
         }
-        else{
-            $this->reportMaster->sub_title = 'Buyer Code :' . $buyer->buyer_code;
-            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
-                $q->where('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
-                $query->orderBy('po_no');
-            });    
-        }
+//        else{
+//            $this->reportMaster->sub_title = 'Buyer Code :' . $buyer->buyer_code;
+//            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
+//                $q->where('buyercode_id', $this->buyer );})->whereHas('carton.product' ,function ($query) {
+//                $query->orderBy('po_no');
+//            });
+//        }
         
 
         $this->data = $queryBuilder->get();

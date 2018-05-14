@@ -67,6 +67,14 @@
         });
     </script>
     <script>
-        $('#varity').select2();
+        $('#varity,#location_id').select2();
+        $('#start_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value: '{{\Carbon\Carbon::parse($shipment->start_time)->format(PHP_DATE_TIME_FORMAT)}}'
+        });
+        $('#end_time').datetimepicker({
+            format :'{{PHP_DATE_TIME_FORMAT}}',
+            value: '{{\Carbon\Carbon::parse($shipment->end_time)->format(PHP_DATE_TIME_FORMAT)}}'
+        });
     </script>
 @endpush

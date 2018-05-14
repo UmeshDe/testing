@@ -21,4 +21,13 @@ class Utils
             return  Carbon::parse($dateDate)->format(PHP_DATE_FORMAT);
         }
     }
+
+    public static function parseDateTime($dateDate){
+        if($dateDate === "0000-00-00 00:00:00" || $dateDate == null){
+            return "NA";
+        }
+        else{
+            return  Carbon::parse($dateDate)->format(PHP_DATE_TIME_FORMAT);
+        }
+    }
 }

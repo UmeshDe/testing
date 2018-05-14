@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Dashboard\Repositories\WidgetRepository;
+use Modules\Process\Entities\Product;
+use Modules\Process\Entities\Repack;
+use Modules\Process\Entities\Shipment;
+use Modules\Process\Entities\Throwing;
+use Modules\Process\Entities\Transfer;
+use Modules\Process\Repositories\ProductRepository;
+use Modules\Process\Repositories\ShipmentRepository;
+use Modules\Process\Repositories\ThrowingRepository;
+use Modules\Process\Repositories\TransferRepository;
 use Modules\User\Contracts\Authentication;
 use Nwidart\Modules\Contracts\RepositoryInterface;
 
@@ -48,7 +57,23 @@ class DashboardController extends AdminBaseController
             $customWidgets = $widget->widgets;
         }
 
-        return view('dashboard::admin.dashboard', compact('customWidgets'));
+        $productCount = app(Product::class)->count();
+
+        $transferCount = app(Transfer::class)->count();
+
+        $thowingCount = app(Throwing::class)->count();
+
+        $shipmentCount = app(Shipment::class)->count();
+
+        $productionData = app(ProductRepository::class)->all()->take(5);
+
+        $transferData = app(TransferRepository::class)->all()->take(5);
+
+        $thowingData = app(ThrowingRepository::class)->all()->take(5);
+
+        $shipmentData = app(ShipmentRepository::class)->all()->take(5);
+
+        return view('dashboard::admin.dashboard', compact('customWidgets','productCount','transferCount','thowingCount','shipmentCount','productionData','transferData','thowingData','shipmentData'));
     }
 
     /**

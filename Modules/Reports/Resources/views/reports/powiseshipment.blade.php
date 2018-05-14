@@ -14,9 +14,27 @@
         <tr>
             <td colspan="20" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
+        {{--<tr>--}}
+            {{--<td colspan="1"--}}
+                {{--align="left"> <strong>Container </strong>--}}
+            {{--</td>--}}
+            {{--<td colspan="19" align="left">--}}
+                {{--@foreach($report->containerno as $container)--}}
+                    {{--{{$container}} ,--}}
+                {{--@endforeach--}}
+            {{--</td>--}}
+        {{--</tr>--}}
         <tr>
-            <td colspan="20" align="left"> {{$report->reportMaster->sub_title}}</td>
+            <td colspan="1"
+                align="left"> <strong>PO No. </strong>
+            </td>
+            <td colspan="19"
+                align="left">
+            </td>
         </tr>
+        {{--<tr>--}}
+            {{--<td colspan="20" align="left"> {{$report->reportMaster->sub_title}}</td>--}}
+        {{--</tr>--}}
         <tr>
             <td colspan="12" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>

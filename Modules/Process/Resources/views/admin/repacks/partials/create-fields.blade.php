@@ -29,18 +29,85 @@
                 <input type="hidden" name="cartId" id="ctId">
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('product') ? ' has-error has-feedback' : '' }}">
-                <label class="control-label col-sm-4">Carton:</label>
-                <div class="col-sm-7">
-                    {!!
-                        Former::select('product')->raw()
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('product') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label class="control-label col-sm-4">Carton:</label>--}}
+                {{--<div class="col-sm-7">--}}
+                    {{--{!!--}}
+                        {{--Former::select('product')->raw()--}}
 
-                        ->addOption(null)
-                        ->addClass('select')
-                     !!}
-                </div>
-            </div>
+                        {{--->addOption(null)--}}
+                        {{--->addClass('select')--}}
+                     {{--!!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Variety</th>
+                    <th>Carton Date</th>
+                    <th>Lot Number</th>
+                    <th>Available Quantity</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group has-feedback {{ $errors->has('variety') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-5">Variety:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('variety')
+                                    ->addOption(null)
+
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group has-feedback {{ $errors->has('carton_date') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="carton-date" class="control-label col-sm-3">Carton Date:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('carton_date1')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-3">Lot Number:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('lot_no')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group has-feedback {{ $errors->has('available_quantity') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-3">Available Quantity:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('available_quantity')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <div class="row">

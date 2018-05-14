@@ -134,6 +134,9 @@ class PowiseShipmentReport extends AbstractReport
         ],
     ];
 
+    public $pos;
+    public $containerno;
+
 
     public function setup(){
 
@@ -145,12 +148,14 @@ class PowiseShipmentReport extends AbstractReport
 //            $q->whereDate('created_at' , '>=' , $this->startDate->format('Y-m-d'))->whereDate('created_at' ,'<=',$this->endDate->format('Y-m-d'));});
 
 
-        if($this->po != null || $this->po != "")
-        {
-            $this->reportMaster->sub_title = 'PO No: ' . $this->po ;
+//        if($this->po != null || $this->po != "")
+//        {
+//        $this->containerno = $this->container;
+        $this->pos = $this->po;
+
 
             $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('carton.product' ,function($q){
-                $q->where('po_no', $this->po );
+                $q->whereIn('po_no', $this->po );
             });
 
             $this->reportMaster->subfooter = DB::table("process__shipmentcartons")
@@ -158,24 +163,24 @@ class PowiseShipmentReport extends AbstractReport
                 ->join('process__cartons','process__shipmentcartons.carton_id','=','process__cartons.id')
                 ->join('process__products','process__cartons.product_id','=','process__products.id')
                 ->select(DB::raw('SUM(process__shipmentcartons.quantity) as total'))
-                ->where('process__products.po_no',$this->po)
+                ->whereIn('process__products.po_no',$this->po)
+//                ->whereIn('process__shipments.container_no',$this->container)
                 ->get();
-        }
-        else
-        {
-            $this->reportMaster->sub_title = 'Container No: ' . $this->container ;
-            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
-                $q->where('container_no', $this->container);
-            });
-
-            $this->reportMaster->subfooter = DB::table("process__shipmentcartons")
-                ->join('process__shipments','process__shipments.id','=','process__shipmentcartons.shipment_id')
-                ->join('process__cartons','process__shipmentcartons.carton_id','=','process__cartons.id')
-                ->join('process__products','process__cartons.product_id','=','process__products.id')
-                ->select(DB::raw('SUM(process__shipmentcartons.quantity) as total'))
-                ->where('process__shipments.container_no',$this->container)
-                ->get();
-        }
+//        }
+////        else
+//        {
+//            $queryBuilder = ShipmentCarton::with('carton','carton.product','carton.product.fishtype','shipment')->whereHas('shipment' ,function($q){
+//                $q->where('container_no', $this->container);
+//            });
+//
+//            $this->reportMaster->subfooter = DB::table("process__shipmentcartons")
+//                ->join('process__shipments','process__shipments.id','=','process__shipmentcartons.shipment_id')
+//                ->join('process__cartons','process__shipmentcartons.carton_id','=','process__cartons.id')
+//                ->join('process__products','process__cartons.product_id','=','process__products.id')
+//                ->select(DB::raw('SUM(process__shipmentcartons.quantity) as total'))
+//                ->where('process__shipments.container_no',$this->container)
+//                ->get();
+//        }
 
         $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
         $this->data = $queryBuilder->get();

@@ -5,6 +5,7 @@ namespace Modules\Process\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Admin\Repositories\LocationRepository;
 use Modules\Process\Entities\Transfer;
 use Modules\Process\Entities\TransferCarton;
@@ -61,9 +62,14 @@ class TransferController extends AdminBaseController
             ->orderBy('name')
             ->select(DB::raw("CONCAT(name,'-',location) AS name"),'id')
             ->pluck('name','id');
-        
+
+        $variety = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
         $users = app(UserRepository::class)->all();
-        return view('process::admin.transfers.create',compact('users','locations','transfers','cartons'));
+
+        return view('process::admin.transfers.create',compact('users','locations','transfers','cartons','variety'));
     }
 
     /**

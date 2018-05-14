@@ -8,12 +8,14 @@ class CreateQualityParameterRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
-    }
-
-    public function translationRules()
-    {
-        return [];
+        return [
+            'supervisor_id' => 'required',
+            'ph' => 'required',
+            'machine_moisture' => 'required',
+            'machine_kamaboko_hw' => 'required',
+            'moisture' => 'required',
+            'kamaboko_hw' => 'required'
+        ];
     }
 
     public function authorize()
@@ -23,11 +25,13 @@ class CreateQualityParameterRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
-    }
-
-    public function translationMessages()
-    {
-        return [];
+        return [
+            'supervisor_id.required' => 'Please Select Supervisor',
+            'ph.required' => "Enter PH",
+            'machine_moisture.required' => 'Enter Machine Moisture',
+            'machine_kamaboko_hw.required' => 'Enter Machine Kamaboko',
+            'moisture.required' => 'Enter Moisture',
+            'kamaboko_hw.required' => 'Enter Kamaboko'
+        ];
     }
 }

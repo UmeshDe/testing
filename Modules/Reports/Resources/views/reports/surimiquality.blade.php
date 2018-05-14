@@ -1,5 +1,5 @@
 @extends('reports::reports.layout.master')
-
+<?php  ini_set('max_execution_time', -1); ?>
 @section('styles')
 
     <?php
@@ -25,7 +25,7 @@
         </tr>
         <tr>
             @foreach($report->columns as $column)
-                <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
+                <th style="text-align: center">
                     {{isset($column['display_name'])?$column['display_name']:''}}
                 </th>
             @endforeach
@@ -39,7 +39,7 @@
             ?>
             <tr>
                 @foreach($report->columns as $column)
-                    <td style="{{isset($column['row_style'])?$column['row_style']:''}}">
+                    <td style="text-align: center">
 
                         <?php $value;
 
@@ -96,12 +96,14 @@
             </tr>
         @endforeach
         <tfoot>
-        {{--<tr>--}}
-            {{--<td colspan="6" align="center"></td>--}}
-            {{--<td colspan="2"> Total No. Of Cartons</td>--}}
-            {{--<td>{{$report->reportMaster->subfooter}}</td>--}}
-            {{--<td colspan="14"></td>--}}
-        {{--</tr>--}}
+        <tr>
+            <td colspan="6" align="center"></td>
+            <td colspan="3" style="text-align: center"> Total No. Of Cartons</td>
+            @foreach($report->reportMaster->subfooter as $total)
+            <td style="text-align: center">{{$total->total}}</td>
+            @endforeach
+            <td colspan="13"></td>
+        </tr>
         </tfoot>
     </table>
 @endsection

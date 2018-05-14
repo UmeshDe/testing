@@ -32,7 +32,7 @@
                         </h4>
                     </div>
                     <div class="box-body">
-                            @include('process::admin.repacks.partials.create-fields')
+                            @include('process::admin.repacks.partials.edit-fields')
                     </div>
                     <div class="box-footer">
                         <a class="btn btn-danger btn-flat" href="{{ route('admin.process.repack.index')}}" style="margin-left: 30%"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
@@ -86,6 +86,11 @@
             timepicker:false,
             format:'{{PHP_DATE_FORMAT}}',
             value : '{{\Carbon\Carbon::parse($repack->carton_date)->format(PHP_DATE_FORMAT)}}'
+        });
+        $('#repack_date').datetimepicker({
+            timepicker:false,
+            format:'{{PHP_DATE_FORMAT}}',
+            value : '{{\Carbon\Carbon::parse($repack->repack_date)->format(PHP_DATE_FORMAT)}}'
         });
 
     </script>

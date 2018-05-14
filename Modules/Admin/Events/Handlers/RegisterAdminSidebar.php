@@ -107,14 +107,6 @@ class RegisterAdminSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('admin.grades.index')
                     );
                 });
-                $item->item(trans('admin::kinds.title.kinds'), function (Item $item) {
-                    $item->icon('fa fa-copy');
-                    $item->weight(0);
-                    $item->route('admin.admin.kind.index');
-                    $item->authorize(
-                        $this->auth->hasAccess('admin.kinds.index')
-                    );
-                });
                 $item->item(trans('admin::locations.title.locations'), function (Item $item) {
                     $item->icon('fa fa-map-marker');
                     $item->weight(0);

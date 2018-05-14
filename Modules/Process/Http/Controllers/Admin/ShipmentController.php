@@ -9,14 +9,18 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\Repositories\FishTypeRepository;
 use Modules\Admin\Repositories\GradeRepository;
 use Modules\Admin\Repositories\LocationRepository;
+use Modules\Filemanager\Helper\FileMetadata;
+use Modules\Media\Repositories\FileRepository;
 use Modules\Process\Entities\Shipment;
 use Modules\Process\Entities\ShipmentCarton;
 use Modules\Process\Entities\TransferCarton;
 use Modules\Process\Http\Requests\CreateShipmentRequest;
 use Modules\Process\Http\Requests\UpdateShipmentRequest;
 use Modules\Process\Repositories\CartonLocationRepository;
+use Modules\Process\Repositories\ShipmentFileRepository;
 use Modules\Process\Repositories\ShipmentRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
 use Modules\User\Repositories\UserRepository;
 
 class ShipmentController extends AdminBaseController
@@ -26,11 +30,17 @@ class ShipmentController extends AdminBaseController
      */
     private $shipment;
 
-    public function __construct(ShipmentRepository $shipment)
+    /**
+     * @var
+     */
+    protected $auth;
+
+    public function __construct(ShipmentRepository $shipment,Authentication $auth)
     {
         parent::__construct();
 
         $this->shipment = $shipment;
+        $this->auth = $auth;
     }
 
     /**
@@ -41,8 +51,8 @@ class ShipmentController extends AdminBaseController
     public function index()
     {
         $shipments = $this->shipment->all();
-
-        return view('process::admin.shipments.index', compact('shipments'));
+        
+        return view('process::admin.shipments.index', compact('shipments','shipmentFiles'));
     }
 
     /**
@@ -126,7 +136,27 @@ class ShipmentController extends AdminBaseController
 
         //Insert cartons in transfer cartons
         ShipmentCarton::insert($shippedCartons);
-        
+
+        $shipmentFiles = app(ShipmentFileRepository::class);
+
+
+        if($request->photo_id != null && $request->photo_id != "") {
+            foreach ($request->photo_id as $photoId) {
+                if ($photoId->isValid()) {
+                    $fileMetadata = new FileMetadata();
+                    $fileMetadata->description = 'Description';
+                    $fileMetadata->fileStatus = 1;
+                    $fileMetadata->ownerUser = $this->auth->user();
+                    $fileMetadata->isPublic = true;
+                    $fileMetadata->versionNo = 1;
+                    $fileMetadata->fileIdentifierFolder = 'shipment-photo';
+                    $fileObject = app(\Modules\Filemanager\Repositories\FileRepository::class)->createNewFile($photoId, 'shipment-photo', $fileMetadata);
+
+                    $shipmentFiles->create(['shipment_id' => $shipment->id, 'file_id' => $fileObject->id]);
+                }
+            }
+        }
+
         
 //        $this->shipment->create($request->all());
 

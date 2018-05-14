@@ -9,16 +9,45 @@ use Dompdf\FontMetrics;
 
 @section('content')
     <table style="margin-top: 5%">
+        @if(isset($report->vehicleno))
+        <tr>
+            <td align="left" colspan="1"> <strong>Vehicle </strong>
+            </td>
+            <td style="text-align: left" colspan="5">
+                @foreach($report->vehicleno as $vehicle)
+                    {{$vehicle}} ,
+                @endforeach
+            </td>
+        </tr>
+        @endif
+        @if(isset($report->containerno))
+        <tr>
+            <td colspan="1"
+                align="left"> <strong>Container </strong>
+            </td>
+            <td colspan="5" align="left">
+                @foreach($report->containerno as $container)
+                    {{$container}} ,
+                @endforeach
+            </td>
+        </tr>
+        @endif
         <thead>
+        @if(isset($report->containerno))
         <tr>
             <td colspan="6" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
-        <tr>
-            <td colspan="6" align="left"> {{$report->reportMaster->sub_title }}</td>
-        </tr>
+            @else
+            <tr>
+                <td colspan="18" align="left"> {{$report->reportMaster->sub_title}}</td>
+            </tr>
+        @endif
+        {{--<tr>--}}
+            {{--<td colspan="17" align="center"> {{$report->reportMaster->title}}</td>--}}
+        {{--</tr>--}}
         <tr>
             @foreach($report->columns as $column)
-                <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
+                <th style="text-align: center">
                     {{isset($column['display_name'])?$column['display_name']:''}}
                 </th>
             @endforeach
@@ -32,7 +61,7 @@ use Dompdf\FontMetrics;
             ?>
             <tr>
             @foreach($report->columns as $column)
-                <td style="{{isset($column['row_style'])?$column['row_style']:''}}">
+                <td style="text-align: center">
 
                     <?php $value;
 

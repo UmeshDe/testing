@@ -204,7 +204,20 @@ class ProcessServiceProvider extends ServiceProvider
                 return new \Modules\Process\Repositories\Cache\CachePackingDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Process\Repositories\ShipmentFileRepository',
+            function () {
+                $repository = new \Modules\Process\Repositories\Eloquent\EloquentShipmentFileRepository(new \Modules\Process\Entities\ShipmentFile());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Process\Repositories\Cache\CacheShipmentFileDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 

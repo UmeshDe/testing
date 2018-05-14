@@ -1,21 +1,45 @@
 @extends('reports::reports.layout.master')
+<?php  ini_set('max_execution_time', -1); ?>
 
 @section('styles')
 
-    <?php
-    use Dompdf\FontMetrics;
-    ?>
+   
 @endsection
 
 @section('content')
 
     <table class="export-table">
+        <tr>
+            <td align="left" colspan="1"> <strong>Variety </strong>
+            </td>
+            <td  colspan="35">
+                @foreach($report->fishtypes as $type)
+                    {{$type->type}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>Grade </strong>
+            </td>
+            <td  colspan="35">
+                @foreach($report->grades as $grade)
+                    {{$grade->grade}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>Date </strong>
+            </td>
+            <td  colspan="35">
+                {{$report->date}}
+            </td>
+        </tr>
         <thead>
         <tr>
             <td colspan="36" align="center"> {{$report->reportMaster->title}}</td>
         </tr>
         <tr>
-            <td colspan="16" align="left"> {{$report->date}}</td>
+            <td colspan="16" align="left"></td>
             <td colspan="20" align="center">
             @foreach($report->total as $total)
                 {{$total->total}}
@@ -29,7 +53,7 @@
         </tr>
         <tr>
             @foreach($report->columns as $column)
-                <th style="{{isset($column['header_style'])?$column['header_style']:''}}">
+                <th style="text-align: center">
                     {{isset($column['display_name'])?$column['display_name']:''}}
                 </th>
             @endforeach
@@ -43,7 +67,7 @@
             ?>
             <tr>
                 @foreach($report->columns as $column)
-                    <td style="{{isset($column['row_style'])?$column['row_style']:''}}">
+                    <td style="text-align: center">
 
                         <?php $value;
 
@@ -104,7 +128,7 @@
             <td colspan="22" align="center"></td>
             <td colspan="2"> Total No. Of Cartons</td>
             @foreach($report->total as $total)
-                <td>{{$total->total}}</td>
+                <td style="text-align: center">{{$total->total}}</td>
             @endforeach
             <td colspan="11"></td>
         </tr>

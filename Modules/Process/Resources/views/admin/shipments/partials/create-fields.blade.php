@@ -7,7 +7,7 @@
                     {!!
                         Former::text('container_no')->raw()
                      !!}
-
+                    <span style="color: red">{{$errors->first('container_no')}}</span>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     {!!
                         Former::text('vehicle_no')->raw()
                      !!}
-
+                    <span style="color: red">{{$errors->first('vehicle_no')}}</span>
                 </div>
             </div>
         </div>
@@ -107,15 +107,21 @@
         </div>
     </div>
     <div class="row">
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('photo') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label for="photo" class="control-label col-sm-3">Photo:</label>--}}
+                {{--<div class="col-sm-9">--}}
+                    {{--{!!--}}
+                         {{--Former::text('photo')--}}
+                        {{--->raw()--}}
+                     {{--!!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('photo') ? ' has-error has-feedback' : '' }}">
-                <label for="photo" class="control-label col-sm-3">Photo:</label>
-                <div class="col-sm-9">
-                    {!!
-                         Former::text('photo')
-                        ->raw()
-                     !!}
-                </div>
+            <label class="control-label col-sm-3">Upload File</label>
+            <div class="col-sm-9">
+                <input multiple="multiple" name="photo_id[]" type="file">
             </div>
         </div>
         <div class="col-md-6">
@@ -156,7 +162,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('stuffing_place') ? ' has-error has-feedback' : '' }}">
+            <div class="form-group has-feedback {{ $errors->has('location_id') ? ' has-error has-feedback' : '' }}">
                 <label for="loading_from" class="control-label col-sm-3">Stuffing Place:</label>
                 <div class="col-sm-9">
                     {!!
@@ -166,68 +172,160 @@
                         ->addClass('select')
                         ->raw()
                      !!}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('varity') ? ' has-error has-feedback' : '' }}">
-                <label for="varity" class="control-label col-sm-3">Varity:</label>
-                <div class="col-sm-9">
-                    {!!
-                         Former::multiselect('varity')
-                         ->addOption(null)
-                         ->fromQuery($varity,'type','id')
-                        ->addClass('select')
-                        ->raw()
-                     !!}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group has-feedback {{ $errors->has('transfer_lot') ? ' has-error has-feedback' : '' }}">
-                <label for="transfer_lot" class="control-label col-sm-3">Product:</label>
-                <div class="col-sm-9">
-                    {!!
-                         Former::select('transfer_lot')
-                         ->addOption(null)
-                        ->addClass('select')
-                        ->raw()
-
-                     !!}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
-                <label for="lot-no" class="control-label col-sm-6">Quantity:</label>
-                <div class="col-sm-6">
-                    {!!
-                        Former::text('quantity')->raw()
-                     !!}
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
-                <div class="col-sm-9">
-                    <button type="button" class="btn pull-right btn-flat" id="allLots" onclick="display()">Transfer</button>
-                    {!! $errors->first('vehicle_no', '<span class="help-block">:message</span>') !!}
+                    <span style="color: red">{{$errors->first('location_id')}}</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th style="text-align: center">Variety</th>
+                    <th style="text-align: center">Carton Date</th>
+                    <th style="text-align: center">Lot Number</th>
+                    <th style="text-align: center">Available Quantity</th>
+                    <th style="text-align: center">Quantity</th>
+                    <th style="text-align: center">Action</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('variety') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-5">Variety:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('variety')
+                                    ->addOption(null)
+
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                            <span style="color: red">{{$errors->first('variety')}}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('carton_date') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="carton-date" class="control-label col-sm-3">Carton Date:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('carton_date')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                            <span style="color: red">{{$errors->first('carton_date')}}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('lot_no') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-3">Lot Number:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('lot_no')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                            <span style="color: red">{{$errors->first('lot_no')}}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('available_quantity') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-3">Available Quantity:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::select('available_quantity')
+                                    ->addOption(null)
+                                   ->addClass('select')
+                                   ->raw()
+                                !!}
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
+                            {{--<label for="lot-no" class="control-label col-sm-3">Quantity:</label>--}}
+                            <div class="col-sm-12">
+                                {!!
+                                    Former::text('quantity')->raw()
+                                 !!}
+
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">
+                            <div class="col-sm-9">
+                                <button type="button" class="btn pull-right btn-flat" id="allLots" onclick="display()">Shipment</button>
+                                {!! $errors->first('vehicle_no', '<span class="help-block">:message</span>') !!}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('varity') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label for="varity" class="control-label col-sm-3">Varity:</label>--}}
+                {{--<div class="col-sm-9">--}}
+                    {{--{!!--}}
+                         {{--Former::multiselect('varity')--}}
+                         {{--->addOption(null)--}}
+                         {{--->fromQuery($varity,'type','id')--}}
+                        {{--->addClass('select')--}}
+                        {{--->raw()--}}
+                     {{--!!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="row">--}}
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('transfer_lot') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label for="transfer_lot" class="control-label col-sm-3">Product:</label>--}}
+                {{--<div class="col-sm-9">--}}
+                    {{--{!!--}}
+                         {{--Former::select('transfer_lot')--}}
+                         {{--->addOption(null)--}}
+                        {{--->addClass('select')--}}
+                        {{--->raw()--}}
+
+                     {{--!!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-md-3">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<label for="lot-no" class="control-label col-sm-6">Quantity:</label>--}}
+                {{--<div class="col-sm-6">--}}
+                    {{--{!!--}}
+                        {{--Former::text('quantity')->raw()--}}
+                     {{--!!}--}}
+
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-md-2">--}}
+            {{--<div class="form-group has-feedback {{ $errors->has('quantity') ? ' has-error has-feedback' : '' }}">--}}
+                {{--<div class="col-sm-9">--}}
+                    {{--<button type="button" class="btn pull-right btn-flat" id="allLots" onclick="display()">Transfer</button>--}}
+                    {{--{!! $errors->first('vehicle_no', '<span class="help-block">:message</span>') !!}--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    <div class="row">
+        <div class="col-lg-12">
             <table class="table table-bordered table-hover" id="records-table">
                 <tr>
-                    <th>Date</th>
-                    <th>Lot</th>
-                    <th>Quantity</th>
-                    <th>Transfer Quantity</th>
-                    <th>Remove</th>
+                    <th style="text-align: center">Date</th>
+                    <th style="text-align: center">Lot</th>
+                    <th style="text-align: center">Quantity</th>
+                    <th style="text-align: center">Transfer Quantity</th>
+                    <th style="text-align: center">Remove</th>
                 </tr>
             </table>
         </div>

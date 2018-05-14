@@ -191,4 +191,15 @@ abstract class EloquentBaseRepository implements BaseRepository
     {
         return true;
     }
+
+
+    /**
+     * @param $id
+     * @param $with
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
+    public function findWith($id,$with)
+    {
+        return $this->model->with($with)->find($id);
+    }
 }

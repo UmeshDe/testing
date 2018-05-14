@@ -11,7 +11,7 @@ return [
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
     */
-    'name' => 'Accunity WebApp',
+    'name' => 'SBCART WEBAPP',
 
     /*
    |--------------------------------------------------------------------------
@@ -196,6 +196,7 @@ return [
         Former\FormerServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Felixkiss\UniqueWithValidator\ServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
@@ -246,6 +247,7 @@ return [
 
         'Former' => 'Former\Facades\Former',
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];

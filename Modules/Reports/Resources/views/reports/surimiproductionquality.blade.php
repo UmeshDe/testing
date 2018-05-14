@@ -1,4 +1,5 @@
 @extends('reports::reports.layout.master')
+<?php  ini_set('max_execution_time', -1); ?>
 
 @section('styles')
 
@@ -21,7 +22,7 @@
             <td colspan="28" align="left"> </td>
             <td colspan="3" align="center">STANDARD</td>
             <td colspan="3" align="center">SUWARI</td>
-            <td colspan="4"></td>
+            <td colspan="3"></td>
         </tr>
         <tr>
             @foreach($report->columns as $column)

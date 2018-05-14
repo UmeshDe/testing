@@ -220,6 +220,8 @@ class SurimiProductionQualityStockReport extends AbstractReport
     public $date;
 
     public $total;
+    public $grades;
+    public $fishtypes;
 
     public function formatCode($codes){
         return count($codes);
@@ -228,57 +230,107 @@ class SurimiProductionQualityStockReport extends AbstractReport
     public function setup(){
 
 
-        $this->reportMaster->sub_title_style = 'text-align:left';
+//        $this->reportMaster->sub_title_style = 'text-align:left';
 
         $this->reportMaster->footer = ' Printed by :'.  auth()->user()->first_name." ".auth()->user()->last_name .' , ' .'Date & Time :' . Carbon::now()->format(PHP_DATE_TIME_FORMAT) ;
 
-        if($this->grade != null || $this->grade != "")
+        if($this->reportDate !== null)
         {
-            $grade = app(GradeRepository::class)->find($this->grade);
-            $this->date = 'Grade: ' . $grade->grade ;
-            $queryBuilder = QualityParameter::with('carton','carton.cartonlocation','carton.product','carton.product.codes','user')
-            ->where('grade_id',$this->grade);
+            foreach ($this->grade as $grade)
+            {
+                $this->grades [] = app(GradeRepository::class)->find($grade);
+            }
+
+            foreach($this->variety as $variety)
+            {
+                $this->fishtypes [] = app(FishTypeRepository::class)->find($variety);
+            }
+
+            $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '_____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
+
+
+//            $grade = app(GradeRepository::class)->find($this->grade);
+//            $this->date = 'Grade: ' . $grade->grade ;
+            $queryBuilder = QualityParameter::with('carton','carton.cartonlocation','carton.product','carton.product.codes','user')->whereHas('carton.product', function ($q) {
+                $q->whereIn('fish_type', $this->variety);
+                $q->whereDate('carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('carton_date', '<=', $this->endDate->format('Y-m-d'));
+            })->whereIn('grade_id',$this->grade);
 
             $this->total = DB::table("process__qualityparameters")
                 ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
-                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
-                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
-                ->where('grade_id',$this->grade)
-                ->get();
-        }
-        else if($this->variety != null || $this->variety != "") {
-
-            $fishtype = app(FishTypeRepository::class)->find($this->variety);
-            $this->date = 'Fish Type: ' . $fishtype->type ;
-            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
-                $q->where('fish_type', $this->variety);
-            });
-
-            $this->total = DB::table("process__qualityparameters")
-                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+//                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
                 ->join('process__products','process__cartons.product_id','=','process__products.id')
-                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
-                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
-                ->where('fish_type',$this->variety)
+                ->select(DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereIn('grade_id',$this->grade)
+                ->whereIn('process__products.fish_type',$this->variety)
+                ->whereDate('process__products.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__products.carton_date', '<=', $this->endDate->format('Y-m-d'))
                 ->get();
-
         }
         else
         {
-            $this->date = 'Carton From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '_____Carton To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
-            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
-                $q->whereDate('carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('carton_date', '<=', $this->endDate->format('Y-m-d'));
-            });
+            foreach ($this->grade as $grade)
+            {
+                $this->grades [] = app(GradeRepository::class)->find($grade);
+            }
+
+            foreach($this->variety as $variety)
+            {
+                $this->fishtypes [] = app(FishTypeRepository::class)->find($variety);
+            }
+
+            $this->date = '';
+
+
+//            $grade = app(GradeRepository::class)->find($this->grade);
+//            $this->date = 'Grade: ' . $grade->grade ;
+            $queryBuilder = QualityParameter::with('carton','carton.cartonlocation','carton.product','carton.product.codes','user')->whereHas('carton.product', function ($q) {
+                $q->whereIn('fish_type', $this->variety);
+            })->whereIn('grade_id',$this->grade);
 
             $this->total = DB::table("process__qualityparameters")
                 ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+//                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
                 ->join('process__products','process__cartons.product_id','=','process__products.id')
-                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
-                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
-                ->whereDate('process__products.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__products.carton_date', '<=', $this->endDate->format('Y-m-d'))
+                ->select('process__qualityparameters.grade_id','process__products.fish_type',DB::raw('SUM(process__products.no_of_cartons) as total'))
+                ->whereIn('process__qualityparameters.grade_id',$this->grade,'AND')
+                ->whereIn('process__products.fish_type',$this->variety)
                 ->get();
 
+//            dd($this->total);
         }
+//        else if($this->variety != null || $this->variety != "") {
+//
+//            $fishtype = app(FishTypeRepository::class)->find($this->variety);
+//            $this->date = 'Fish Type: ' . $fishtype->type ;
+//            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
+//                $q->where('fish_type', $this->variety);
+//            });
+//
+//            $this->total = DB::table("process__qualityparameters")
+//                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+//                ->join('process__products','process__cartons.product_id','=','process__products.id')
+//                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
+//                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
+//                ->where('fish_type',$this->variety)
+//                ->get();
+//
+//        }
+//        else
+//        {
+
+//            $queryBuilder = QualityParameter::with('carton', 'carton.cartonlocation', 'carton.product', 'carton.product.codes', 'user')->whereHas('carton.product', function ($q) {
+//                $q->whereDate('carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('carton_date', '<=', $this->endDate->format('Y-m-d'));
+//            });
+//
+//            $this->total = DB::table("process__qualityparameters")
+//                ->join('process__cartons','process__cartons.id','=','process__qualityparameters.carton_id')
+//                ->join('process__products','process__cartons.product_id','=','process__products.id')
+//                ->join('process__cartonlocations','process__cartonlocations.carton_id','=','process__cartons.id')
+//                ->select(DB::raw('SUM(process__cartonlocations.available_quantity) as total'))
+//                ->whereDate('process__products.carton_date', '>=', $this->startDate->format('Y-m-d'))->whereDate('process__products.carton_date', '<=', $this->endDate->format('Y-m-d'))
+//                ->get();
+//
+//        }
 
         $this->data = $queryBuilder->get();
 

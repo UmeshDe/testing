@@ -111,7 +111,7 @@ class MandWReport extends AbstractReport
                 $q->whereDate('carton_date', '>=', $this->startDate)->whereDate('carton_date', '<=', $this->endDate);
             });
         }
-        else
+        else if($this->reportDate == 2)
         {
             if(Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) == Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT))
             {
@@ -121,6 +121,10 @@ class MandWReport extends AbstractReport
                 $this->date = 'Inspection From Date: ' . Carbon::parse($this->startDate)->format(PHP_DATE_FORMAT) . '____Inspection To Date:' .Carbon::parse($this->endDate)->format(PHP_DATE_FORMAT) ;
             }
             $queryBuilder = QualityParameter::with('carton','carton.product','user')->whereDate('inspection_date' , '>=' , $this->startDate)->whereDate('inspection_date' ,'<=',$this->endDate);
+        }
+        else
+        {
+
         }
 
         $this->data = $queryBuilder->get();

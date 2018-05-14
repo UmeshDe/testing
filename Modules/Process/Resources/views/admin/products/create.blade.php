@@ -65,10 +65,14 @@
 
             $('#carton_date').datetimepicker({
                 timepicker: false,
-                format: '{{PHP_DATE_FORMAT}}',
+                format: 'Y-m-d',
                 value: new moment()
             });
-            $('.select').select2();
+            $('.select').select2(
+                {
+                    width: '100%'
+                }
+            );
         })
 
 
@@ -99,25 +103,14 @@
             {{--});--}}
         {{--});--}}
 
+            $('#product_slab').focusout(function(){
+                var number = $('#product_slab').val();
+                if (number %2 != 0){
+                    alert("Please Enter Even Number");
+                    $(this).val(0);
+                }
+            });
 
-        {{--var ViewModel = function(model) {--}}
-
-            {{--var self = this;--}}
-            {{--this.product_slab = ko.observable();--}}
-            {{--this.rejected = ko.observable(0);--}}
-
-            {{--this.no_of_cartons = ko.computed(function () {--}}
-                {{--var value = self.product_slab()/20 - Math.ceil((self.rejected()/parseFloat(2)));--}}
-                {{--return (value)?value:0;--}}
-            {{--});--}}
-
-            {{--this.loose = ko.computed(function(){--}}
-                {{--var value = (self.rejected()%2);--}}
-                {{--return (value)?value:0;--}}
-            {{--});--}}
-        {{--};--}}
-
-        {{--ko.applyBindings(new ViewModel({{$product}}));--}}
 
     </script>
 

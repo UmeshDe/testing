@@ -4,6 +4,18 @@ namespace Modules\Reports\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Repositories\BagcolorRepository;
+use Modules\Admin\Repositories\BuyercodeRepository;
+use Modules\Admin\Repositories\ApprovalNumberRepository;
+use Modules\Admin\Repositories\CheckmarkRepository;
+use Modules\Admin\Repositories\CodeMasterRepository;
+use Modules\Admin\Repositories\FishTypeRepository;
+use Modules\Admin\Repositories\GradeRepository;
+use Modules\Admin\Repositories\InternalcodeRepository;
+use Modules\Admin\Repositories\LocationRepository;
+use Modules\Process\Repositories\ProductRepository;
+use Modules\Process\Repositories\TransferRepository;
 use Modules\Reports\Entities\ReportMaster;
 use Modules\Reports\Http\Requests\CreateReportMasterRequest;
 use Modules\Reports\Http\Requests\UpdateReportMasterRequest;
@@ -74,7 +86,214 @@ class ReportMasterController extends AdminBaseController
      */
     public function edit(ReportMaster $reportmaster)
     {
-        return view('reports::admin.reportmasters.edit', compact('reportmaster'));
+
+        $codeMasterRepo = app(CodeMasterRepository::class);
+
+        $reports = $this->reportmaster->allWithBuilder()
+            ->where('module_id','=',$reportmaster->module_id)
+            ->pluck('name','id');
+
+        $reportLogs = app(ReportMasterRepository::class)->all();
+
+        $grade = app(GradeRepository::class)->allWithBuilder()
+            ->orderBy('grade')
+            ->pluck('grade','id');
+
+        $eiano = app(ApprovalNumberRepository::class)->allWithBuilder()
+            ->orderBy('app_number')
+            ->pluck('app_number','id');
+
+        $cm = app(CheckmarkRepository::class)->allWithBuilder()
+            ->orderBy('cm')
+            ->pluck('cm','id');
+
+        $variety = app(FishTypeRepository::class)->allWithBuilder()
+            ->orderBy('type')
+            ->pluck('type','id');
+
+        $buyercode = app(BuyercodeRepository::class)->allWithBuilder()
+            ->orderBy('buyer_code')
+            ->pluck('buyer_code','id');
+
+        $place = app(LocationRepository::class)->allWithBuilder()
+            ->orderBy('location')
+            ->pluck('location','id');
+
+        $po = app(ProductRepository::class)->all();
+
+        $bagColor = app(BagcolorRepository::class)->allWithBuilder()
+            ->orderBy('color')
+            ->pluck('color','id');
+
+
+        $transferData = app(TransferRepository::class)->all();
+
+//        $orders= DB::table('process__shipments','process__shipments')
+//            ->select(DB::raw('process__shipments.vehicle_no','process__transfers.vehicle_no'))
+//            ->get();
+
+        $shipmentVehicle =DB::table('process__shipments')
+            ->distinct()
+            ->select('vehicle_no');
+
+        $vehicle = DB::table('process__transfers')
+            ->distinct()
+            ->select('vehicle_no')
+            ->union($shipmentVehicle)
+            ->get();
+
+        $shipmentContainer =DB::table('process__shipments')
+            ->distinct()
+            ->select('container_no');
+
+        $container = DB::table('process__transfers')
+            ->distinct()
+            ->select('container_no')
+            ->union($shipmentContainer)
+            ->get();
+
+        $ic = app(InternalcodeRepository::class)->allWithBuilder()
+            ->orderBy('internal_code')
+            ->pluck('internal_code','id');
+
+
+        $fm = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent' ,'=',1)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $d = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',3)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $s = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent' ,'=',4)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $a = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',5)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $c = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent' ,'=' ,6)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $p= $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',7)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $b= $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',8)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $m = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',9)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $w = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',10)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $q = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',11)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $sc = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',12)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $lc = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',13)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $i = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',245)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $k = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',268)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $e = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',277)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $t = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',278)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $sg = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',279)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        //where is_parent == 280
+        $kg = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',488)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $g = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',281)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $h = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',282)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $rc = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',284)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $mk = $codeMasterRepo->allWithBuilder()
+            ->where('is_parent','=',285)
+            ->orderBy('code')
+            ->pluck('code','id');
+
+        $codes = [
+            'fm' => $fm,
+            'd' => $d,
+            's' => $s,
+            'a' => $a,
+            'c' => $c,
+            'p' => $p,
+            'b' => $b,
+            'm' => $m,
+            'w' => $w,
+            'q' => $q,
+            'sc' => $sc,
+            'lc' => $lc,
+            'i' => $i,
+            'k' => $k,
+            'e' => $e,
+            't' => $t,
+            'sg' => $sg,
+            'kg' => $kg,
+            'g' => $g,
+            'h' => $h,
+            'rc' => $rc,
+            'mk' => $mk
+        ];
+
+        return view('reports::admin.reportmasters.edit', compact('reports','grade','variety','buyercode','po','ic','transferData','vehicle','container','place','reportLogs','reportmaster','bagColor','eiano','cm'))->with($codes);
     }
 
     /**

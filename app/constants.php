@@ -8,4 +8,5 @@ if (! defined('APP_NAME')) {
     
     define('DEFAULT_PASSWORD' , 'ULKA');
     define('SUPERVISOR_ROLE' , '1');
+    define('SHIPMENT_FILE','shipmentphoto');
 }

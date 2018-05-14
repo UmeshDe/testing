@@ -4,6 +4,7 @@
 
     <?php
     use Dompdf\FontMetrics;
+    use Carbon\Carbon;
     ?>
 @endsection
 
@@ -16,29 +17,343 @@
     <table style="margin-top: 5%">
         {{--<thead>--}}
         <tr>
-            <td colspan="19" align="center"> {{$report->reportMaster->title}}</td>
+            <th colspan="19" align="center">
+                {{$report->reportMaster->title}}
+            </th>
         </tr>
         <tr>
-            <td colspan="19"
-                align="left"> {{$report->reportMaster->sub_title }}</td>
-        </tr>
-        <tr>
-            <td>
-                SPP
+            <td align="left" colspan="1"> <strong>Stock On Date </strong>
             </td>
+            <td style="text-align: left" colspan="18">
+               {{Carbon::now()->format(PHP_DATE_FORMAT)}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>Variety </strong>
+            </td>
+            <td style="text-align: left" colspan="18">
+                @foreach($report->types as $type)
+                    {{$type->type}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"> <strong>Place</strong>
+            </td>
+            <td colspan="18" align="left">
+                @foreach($report->locations as $place)
+                    {{$place->location}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>EIA No </strong>
+            </td>
+            <td style="text-align: left" colspan="18">
+                @foreach($report->approval as $approval)
+                    {{$approval->app_number}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td align="left" colspan="1"> <strong>CM </strong>
+            </td>
+            <td style="text-align: left" colspan="18">
+                @foreach($report->checkmark as $checkmark)
+                    {{$checkmark->cm}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> Bag Color </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->color as $color)
+                    {{$color->color}} ,
+                @endforeach
+            </td>
+        </tr>
+        {{--<tr>--}}
+            {{--<td colspan="1"--}}
+                {{--align="left"> <strong>PO No. </strong>--}}
+            {{--</td>--}}
+            {{--<td colspan="18"--}}
+                {{--align="left">--}}
+            {{--</td>--}}
+        {{--</tr>--}}
+        <tr>
+            <td colspan="1"
+                align="left"><strong> FM Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->fmcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> I Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->icode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> K Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->kcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> E Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->ecode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> T Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->tcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> SG Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->sgcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> KG Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->kgcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> G Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->gcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> H Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->hcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> RC Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->rccode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> MK Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->mkcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> D Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->dcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> S Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->scode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> A Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->acode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> C Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->ccode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> P Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->pcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> B Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->bcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> M Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->mcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> W Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->wcode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> Q Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->qcode as $code)
+                    {{$code->code}}
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> SC Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->sccode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1"
+                align="left"><strong> LC Code </strong>
+            </td>
+            <td colspan="18"
+                align="left">
+                @foreach($report->lccode as $code)
+                    {{$code->code}} ,
+                @endforeach
+            </td>
+        </tr>
+        {{--<tr>--}}
+            {{--<td colspan="1"--}}
+                {{--align="left"><strong> BuyerCode </strong>--}}
+            {{--</td>--}}
+            {{--<td colspan="18"--}}
+                {{--align="left">--}}
+                {{--@foreach($report->buyercode as $buyer)--}}
+                    {{--{{$buyer->buyer_code}} ,--}}
+                {{--@endforeach--}}
+            {{--</td>--}}
+        {{--</tr>--}}
+        <tr>
+            <th style="text-align: center">
+                SPP
+            </th>
                     @foreach ($report->grades->reverse() as $grade)
-                        <td>
+                        <th style="text-align: center">
 
                         {{  $grade->grade }}
 
-                        </td>
+                        </th>
                     @endforeach
-            <td>
+            <th style="text-align: center">
                 UG
-            </td>
-            <td>
+            </th>
+            <th style="text-align: center">
                 Total
-            </td>
+            </th>
         </tr>
         {{--</thead>--}}
         <?php
@@ -52,11 +367,11 @@
                 $cartons = 0;
                     ?>
             <tr>
-                <td>
+                <td style="text-align: center">
                     {{ $fishtype->type }}
                 </td>
                 @foreach ($report->grades->reverse() as $grade)
-                    <td>
+                    <td style="text-align: center">
                         <?php
                         $value = $report->gradeSum->where('grade_id', $grade->id)->where('fish_type', $fishtype->id);
                         if(count($value) >= 1)
@@ -73,7 +388,7 @@
                         ?>
                     </td>
                 @endforeach
-                <td>
+                <td style="text-align: center">
                     <?php
                     $value = $report->ungraded->where('fish_type', $fishtype->id);
                     foreach ($value as $val)
@@ -83,27 +398,54 @@
                         }
                         ?>
                 </td>
-                <td>
+                <th style="text-align: center">
                     <?php
-                    echo $total;
+                    echo $total + $cartons;
                     ?>
-                </td>
+                </th>
             </tr>
         @endforeach
+
         <tr>
-            <td colspan="17"></td>
+            <th style="text-align: center">Total</th>
+            @foreach ($report->grades->reverse() as $grade)
+            <th style="text-align: center">
+                <?php
+                $gradewiseTotal = 0;
+
+                $value = $report->gradeSum->where('grade_id', $grade->id);
+//                echo $value;
+                    foreach ($value as $val)
+                    {
+                        $gradewiseTotal += $val->total_sales;
+                    }
+                    echo $gradewiseTotal;
+                ?>
+            </th>
+            @endforeach
+            <th style="text-align: center">
+                <?php
+
+                foreach ($report->ungraded as $val)
+                {
+                    $cartons += $val->total_sales;
+
+                }
+                echo $cartons;
+                ?>
+
+            </th>
             <?php
             foreach($report->gradeSum as $grade)
             {
                 $final += $grade->total_sales;
             }
                     ?>
-            <td>Total</td>
-            <td>
+            <th style="text-align: center">
                 <?php
-                    echo $final;
+                    echo $final + $cartons;
                 ?>
-            </td>
+            </th>
 
         </tr>
 
